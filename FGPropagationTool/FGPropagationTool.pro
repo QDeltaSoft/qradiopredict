@@ -4,20 +4,24 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql
-
-TARGET = TestApp
+QT       += core gui network sql widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+TARGET = FGPropagationTool
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
         MainWindow.cpp \
     WeatherImageObject.cpp \
-    WeatherManager.cpp
+    WeatherManager.cpp \
+    databaseapi.cpp \
+    fgtelnet.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
-    WeatherManager.h
+    WeatherManager.h \
+    databaseapi.h \
+    fgtelnet.h
 
 FORMS    += MainWindow.ui
 
