@@ -53,6 +53,7 @@ public:
 
     MapGraphicsScene * scene() const;
     void setScene(MapGraphicsScene *);
+    QPointer<QGraphicsView> _childView;
 
     //pure-virtual from PrivateQGraphicsInfoSource
     QSharedPointer<MapTileSource> tileSource() const;
@@ -94,7 +95,7 @@ protected:
 
 private:
     QPointer<MapGraphicsScene> _scene;
-    QPointer<QGraphicsView> _childView;
+
     QPointer<QGraphicsScene> _childScene;
     QSharedPointer<MapTileSource> _tileSource;
 

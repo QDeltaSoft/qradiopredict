@@ -15,15 +15,21 @@ SOURCES += main.cpp\
     WeatherImageObject.cpp \
     WeatherManager.cpp \
     databaseapi.cpp \
-    fgtelnet.cpp
+    fgtelnet.cpp \
+    toolbox.cpp \
+    connectionsuccessdialog.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
     WeatherManager.h \
     databaseapi.h \
-    fgtelnet.h
+    fgtelnet.h \
+    toolbox.h \
+    connectionsuccessdialog.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    toolbox.ui \
+    connectionsuccessdialog.ui
 
 #Linkage for MapGraphics shared library
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/release/ -lMapGraphics

@@ -29,7 +29,7 @@
      <x>0</x>
      <y>0</y>
      <width>1103</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuWindow">
@@ -41,10 +41,29 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionConnect_to_Flightgear"/>
     <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuWindow"/>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget2">
+   <property name="windowTitle">
+    <string>Commands</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2"/>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget3">
+   <property name="windowTitle">
+    <string>Toolbox</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>4</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3"/>
   </widget>
   <action name="actionExit">
    <property name="text">
@@ -52,6 +71,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionConnect_to_Flightgear">
+   <property name="text">
+    <string>Connect to Flightgear</string>
    </property>
   </action>
  </widget>
