@@ -56,7 +56,6 @@ void PrivateQGraphicsView::mousePressEvent(QMouseEvent *event)
 ////virtual from QGraphicsView
 void PrivateQGraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
-    viewport()->setCursor(Qt::CrossCursor);
     event->setAccepted(false);
     this->hadMouseReleaseEvent(event);
     if (!event->isAccepted())

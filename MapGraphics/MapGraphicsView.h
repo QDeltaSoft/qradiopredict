@@ -75,6 +75,7 @@ public:
     
 signals:
     void zoomLevelChanged(quint8 nZoom);
+    void map_clicked(QPointF where);
     
 public slots:
 
@@ -100,6 +101,8 @@ private:
     QSharedPointer<MapTileSource> _tileSource;
 
     QSet<MapTileGraphicsObject *> _tileObjects;
+
+    QList<QGraphicsItem *> _graphics;
 
     quint8 _zoomLevel;
 

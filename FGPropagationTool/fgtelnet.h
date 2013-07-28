@@ -11,19 +11,22 @@ public:
     ~FGTelnet();
 
     void setProperty(QString prop_name, QString value);
+    QString getProperty(QString prop_name);
     void runCmd(QString cmd);
+    unsigned inline status() {return _status;}
 
 public slots:
 
     void connectToFGFS();
 
 signals:
-
+    void connectionFailure();
     void connectedToFGFS();
 
 private:
     QTcpSocket _socket;
     unsigned _connection_tries;
+    unsigned _status;
 
 
 private slots:

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons/images">
+        <file>antenna.png</file>
+        <file>flag.png</file>
+        <file>phone.png</file>
+        <file>s-meter-scale.png</file>
+    </qresource>
+</RCC>

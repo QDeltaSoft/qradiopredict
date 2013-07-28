@@ -41,6 +41,7 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionStart_Flightgear"/>
     <addaction name="actionConnect_to_Flightgear"/>
     <addaction name="actionExit"/>
    </widget>
@@ -76,6 +77,11 @@
   <action name="actionConnect_to_Flightgear">
    <property name="text">
     <string>Connect to Flightgear</string>
+   </property>
+  </action>
+  <action name="actionStart_Flightgear">
+   <property name="text">
+    <string>Start Flightgear</string>
    </property>
   </action>
  </widget>

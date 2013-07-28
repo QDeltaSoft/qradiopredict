@@ -15,7 +15,7 @@ public:
     explicit toolbox(QWidget *parent = 0);
     ~toolbox();
     
-private:
+
     Ui::toolbox *ui;
 };
 

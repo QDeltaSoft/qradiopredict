@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     databaseapi.cpp \
     fgtelnet.cpp \
     toolbox.cpp \
-    connectionsuccessdialog.cpp
+    connectionsuccessdialog.cpp \
+    util.cpp \
+    fgremote.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -25,7 +27,9 @@ HEADERS  += MainWindow.h \
     databaseapi.h \
     fgtelnet.h \
     toolbox.h \
-    connectionsuccessdialog.h
+    connectionsuccessdialog.h \
+    util.h \
+    fgremote.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
@@ -34,7 +38,10 @@ FORMS    += MainWindow.ui \
 #Linkage for MapGraphics shared library
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/release/ -lMapGraphics
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/debug/ -lMapGraphics
-else:unix:!symbian: LIBS += -L$$OUT_PWD/../MapGraphics/ -lMapGraphics
+else:unix:!symbian: LIBS += -L$$OUT_PWD/../MapGraphics/ -lMapGraphics -lsqlite3
 
 INCLUDEPATH += $$PWD/../MapGraphics
 DEPENDPATH += $$PWD/../MapGraphics
+
+RESOURCES += \
+    resources.qrc

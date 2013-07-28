@@ -7,6 +7,7 @@ FGTelnet::FGTelnet()
     QObject::connect(&_socket,SIGNAL(error(QAbstractSocket::SocketError )),this,SLOT(connectionFailed(QAbstractSocket::SocketError)));
     QObject::connect(&_socket,SIGNAL(connected()),this,SLOT(connectionSuccess()));
     _connection_tries=0;
+    _status=0;
     this->connectToFGFS();
 
     //if (_socket.waitForConnected(2000))
@@ -24,6 +25,7 @@ void FGTelnet::connectionSuccess()
 {
     qDebug("Connection to Flightgear established.");
     this->runCmd(QString("data"));
+    _status=1;
     emit connectedToFGFS();
 }
 
@@ -39,12 +41,15 @@ void FGTelnet::connectionFailed(QAbstractSocket::SocketError error)
     else
     {
         qDebug("Giving up! Flightgear is not running.");
+        emit connectionFailure();
     }
+    _status=0;
 }
 
 
 void FGTelnet::connectToFGFS()
 {
+    if(_status==1) return;
     _socket.connectToHost("localhost", 5500);
     //if (_socket.waitForConnected(2000))
     //    qDebug("Connected!");
@@ -57,6 +62,21 @@ void FGTelnet::setProperty(QString prop_name, QString value)
     QString command = "set " + prop_name + " " + value + CRLF;
     _socket.write(command.toUtf8());
     _socket.flush();
+
+}
+
+QString FGTelnet::getProperty(QString prop_name)
+{
+    QString command = "get " + prop_name + CRLF;
+    _socket.write(command.toUtf8());
+    _socket.flush();
+    char value[2048];
+    if(_socket.waitForReadyRead())
+    {
+        qint64 linelength = _socket.readLine(value,sizeof(value));
+        if(linelength != -1) return QString(value);
+    }
+    return QString("");
 
 }
 

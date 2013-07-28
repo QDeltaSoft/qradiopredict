@@ -312,7 +312,9 @@ void MapGraphicsView::zoomOut(ZoomMode zMode)
 //protected slot
 void MapGraphicsView::handleChildMouseDoubleClick(QMouseEvent *event)
 {
-    event->setAccepted(false);
+    event->setAccepted(true);
+    QPointF dragPosition = _childView->mapToScene(_childView->mapFromGlobal(QCursor::pos()));
+    emit map_clicked(dragPosition);
 }
 
 //protected slot
@@ -324,13 +326,17 @@ void MapGraphicsView::handleChildMouseMove(QMouseEvent *event)
 //protected slot
 void MapGraphicsView::handleChildMousePress(QMouseEvent *event)
 {
+
     event->setAccepted(false);
+    this->setCursor(Qt::OpenHandCursor);
 }
 
 //protected slot
 void MapGraphicsView::handleChildMouseRelease(QMouseEvent *event)
 {
-    event->setAccepted(false);
+    this->_childView->viewport()->setCursor(Qt::CrossCursor);
+    event->setAccepted(true);
+    //this->setCursor(Qt::ArrowCursor);
 }
 
 //protected slot

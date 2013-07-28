@@ -15,7 +15,7 @@ public:
     explicit ConnectionSuccessDialog(QWidget *parent = 0);
     ~ConnectionSuccessDialog();
     
-private:
+
     Ui::ConnectionSuccessDialog *ui;
 };
 
