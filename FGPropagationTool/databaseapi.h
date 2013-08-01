@@ -2,6 +2,10 @@
 #define DATABASEAPI_H
 
 #include <QtSql>
+#include <QVector>
+#include "mobilestation.h"
+#include "groundstation.h"
+#include "flightplanpoints.h"
 
 class DatabaseApi
 {
@@ -16,7 +20,7 @@ public:
      * @param id_session
      */
 
-    void
+    QVector<MobileStation *>
     select_mobile_station(const unsigned &id_session);
 
 
@@ -25,7 +29,7 @@ public:
      * @param id_session
      */
 
-    void
+    QVector<GroundStation *>
     select_ground_stations(const unsigned &id_session);
 
     /**
@@ -33,7 +37,7 @@ public:
      * @param id_session
      */
 
-    void
+    QVector<FlightPlanPoints *>
     select_flightplan_positions(const unsigned &id_session);
 
 

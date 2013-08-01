@@ -19,7 +19,10 @@ SOURCES += main.cpp\
     toolbox.cpp \
     connectionsuccessdialog.cpp \
     util.cpp \
-    fgremote.cpp
+    fgremote.cpp \
+    mobilestation.cpp \
+    groundstation.cpp \
+    flightplanpoints.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -29,7 +32,10 @@ HEADERS  += MainWindow.h \
     toolbox.h \
     connectionsuccessdialog.h \
     util.h \
-    fgremote.h
+    fgremote.h \
+    mobilestation.h \
+    groundstation.h \
+    flightplanpoints.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \

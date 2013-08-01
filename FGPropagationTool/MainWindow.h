@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include "fgtelnet.h"
 #include "databaseapi.h"
+#include "mobilestation.h"
+#include "groundstation.h"
+#include "flightplanpoints.h"
 #include "util.h"
 #include "fgremote.h"
 #include "toolbox.h"
@@ -46,6 +49,7 @@ public slots:
     void setMapItems(quint8 zoom);
 
 private:
+    void restoreMapState();
     Ui::MainWindow *ui;
     MapGraphicsView *_view;
     int _placed_item_type;

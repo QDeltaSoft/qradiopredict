@@ -89,7 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scene->addObject(obj);
 
-
+    this->restoreMapState();
     view->setZoomLevel(4);
     view->centerOn(24.658752, 46.255456);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
@@ -145,7 +145,7 @@ void MainWindow::mapClick(QPointF pos)
     case 1:
         _remote->set_mobile(newpos);
 
-        _db->add_mobile_station(0,newpos.rx(),newpos.ry(),time);
+
         _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));
         _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
     {
@@ -162,12 +162,15 @@ void MainWindow::mapClick(QPointF pos)
         QPointF phone_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()-QPoint(16,16)));
         phone->setOffset(phone_pos);
         _map_mobiles.insert(phone, newpos);
+        _db->add_mobile_station(0,newpos.rx(),newpos.ry(),time);
     }
 
         break;
     case 2:
-        _remote->set_ground(newpos);
-        _db->add_ground_station(0,newpos.rx(),newpos.ry(),time);
+        //_remote->set_ground(newpos);
+        if(_map_ground.size() > 3)
+            break;
+
         _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));
         _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
     {
@@ -177,11 +180,12 @@ void MainWindow::mapClick(QPointF pos)
         QPointF antenna_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()-QPoint(16,16)));
         antenna->setOffset(antenna_pos);
         _map_ground.insert(antenna, newpos);
+        _db->add_ground_station(0,newpos.rx(),newpos.ry(),time);
     }
         break;
     case 3:
-        _remote->set_fp(newpos);
-        _db->add_flightplan_position(0,newpos.rx(),newpos.ry(),time);
+        //_remote->set_fp(newpos);
+
         _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));
         _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
     {
@@ -191,6 +195,7 @@ void MainWindow::mapClick(QPointF pos)
         QPointF fppos_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()-QPoint(7,25)));
         fppos->setOffset(fppos_pos);
         _map_fppos.insert(fppos, newpos);
+        _db->add_flightplan_position(0,newpos.rx(),newpos.ry(),time);
     }
         break;
     default:
@@ -199,12 +204,6 @@ void MainWindow::mapClick(QPointF pos)
 
     }
 
-    /*ConnectionSuccessDialog *dialog = new ConnectionSuccessDialog;\
-    QString str;
-    QString str2;
-    dialog->ui->label->setText(str.setNum(newpos.rx())+" "+str2.setNum(newpos.ry()));
-    dialog->show();
-    */
 }
 
 
@@ -263,5 +262,56 @@ void MainWindow::setGroundType()
 void MainWindow::setFPType()
 {
     _placed_item_type = 3;
+}
+
+
+void MainWindow::restoreMapState()
+{
+    // mobile
+    QVector<MobileStation *> mobiles = _db->select_mobile_station(0);
+    MobileStation *mobile = mobiles[0];
+    QPixmap pixmap(":icons/images/phone.png");
+    pixmap = pixmap.scaled(32,32);
+    QGraphicsPixmapItem *phone= _view->_childView->scene()->addPixmap(pixmap);
+    QPointF pos = QPointF(mobile->longitude,mobile->latitude);
+    int zoom = _view->zoomLevel();
+    QPointF xypos = Util::convertToXY(pos, zoom);
+    qDebug() << mobile->longitude << " " << mobile->latitude << " " << xypos.rx() << " " << xypos.ry();
+    phone->setOffset(xypos - QPoint(16,16));
+    _map_mobiles.insert(phone, pos);
+
+    // ground
+
+    QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
+    for (int i=0;i<ground_stations.size();++i)
+    {
+        GroundStation *gs = ground_stations.at(i);
+        QPixmap pixmap(":icons/images/antenna.png");
+        pixmap = pixmap.scaled(32,32);
+        QGraphicsPixmapItem *antenna= _view->_childView->scene()->addPixmap(pixmap);
+        QPointF pos = QPointF(gs->longitude,gs->latitude);
+        int zoom = _view->zoomLevel();
+        QPointF xypos = Util::convertToXY(pos, zoom);
+        antenna->setOffset(xypos - QPoint(16,16));
+        _map_ground.insert(antenna, pos);
+    }
+
+
+    // fp
+
+    QVector<FlightPlanPoints *> fp_points = _db->select_flightplan_positions(0);
+    for (int i=0;i<fp_points.size();++i)
+    {
+        FlightPlanPoints *fp = fp_points.at(i);
+        QPixmap pixmap(":icons/images/flag.png");
+        pixmap = pixmap.scaled(32,32);
+        QGraphicsPixmapItem *flag= _view->_childView->scene()->addPixmap(pixmap);
+        QPointF pos = QPointF(fp->longitude,fp->latitude);
+        int zoom = _view->zoomLevel();
+        QPointF xypos = Util::convertToXY(pos, zoom);
+        flag->setOffset(xypos - QPoint(7,25));
+        _map_fppos.insert(flag, pos);
+    }
+
 }
 

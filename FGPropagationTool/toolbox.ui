@@ -110,7 +110,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>longitude</string>
+    <string>Longitude</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -136,7 +136,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>latitude</string>
+    <string>Latitude</string>
    </property>
   </widget>
  </widget>
