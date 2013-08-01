@@ -276,12 +276,12 @@ void MainWindow::restoreMapState()
     QPointF pos = QPointF(mobile->longitude,mobile->latitude);
     int zoom = _view->zoomLevel();
     QPointF xypos = Util::convertToXY(pos, zoom);
-    qDebug() << mobile->longitude << " " << mobile->latitude << " " << xypos.rx() << " " << xypos.ry();
     phone->setOffset(xypos - QPoint(16,16));
     _map_mobiles.insert(phone, pos);
+    delete mobile;
+    mobiles.clear();
 
     // ground
-
     QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
     for (int i=0;i<ground_stations.size();++i)
     {
@@ -294,11 +294,12 @@ void MainWindow::restoreMapState()
         QPointF xypos = Util::convertToXY(pos, zoom);
         antenna->setOffset(xypos - QPoint(16,16));
         _map_ground.insert(antenna, pos);
+        delete gs;
     }
+    ground_stations.clear();
 
 
     // fp
-
     QVector<FlightPlanPoints *> fp_points = _db->select_flightplan_positions(0);
     for (int i=0;i<fp_points.size();++i)
     {
@@ -311,7 +312,9 @@ void MainWindow::restoreMapState()
         QPointF xypos = Util::convertToXY(pos, zoom);
         flag->setOffset(xypos - QPoint(7,25));
         _map_fppos.insert(flag, pos);
+        delete fp;
     }
+    fp_points.clear();
 
 }
 

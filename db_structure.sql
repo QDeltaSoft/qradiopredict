@@ -1,0 +1,10 @@
+BEGIN TRANSACTION;
+CREATE TABLE commands (id INTEGER PRIMARY KEY, id_session NUMERIC, update_signals TEXT);
+CREATE TABLE flightplan_positions (id INTEGER PRIMARY KEY, id_session NUMERIC, longitude TEXT, latitude TEXT, altitude NUMERIC, created_on NUMERIC);
+CREATE TABLE ground_stations (id INTEGER PRIMARY KEY, id_session NUMERIC, name TEXT, longitude TEXT, latitude TEXT, frequency NUMERIC, beacon_delay NUMERIC, transmission_type NUMERIC, elevation_feet NUMERIC, heading_deg NUMERIC, pitch_deg NUMERIC, polarization NUMERIC, rx_antenna_height NUMERIC, rx_antenna_type TEXT, rx_antenna_gain NUMERIC, rx_line_losses NUMERIC, rx_sensitivity NUMERIC, tx_power_watt NUMERIC, tx_antenna_height NUMERIC, tx_antenna_gain NUMERIC, tx_line_losses NUMERIC, tx_antenna_type TEXT, enabled NUMERIC, created_on NUMERIC);
+CREATE TABLE mobile_stations (created_on NUMERIC, id INTEGER PRIMARY KEY, id_session NUMERIC, name TEXT, longitude TEXT, latitude TEXT, current_longitude TEXT, current_latitude TEXT, heading_deg NUMERIC, elevation_feet NUMERIC, speed NUMERIC, frequency NUMERIC, tx_power_watt NUMERIC, terrain_following NUMERIC);
+INSERT INTO mobile_stations VALUES(1375383201,1,0,NULL,26.8155670166016,45.1515375134707,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+CREATE TABLE replays (id INTEGER PRIMARY KEY, id_session NUMERIC, id_replay TEXT, mobile_longitude TEXT, mobile_latitude TEXT, id_station NUMERIC, signal_dbm TEXT, signal NUMERIC, field_strength_uv TEXT, link_budget TEXT, terrain_attenuation TEXT, clutter_attenuation TEXT, prop_mode TEXT);
+CREATE TABLE sessions (id INTEGER PRIMARY KEY, name TEXT, created_on NUMERIC);
+CREATE TABLE signals (id INTEGER PRIMARY KEY, id_session NUMERIC, id_station NUMERIC, signal_dbm TEXT, signal NUMERIC, field_strength_uv TEXT, link_budget TEXT, terrain_attenuation TEXT, clutter_attenuation TEXT, prop_mode TEXT);
+COMMIT;
