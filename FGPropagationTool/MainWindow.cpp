@@ -70,9 +70,13 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->dockWidget3->setWidget(_tb);
     this->ui->centralWidget->setVisible(false);
 
+    this->ui->dockWidget2->setVisible(false);
+
     this->ui->menuWindow->addAction(this->ui->dockWidget->toggleViewAction());
+    this->ui->menuWindow->addAction(this->ui->dockWidget2->toggleViewAction());
     this->ui->menuWindow->addAction(this->ui->dockWidget3->toggleViewAction());
     this->ui->dockWidget->toggleViewAction()->setText("&Layers");
+    this->ui->dockWidget->toggleViewAction()->setText("&Data");
     this->ui->dockWidget3->toggleViewAction()->setText("&Toolbox");
 
     QObject::connect(view,SIGNAL(map_clicked(QPointF)),this,SLOT(mapClick(QPointF)));
@@ -80,8 +84,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     QObject::connect(_tb->ui->addMobileButton,SIGNAL(clicked()),this,SLOT(setMobileType()));
+    QObject::connect(_tb->ui->addMobileButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
     QObject::connect(_tb->ui->addGroundButton,SIGNAL(clicked()),this,SLOT(setGroundType()));
+    QObject::connect(_tb->ui->addGroundButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(setFPType()));
+    QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
 
     QPolygonF polygon;
     polygon << QPointF(10.4, 20.5) << QPointF(20.2, 30.2) << QPointF(24.2, 45.2);
@@ -318,3 +325,58 @@ void MainWindow::restoreMapState()
 
 }
 
+void MainWindow::showEditBoxes()
+{
+    switch(_placed_item_type)
+    {
+    case 1:
+    {
+        QVector<MobileStation *> mobiles = _db->select_mobile_station(0);
+        MobileStation *mobile = mobiles[0];
+        MobileForm *mf = new MobileForm;
+        //this->ui->dockWidget2->setWidget(mf);
+        mf->ui->nameEdit->setText(mobile->name);
+        mf->ui->frequencyEdit->setText(QString::number(mobile->frequency));
+        mf->ui->headingEdit->setText(QString::number(mobile->heading_deg));
+        mf->ui->altitudeEdit->setText(QString::number(mobile->elevation_feet));
+        mf->ui->terrainFollowingEdit->setText(QString::number(mobile->terrain_following));
+        mf->ui->speedEdit->setText(QString::number(mobile->speed));
+        mf->show();
+        delete mobile;
+        mobiles.clear();
+    }
+        break;
+
+    case 2:
+    {
+        QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
+        for (int i=0;i<ground_stations.size();++i)
+        {
+            GroundStation *gs = ground_stations.at(i);
+            GroundStationForm *gs_form = new GroundStationForm;
+            gs_form->ui->idEdit->setText(QString::number(gs->id));
+            //this->ui->dockWidget2->setWidget(gs_form);
+            gs_form->show();
+            delete gs;
+        }
+        ground_stations.clear();
+    }
+
+        break;
+
+    case 3:
+    {
+        QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
+        for (int i=0;i<ground_stations.size();++i)
+        {
+            GroundStation *gs = ground_stations.at(i);
+            GroundStationForm *gs_form = new GroundStationForm;
+            gs_form->ui->idEdit->setText(QString::number(gs->id));
+            //this->ui->dockWidget2->setWidget(gs_form);
+            gs_form->show();
+            delete gs;
+        }
+        ground_stations.clear();
+    }
+        break;
+}

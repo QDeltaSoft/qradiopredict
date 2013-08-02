@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GroundStationForm</class>
+ <widget class="QWidget" name="GroundStationForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>582</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Ground Station</string>
+  </property>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>40</y>
+     <width>241</width>
+     <height>541</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>239</width>
+      <height>539</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="formLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>231</width>
+       <height>551</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="nameEdit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Frequency</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="frequencyEdit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="beaconDelayLabel">
+        <property name="text">
+         <string>Beacon delay</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="beaconDelayLineEdit"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="transmissionTypeLabel">
+        <property name="text">
+         <string>Transmission type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="transmissionTypeLineEdit"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="elevationFeetLabel">
+        <property name="text">
+         <string>Elevation feet</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="elevationFeetLineEdit"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="headingDegLabel">
+        <property name="text">
+         <string>Heading deg</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="headingDegLineEdit"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="pitchDegLabel">
+        <property name="text">
+         <string>Pitch deg</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="pitchDegLineEdit"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="polarizationLabel">
+        <property name="text">
+         <string>Polarization</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="polarizationLineEdit"/>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="txAntennaHeightLabel">
+        <property name="text">
+         <string>Tx antenna height</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="txAntennaHeightLineEdit"/>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="txAntennaGainLabel">
+        <property name="text">
+         <string>Tx antenna gain</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLineEdit" name="txAntennaGainLineEdit"/>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="txAntennaTypeLabel">
+        <property name="text">
+         <string>Tx antenna type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QLineEdit" name="txAntennaTypeLineEdit"/>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="txLineLossesLabel">
+        <property name="text">
+         <string>Tx line losses</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QLineEdit" name="txLineLossesLineEdit"/>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="txPowerWattLabel">
+        <property name="text">
+         <string>Tx power watt</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="QLineEdit" name="txPowerWattLineEdit"/>
+      </item>
+      <item row="13" column="0">
+       <widget class="QLabel" name="rxAntennaHeightLabel">
+        <property name="text">
+         <string>Rx antenna height</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="QLineEdit" name="rxAntennaHeightLineEdit"/>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="rxAntennaGainLabel">
+        <property name="text">
+         <string>Rx antenna gain</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="QLineEdit" name="rxAntennaGainLineEdit"/>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel" name="rxAntennaTypeLabel">
+        <property name="text">
+         <string>Rx antenna type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="QLineEdit" name="rxAntennaTypeLineEdit"/>
+      </item>
+      <item row="16" column="0">
+       <widget class="QLabel" name="rxSensitivityLabel">
+        <property name="text">
+         <string>Rx sensitivity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="1">
+       <widget class="QLineEdit" name="rxSensitivityLineEdit"/>
+      </item>
+      <item row="17" column="0">
+       <widget class="QLabel" name="rxLineLossesLabel">
+        <property name="text">
+         <string>Rx line losses</string>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="1">
+       <widget class="QLineEdit" name="rxLineLossesLineEdit"/>
+      </item>
+      <item row="18" column="1">
+       <widget class="QPushButton" name="saveButton">
+        <property name="text">
+         <string>Save</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="0">
+       <widget class="QPushButton" name="deleteButton">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>57</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ID:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="idEdit">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>10</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

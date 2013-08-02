@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     fgremote.cpp \
     mobilestation.cpp \
     groundstation.cpp \
-    flightplanpoints.cpp
+    flightplanpoints.cpp \
+    mobileform.cpp \
+    groundstationform.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -35,11 +37,15 @@ HEADERS  += MainWindow.h \
     fgremote.h \
     mobilestation.h \
     groundstation.h \
-    flightplanpoints.h
+    flightplanpoints.h \
+    mobileform.h \
+    groundstationform.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
-    connectionsuccessdialog.ui
+    connectionsuccessdialog.ui \
+    mobileform.ui \
+    groundstationform.ui
 
 #Linkage for MapGraphics shared library
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/release/ -lMapGraphics

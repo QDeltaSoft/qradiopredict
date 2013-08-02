@@ -10,6 +10,10 @@
 #include "util.h"
 #include "fgremote.h"
 #include "toolbox.h"
+#include "mobileform.h"
+#include "ui_mobileform.h"
+#include "groundstationform.h"
+#include "ui_groundstationform.h"
 #include <vector>
 #include "MapGraphicsView.h"
 
@@ -43,6 +47,7 @@ private slots:
     void setMobileType();
     void setGroundType();
     void setFPType();
+    void showEditBoxes();
 
 public slots:
     void mapClick(QPointF pos);
@@ -50,6 +55,7 @@ public slots:
 
 private:
     void restoreMapState();
+
     Ui::MainWindow *ui;
     MapGraphicsView *_view;
     int _placed_item_type;
