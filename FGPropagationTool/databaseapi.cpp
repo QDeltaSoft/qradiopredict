@@ -308,6 +308,7 @@ DatabaseApi::update_ground_station(const unsigned &id_session, const unsigned &i
     query.bindValue(":time", time);
     query.bindValue(":id", id);
     query.exec();
+    qDebug() << query.lastError().text();
 
 }
 
@@ -326,7 +327,7 @@ DatabaseApi::update_mobile_station(const unsigned &id_session, const unsigned &i
     query2.exec();
     if(query2.next())
     {
-        query.prepare("UPDATE ground_stations SET id_session=:id_session,"
+        query.prepare("UPDATE mobile_stations SET id_session=:id_session,"
                       "name=:name, frequency=:frequency,"
                       "elevation_feet =:elevation_feet, heading_deg=:heading_deg,"
                       "tx_power_watt = :tx_power_watt,"
@@ -343,6 +344,7 @@ DatabaseApi::update_mobile_station(const unsigned &id_session, const unsigned &i
         query.bindValue(":time", time);
         query.bindValue(":id", id);
         query.exec();
+
     }
 
 }

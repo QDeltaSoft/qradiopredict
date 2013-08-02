@@ -14,6 +14,8 @@
 #include "ui_mobileform.h"
 #include "groundstationform.h"
 #include "ui_groundstationform.h"
+#include "flightplanform.h"
+#include "ui_flightplanform.h"
 #include <vector>
 #include "MapGraphicsView.h"
 
@@ -52,6 +54,10 @@ private slots:
 public slots:
     void mapClick(QPointF pos);
     void setMapItems(quint8 zoom);
+    void saveMobile(MobileStation * m);
+    void saveGroundStation(GroundStation * g);
+    void saveFlightplan(FlightPlanPoints * fp);
+
 
 private:
     void restoreMapState();

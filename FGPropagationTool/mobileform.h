@@ -2,6 +2,7 @@
 #define MOBILEFORM_H
 
 #include <QWidget>
+#include "mobilestation.h"
 
 namespace Ui {
 class MobileForm;
@@ -17,6 +18,10 @@ public:
     
 
     Ui::MobileForm *ui;
+signals:
+    void haveData(MobileStation * m);
+private slots:
+    void saveMobile();
 };
 
 #endif // MOBILEFORM_H

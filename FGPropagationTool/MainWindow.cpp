@@ -90,11 +90,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(setFPType()));
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
 
+    /*\ This needs to go
     QPolygonF polygon;
     polygon << QPointF(10.4, 20.5) << QPointF(20.2, 30.2) << QPointF(24.2, 45.2);
     PolygonObject * obj = new PolygonObject(polygon, QColor(20,200,20,200));
 
     scene->addObject(obj);
+    */
 
     this->restoreMapState();
     view->setZoomLevel(4);
@@ -331,16 +333,19 @@ void MainWindow::showEditBoxes()
     {
     case 1:
     {
+        //mobile
         QVector<MobileStation *> mobiles = _db->select_mobile_station(0);
         MobileStation *mobile = mobiles[0];
         MobileForm *mf = new MobileForm;
         //this->ui->dockWidget2->setWidget(mf);
+        mf->ui->idEdit->setText(QString::number(mobile->id));
         mf->ui->nameEdit->setText(mobile->name);
         mf->ui->frequencyEdit->setText(QString::number(mobile->frequency));
         mf->ui->headingEdit->setText(QString::number(mobile->heading_deg));
         mf->ui->altitudeEdit->setText(QString::number(mobile->elevation_feet));
         mf->ui->terrainFollowingEdit->setText(QString::number(mobile->terrain_following));
         mf->ui->speedEdit->setText(QString::number(mobile->speed));
+        QObject::connect(mf,SIGNAL(haveData(MobileStation*)),this,SLOT(saveMobile(MobileStation *)));
         mf->show();
         delete mobile;
         mobiles.clear();
@@ -349,13 +354,34 @@ void MainWindow::showEditBoxes()
 
     case 2:
     {
+        //ground
         QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
         for (int i=0;i<ground_stations.size();++i)
         {
             GroundStation *gs = ground_stations.at(i);
             GroundStationForm *gs_form = new GroundStationForm;
             gs_form->ui->idEdit->setText(QString::number(gs->id));
+            gs_form->ui->nameEdit->setText(gs->name);
+            gs_form->ui->headingDegLineEdit->setText(QString::number(gs->heading_deg));
+            gs_form->ui->pitchDegLineEdit->setText(QString::number(gs->pitch_deg));
+            gs_form->ui->elevationFeetLineEdit->setText(QString::number(gs->elevation_feet));
+            gs_form->ui->frequencyEdit->setText(QString::number(gs->frequency));
+            gs_form->ui->beaconDelayLineEdit->setText(QString::number(gs->beacon_delay));
+            gs_form->ui->transmissionTypeLineEdit->setText(QString::number(gs->transmission_type));
+            gs_form->ui->polarizationLineEdit->setText(QString::number(gs->polarization));
+            gs_form->ui->rxAntennaHeightLineEdit->setText(QString::number(gs->rx_antenna_height));
+            gs_form->ui->rxAntennaGainLineEdit->setText(QString::number(gs->rx_antenna_gain));
+            gs_form->ui->rxAntennaTypeLineEdit->setText(gs->rx_antenna_type);
+            gs_form->ui->rxLineLossesLineEdit->setText(QString::number(gs->rx_line_losses));
+            gs_form->ui->rxSensitivityLineEdit->setText(QString::number(gs->rx_sensitivity));
+            gs_form->ui->txPowerWattLineEdit->setText(QString::number(gs->tx_power_watt));
+            gs_form->ui->txAntennaHeightLineEdit->setText(QString::number(gs->tx_antenna_height));
+            gs_form->ui->txAntennaGainLineEdit->setText(QString::number(gs->tx_antenna_gain));
+            gs_form->ui->txAntennaTypeLineEdit->setText(gs->tx_antenna_type);
+            gs_form->ui->txLineLossesLineEdit->setText(QString::number(gs->tx_line_losses));
+
             //this->ui->dockWidget2->setWidget(gs_form);
+            QObject::connect(gs_form,SIGNAL(haveData(GroundStation*)),this,SLOT(saveGroundStation(GroundStation *)));
             gs_form->show();
             delete gs;
         }
@@ -366,17 +392,53 @@ void MainWindow::showEditBoxes()
 
     case 3:
     {
-        QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
-        for (int i=0;i<ground_stations.size();++i)
+        //fp pos -- needs to be written
+        QVector<FlightPlanPoints *> fp_points = _db->select_flightplan_positions(0);
+        for (int i=0;i<fp_points.size();++i)
         {
-            GroundStation *gs = ground_stations.at(i);
-            GroundStationForm *gs_form = new GroundStationForm;
-            gs_form->ui->idEdit->setText(QString::number(gs->id));
+            FlightPlanPoints *fp = fp_points.at(i);
+            FlightplanForm *fp_form = new FlightplanForm;
+            fp_form->ui->idLineEdit->setText(QString::number(fp->id));
+            fp_form->ui->lonLineEdit->setText(QString::number(fp->longitude));
+            fp_form->ui->latLineEdit->setText(QString::number(fp->latitude));
+            fp_form->ui->altitudeLineEdit->setText(QString::number(fp->altitude));
             //this->ui->dockWidget2->setWidget(gs_form);
-            gs_form->show();
-            delete gs;
+            QObject::connect(fp_form,SIGNAL(haveData(FlightPlanPoints *)),this,SLOT(saveFlightplan(FlightPlanPoints*)));
+            fp_form->show();
+            delete fp;
         }
-        ground_stations.clear();
+        fp_points.clear();
     }
         break;
+    }
+}
+
+void MainWindow::saveMobile(MobileStation * m)
+{
+    _db->update_mobile_station(0, m->id, m->name, m->frequency,
+                               m->elevation_feet, m->heading_deg,
+                               m->tx_power_watt, m->terrain_following,
+                               m->speed,0);
+    delete m;
+
+}
+
+void MainWindow::saveGroundStation(GroundStation * g)
+{
+    _db->update_ground_station(0,g->id,g->name,g->frequency,g->beacon_delay,
+                               g->transmission_type,g->elevation_feet,g->heading_deg,
+                               g->pitch_deg,g->polarization,g->tx_antenna_height,g->tx_antenna_type,
+                               g->tx_antenna_gain,g->tx_line_losses,g->tx_power_watt,
+                               g->rx_antenna_height,g->rx_antenna_type,g->rx_antenna_gain,
+                               g->rx_line_losses,g->rx_sensitivity,g->created_on);
+    delete g;
+
+}
+
+
+void MainWindow::saveFlightplan(FlightPlanPoints * fp)
+{
+    _db->update_flightplan_position(fp->altitude,0,fp->id);
+    delete fp;
+
 }

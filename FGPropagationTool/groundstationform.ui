@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>582</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -25,7 +25,7 @@
      <x>0</x>
      <y>40</y>
      <width>241</width>
-     <height>541</height>
+     <height>551</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -37,7 +37,7 @@
       <x>0</x>
       <y>0</y>
       <width>239</width>
-      <height>539</height>
+      <height>549</height>
      </rect>
     </property>
     <widget class="QWidget" name="formLayoutWidget">
@@ -46,7 +46,7 @@
        <x>0</x>
        <y>0</y>
        <width>231</width>
-       <height>551</height>
+       <height>541</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
