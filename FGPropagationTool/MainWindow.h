@@ -69,6 +69,7 @@ private:
     QMap<QGraphicsPixmapItem *, QPointF> _map_mobiles;
     QMap<QGraphicsPixmapItem *, QPointF> _map_ground;
     QMap<QGraphicsPixmapItem *, QPointF> _map_fppos;
+    QVector<QDockWidget *> _docks;
 
 };
 

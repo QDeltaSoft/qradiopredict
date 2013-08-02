@@ -70,10 +70,10 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->dockWidget3->setWidget(_tb);
     this->ui->centralWidget->setVisible(false);
 
-    this->ui->dockWidget2->setVisible(false);
+
 
     this->ui->menuWindow->addAction(this->ui->dockWidget->toggleViewAction());
-    this->ui->menuWindow->addAction(this->ui->dockWidget2->toggleViewAction());
+
     this->ui->menuWindow->addAction(this->ui->dockWidget3->toggleViewAction());
     this->ui->dockWidget->toggleViewAction()->setText("&Layers");
     this->ui->dockWidget->toggleViewAction()->setText("&Data");
@@ -329,11 +329,18 @@ void MainWindow::restoreMapState()
 
 void MainWindow::showEditBoxes()
 {
+
     switch(_placed_item_type)
     {
     case 1:
     {
         //mobile
+        for (int j=0;j<_docks.size();++j)
+        {
+            this->removeDockWidget(_docks.at(j));
+            delete _docks.at(j);
+        }
+        _docks.clear();
         QVector<MobileStation *> mobiles = _db->select_mobile_station(0);
         MobileStation *mobile = mobiles[0];
         MobileForm *mf = new MobileForm;
@@ -346,7 +353,12 @@ void MainWindow::showEditBoxes()
         mf->ui->terrainFollowingEdit->setText(QString::number(mobile->terrain_following));
         mf->ui->speedEdit->setText(QString::number(mobile->speed));
         QObject::connect(mf,SIGNAL(haveData(MobileStation*)),this,SLOT(saveMobile(MobileStation *)));
-        mf->show();
+        QDockWidget *dw = new QDockWidget;
+        dw->setWindowTitle(mobile->name+" "+QString::number( mobile->id));
+        dw->setWidget(mf);
+        this->addDockWidget(Qt::LeftDockWidgetArea,dw);
+        _docks.push_back(dw);
+        //mf->show();
         delete mobile;
         mobiles.clear();
     }
@@ -355,7 +367,14 @@ void MainWindow::showEditBoxes()
     case 2:
     {
         //ground
+        for (int j=0;j<_docks.size();++j)
+        {
+            this->removeDockWidget(_docks.at(j));
+            delete _docks.at(j);
+        }
+        _docks.clear();
         QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
+
         for (int i=0;i<ground_stations.size();++i)
         {
             GroundStation *gs = ground_stations.at(i);
@@ -380,10 +399,20 @@ void MainWindow::showEditBoxes()
             gs_form->ui->txAntennaTypeLineEdit->setText(gs->tx_antenna_type);
             gs_form->ui->txLineLossesLineEdit->setText(QString::number(gs->tx_line_losses));
 
+            QDockWidget *dw = new QDockWidget;
+            dw->setWindowTitle(QString::number( gs->id));
+            dw->setWidget(gs_form);
+            this->addDockWidget(Qt::LeftDockWidgetArea,dw);
+            _docks.push_back(dw);
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(gs_form,SIGNAL(haveData(GroundStation*)),this,SLOT(saveGroundStation(GroundStation *)));
-            gs_form->show();
+            //gs_form->show();
             delete gs;
+        }
+        for (int j=0;j<_docks.size();++j)
+        {
+            if((j+1)==_docks.size()) continue;
+            this->tabifyDockWidget(_docks.at(j),_docks.at(j+1));
         }
         ground_stations.clear();
     }
@@ -392,7 +421,13 @@ void MainWindow::showEditBoxes()
 
     case 3:
     {
-        //fp pos -- needs to be written
+        //fp pos
+        for (int j=0;j<_docks.size();++j)
+        {
+            this->removeDockWidget(_docks.at(j));
+            delete _docks.at(j);
+        }
+        _docks.clear();
         QVector<FlightPlanPoints *> fp_points = _db->select_flightplan_positions(0);
         for (int i=0;i<fp_points.size();++i)
         {
@@ -404,8 +439,18 @@ void MainWindow::showEditBoxes()
             fp_form->ui->altitudeLineEdit->setText(QString::number(fp->altitude));
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(fp_form,SIGNAL(haveData(FlightPlanPoints *)),this,SLOT(saveFlightplan(FlightPlanPoints*)));
-            fp_form->show();
+            QDockWidget *dw = new QDockWidget;
+            dw->setWindowTitle(QString::number( fp->id));
+            dw->setWidget(fp_form);
+            this->addDockWidget(Qt::LeftDockWidgetArea,dw);
+            _docks.push_back(dw);
+            //fp_form->show();
             delete fp;
+        }
+        for (int j=0;j<_docks.size();++j)
+        {
+            if((j+1)==_docks.size()) continue;
+            this->tabifyDockWidget(_docks.at(j),_docks.at(j+1));
         }
         fp_points.clear();
     }
