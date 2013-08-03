@@ -152,7 +152,7 @@ void MainWindow::mapClick(QPointF pos)
     switch(_placed_item_type)
     {
     case 1:
-        _remote->set_mobile(newpos);
+        _remote->set_mobile(0);
 
 
         _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));

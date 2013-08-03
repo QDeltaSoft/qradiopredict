@@ -23,7 +23,7 @@ DatabaseApi::select_mobile_station(const unsigned &id_session)
 {
     QVector<MobileStation *> mobile_stations;
     QSqlQuery query(_db);
-    query.prepare("SELECT * FROM mobile_stations WHERE id_session=:id_session");
+    query.prepare("SELECT * FROM mobile_stations WHERE id_session=:id_session ORDER BY id ASC");
     query.bindValue(":id_session", id_session);
     query.exec();
 
@@ -70,7 +70,7 @@ DatabaseApi::select_ground_stations(const unsigned &id_session)
 {
     QVector<GroundStation *> ground_stations;
     QSqlQuery query(_db);
-    query.prepare("SELECT * FROM ground_stations WHERE id_session=:id_session");
+    query.prepare("SELECT * FROM ground_stations WHERE id_session=:id_session ORDER BY id ASC");
     query.bindValue(":id_session", id_session);
     query.exec();
     int id_idx = query.record().indexOf("id");
@@ -138,7 +138,7 @@ DatabaseApi::select_flightplan_positions(const unsigned &id_session)
 {
     QVector<FlightPlanPoints *> fp_points;
     QSqlQuery query(_db);
-    query.prepare("SELECT * FROM flightplan_positions WHERE id_session=:id_session");
+    query.prepare("SELECT * FROM flightplan_positions WHERE id_session=:id_session ORDER BY id ASC");
     query.bindValue(":id_session", id_session);
     query.exec();
     int id_idx = query.record().indexOf("id");

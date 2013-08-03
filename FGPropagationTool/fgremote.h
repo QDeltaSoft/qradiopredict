@@ -2,6 +2,8 @@
 #define FGREMOTE_H
 
 #include <QPointF>
+#include <QThread>
+#include <QTime>
 #include "fgtelnet.h"
 #include "databaseapi.h"
 #include <QVector>
@@ -11,11 +13,15 @@
 
 class FGRemote
 {
+
 public:
     FGRemote(FGTelnet * t, DatabaseApi * db);
+    ~FGRemote();
     void set_mobile(unsigned id=0);
     void set_ground(unsigned id=0);
     void set_fp(unsigned id =0);
+    void sendAllData();
+
 
 private:
     FGTelnet *_fg;

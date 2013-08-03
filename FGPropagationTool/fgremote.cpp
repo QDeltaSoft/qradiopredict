@@ -9,6 +9,18 @@ FGRemote::FGRemote(FGTelnet *t, DatabaseApi * db)
     _db = db;
 }
 
+FGRemote::~FGRemote()
+{
+}
+
+
+void FGRemote::sendAllData()
+{
+    this->set_mobile();
+    this->set_ground();
+    this->set_fp();
+}
+
 void FGRemote::set_mobile(unsigned id)
 {
     if(_fg->status())
@@ -114,5 +126,92 @@ void FGRemote::set_ground(unsigned id)
 
 void FGRemote::set_fp(unsigned id)
 {
+    if(_fg->status())
+    {
+        QString str;
+        QVector<MobileStation*> stations = _db->select_mobile_station(id);
+        MobileStation *mobile = stations[0];
+
+        // disable autopilot first
+        _fg->setProperty("/autopilot/settings/gps-driving-true-heading","false");
+        _fg->setProperty("/autopilot/locks/heading","");
+        _fg->setProperty("/autopilot/settings/target-speed-kt", "0");
+        _fg->setProperty("/autopilot/locks/speed", "");
+        _fg->setProperty("/autopilot/locks/speed", "");
+        _fg->setProperty("/autopilot/settings/true-heading-deg", "");
+
+        // ok now proceed
+        _fg->setProperty("/autopilot/route-manager/active", "false");
+        _fg->setProperty("/autopilot/route-manager/input", "@clear");
+        _fg->setProperty("/autopilot/route-manager/current-wp","-1");
+        _fg->setProperty("/autopilot/route-manager/input", "@posinit");
+
+        QVector<FlightPlanPoints*> fp_points = _db->select_flightplan_positions(id);
+        for (int i = 0;i< fp_points.size();++i)
+        {
+
+            FlightPlanPoints *fp = fp_points.at(i);
+            if(fp->altitude !=0)
+            {
+
+                _fg->setProperty("/autopilot/route-manager/input", "" +
+                                 str.setNum(fp->longitude)+","+
+                                 str.setNum(fp->latitude)+"@"+str.setNum(fp->altitude));
+            }
+            else
+            {
+
+                _fg->setProperty("/sim/radio/waypoint/nasal/script",
+                                 "var f= 0; var d = geodinfo(" + str.setNum(fp->latitude) + ", " + str.setNum(fp->longitude) +
+                                 ", 20000); if(d != nil) setprop('/sim/radio/waypoint/elevation-ft', (d[0]+2)*"
+                                 + str.setNum(SG_METER_TO_FEET) + ");else setprop('/sim/radio/waypoint/elevation-ft', 9);");
+
+                _fg->runCmd("nasal /sim/radio/waypoint/nasal");
+
+                // sleep 2 secs as nasal is processed
+                QTime delaytime= QTime::currentTime().addSecs(2);
+                while( QTime::currentTime() < delaytime )
+                    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+
+                QString altitude = _fg->getProperty("/sim/radio/waypoint/elevation-ft");
+
+                _fg->setProperty("/autopilot/route-manager/input", "" +
+                                 str.setNum(fp->longitude) + "," + str.setNum(fp->latitude) + "@" + altitude);
+            }
+        }
+
+        _fg->setProperty("/autopilot/route-manager/input", "@activate");
+        _fg->setProperty("/autopilot/route-manager/input", "@jump0");
+
+        if(mobile->terrain_following == 0)
+        {
+            _fg->setProperty("/autopilot/locks/altitude","vnav");
+        }
+        else
+        {
+            _fg->setProperty("/autopilot/settings/target-agl-feet", "5");
+            _fg->setProperty("/autopilot/settings/target-agl-ft","5");
+            _fg->setProperty("/autopilot/locks/altitude","agl-hold");
+
+        }
+
+        _fg->setProperty("/autopilot/settings/gps-driving-true-heading","true");
+        _fg->setProperty("/autopilot/locks/heading", "true-heading-hold");
+
+        if(mobile->speed == 0)
+        {
+            _fg->setProperty("/autopilot/settings/target-speed-kt","30");
+            _fg->setProperty("/engines/engine/speed-max-mps", "30");
+        }
+        else
+        {
+            _fg->setProperty("/autopilot/settings/target-speed-kt", str.setNum(mobile->speed));
+            _fg->setProperty("/engines/engine/speed-max-mps", str.setNum(mobile->speed));
+        }
+
+        _fg->setProperty("/autopilot/locks/speed", "speed-with-throttle");
+        _fg->setProperty("/autopilot/locks/speed", "THR");
+
+    }
 
 }
