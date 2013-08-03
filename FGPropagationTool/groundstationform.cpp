@@ -7,6 +7,7 @@ GroundStationForm::GroundStationForm(QWidget *parent) :
 {
     ui->setupUi(this);
     QObject::connect(ui->saveButton,SIGNAL(clicked()),this,SLOT(saveGround()));
+    QObject::connect(ui->deleteButton,SIGNAL(clicked()),this,SLOT(deleteGround()));
 }
 
 GroundStationForm::~GroundStationForm()
@@ -42,4 +43,12 @@ void GroundStationForm::saveGround()
     g->enabled = 1;
     g->created_on = 0;
     emit haveData(g);
+}
+
+
+void GroundStationForm::deleteGround()
+{
+
+    int id = ui->idEdit->text().toInt();
+    emit delStation(id);
 }

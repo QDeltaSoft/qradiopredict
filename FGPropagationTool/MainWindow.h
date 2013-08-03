@@ -17,6 +17,7 @@
 #include "flightplanform.h"
 #include "ui_flightplanform.h"
 #include <vector>
+#include <math.h>
 #include "MapGraphicsView.h"
 
 #include <QGraphicsPixmapItem>
@@ -57,7 +58,8 @@ public slots:
     void saveMobile(MobileStation * m);
     void saveGroundStation(GroundStation * g);
     void saveFlightplan(FlightPlanPoints * fp);
-
+    void deleteGroundStation(int id);
+    void deleteFlightplan(int id);
 
 private:
     void restoreMapState();

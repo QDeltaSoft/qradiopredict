@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     _telnet = new FGTelnet;
     _db = new DatabaseApi;
-    _remote = new FGRemote(_telnet);
+    _remote = new FGRemote(_telnet, _db);
 
     ui->setupUi(this);
     //!!!!!!!! connections must always come after setupUi!!!
@@ -346,6 +346,8 @@ void MainWindow::showEditBoxes()
         MobileForm *mf = new MobileForm;
         //this->ui->dockWidget2->setWidget(mf);
         mf->ui->idEdit->setText(QString::number(mobile->id));
+        mf->ui->lonEdit->setText(QString::number(mobile->longitude));
+        mf->ui->latEdit->setText(QString::number(mobile->latitude));
         mf->ui->nameEdit->setText(mobile->name);
         mf->ui->frequencyEdit->setText(QString::number(mobile->frequency));
         mf->ui->headingEdit->setText(QString::number(mobile->heading_deg));
@@ -406,6 +408,7 @@ void MainWindow::showEditBoxes()
             _docks.push_back(dw);
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(gs_form,SIGNAL(haveData(GroundStation*)),this,SLOT(saveGroundStation(GroundStation *)));
+            QObject::connect(gs_form,SIGNAL(delStation(int)),this,SLOT(deleteGroundStation(int)));
             //gs_form->show();
             delete gs;
         }
@@ -439,6 +442,7 @@ void MainWindow::showEditBoxes()
             fp_form->ui->altitudeLineEdit->setText(QString::number(fp->altitude));
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(fp_form,SIGNAL(haveData(FlightPlanPoints *)),this,SLOT(saveFlightplan(FlightPlanPoints*)));
+            QObject::connect(fp_form,SIGNAL(delFP(int)),this,SLOT(deleteFlightplan(int)));
             QDockWidget *dw = new QDockWidget;
             dw->setWindowTitle(QString::number( fp->id));
             dw->setWidget(fp_form);
@@ -486,4 +490,68 @@ void MainWindow::saveFlightplan(FlightPlanPoints * fp)
     _db->update_flightplan_position(fp->altitude,0,fp->id);
     delete fp;
 
+}
+
+void MainWindow::deleteGroundStation(int id)
+{
+    QPointF dbpos;
+    QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
+    for(int i=0;i<ground_stations.size();++i)
+    {
+        GroundStation *g = ground_stations.at(i);
+        if(g->id == id)
+        {
+            dbpos.setX(g->longitude);
+            dbpos.setY(g->latitude);
+            break;
+        }
+    }
+
+    QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_ground);
+    while (i.hasNext())
+    {
+        i.next();
+        QPointF pos = i.value();
+        QGraphicsPixmapItem *antenna = i.key();
+        if((fabs(pos.rx() - dbpos.rx()) <= 0.0001) && (fabs(pos.ry() - dbpos.ry()) <= 0.0001))
+        {
+            antenna->setOffset(0,0);
+            _map_ground.remove(antenna);
+        }
+
+    }
+
+    _db->delete_ground_station(0,id);
+}
+
+void MainWindow::deleteFlightplan(int id)
+{
+    QPointF dbpos;
+    QVector<FlightPlanPoints *> fp_points = _db->select_flightplan_positions(0);
+    for(int i=0;i<fp_points.size();++i)
+    {
+        FlightPlanPoints *f = fp_points.at(i);
+        if(f->id == id)
+        {
+            dbpos.setX(f->longitude);
+            dbpos.setY(f->latitude);
+            break;
+        }
+    }
+
+    QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_fppos);
+    while (i.hasNext())
+    {
+        i.next();
+        QPointF pos = i.value();
+        QGraphicsPixmapItem *flag = i.key();
+        if((fabs(pos.rx() - dbpos.rx()) <= 0.0001) && (fabs(pos.ry() - dbpos.ry()) <= 0.0001))
+        {
+            flag->setOffset(0,0);
+            _map_fppos.remove(flag);
+        }
+
+    }
+
+    _db->delete_flightplan_position(0,id);
 }

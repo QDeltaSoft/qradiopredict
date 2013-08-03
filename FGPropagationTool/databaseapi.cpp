@@ -308,7 +308,7 @@ DatabaseApi::update_ground_station(const unsigned &id_session, const unsigned &i
     query.bindValue(":time", time);
     query.bindValue(":id", id);
     query.exec();
-    qDebug() << query.lastError().text();
+
 
 }
 

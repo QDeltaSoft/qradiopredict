@@ -3,17 +3,19 @@
 
 #include <QPointF>
 #include "fgtelnet.h"
+#include "databaseapi.h"
 
 class FGRemote
 {
 public:
-    FGRemote(FGTelnet * t);
+    FGRemote(FGTelnet * t, DatabaseApi * db);
     void set_mobile(QPointF pos);
     void set_ground(QPointF pos);
     void set_fp(QPointF pos);
 
 private:
     FGTelnet *_fg;
+    DatabaseApi * _db;
 
 };
 

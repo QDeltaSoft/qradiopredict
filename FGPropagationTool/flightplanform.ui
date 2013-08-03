@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>284</width>
+    <width>250</width>
     <height>191</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Flightplan point</string>
@@ -18,7 +24,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>261</width>
+     <width>211</width>
      <height>171</height>
     </rect>
    </property>
@@ -30,7 +36,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>259</width>
+      <width>209</width>
       <height>169</height>
      </rect>
     </property>
@@ -39,7 +45,7 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>251</width>
+       <width>201</width>
        <height>161</height>
       </rect>
      </property>

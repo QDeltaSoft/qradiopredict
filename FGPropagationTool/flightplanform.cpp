@@ -7,6 +7,7 @@ FlightplanForm::FlightplanForm(QWidget *parent) :
 {
     ui->setupUi(this);
     QObject::connect(ui->saveButton,SIGNAL(clicked()),this,SLOT(saveFP()));
+    QObject::connect(ui->deleteButton,SIGNAL(clicked()),this,SLOT(deleteFP()));
 }
 
 FlightplanForm::~FlightplanForm()
@@ -24,4 +25,11 @@ void FlightplanForm::saveFP()
     fp->altitude = ui->altitudeLineEdit->text().toDouble();
 
     emit haveData(fp);
+}
+
+
+void FlightplanForm::deleteFP()
+{
+    int id = ui->idLineEdit->text().toInt();
+    emit delFP(id);
 }
