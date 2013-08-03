@@ -506,6 +506,7 @@ void MainWindow::deleteGroundStation(int id)
             break;
         }
     }
+    ground_stations.clear();
 
     QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_ground);
     while (i.hasNext())
@@ -520,6 +521,19 @@ void MainWindow::deleteGroundStation(int id)
         }
 
     }
+
+    /** experimental
+    for (int j=0;j<_docks.size();++j)
+    {
+        if(_docks.at(j)->windowTitle().toInt() == id)
+        {
+            this->removeDockWidget(_docks.at(j));
+            QWidget *widget = _docks.at(j)->widget();
+            delete widget;
+            delete _docks.at(j);
+        }
+    }
+    */
 
     _db->delete_ground_station(0,id);
 }
@@ -538,6 +552,7 @@ void MainWindow::deleteFlightplan(int id)
             break;
         }
     }
+    fp_points.clear();
 
     QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_fppos);
     while (i.hasNext())
@@ -552,6 +567,18 @@ void MainWindow::deleteFlightplan(int id)
         }
 
     }
+    /** experimental
+    for (int j=0;j<_docks.size();++j)
+    {
+        if(_docks.at(j)->windowTitle().toInt() == id)
+        {
+            this->removeDockWidget(_docks.at(j));
+            QWidget *widget = _docks.at(j)->widget();
+            delete widget;
+            delete _docks.at(j);
+        }
+    }
+    */
 
     _db->delete_flightplan_position(0,id);
 }
