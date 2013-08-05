@@ -18,6 +18,7 @@ public slots:
 signals:
     void haveMobilePosition(double lon, double lat);
     void haveSignalReading(Signal *s);
+    void finished();
 
 private:
     FGTelnet *_fg;

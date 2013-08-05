@@ -64,6 +64,7 @@ public slots:
     void deleteFlightplan(unsigned id);
     void sendFlightgearData();
     void startUpdate();
+    void moveMobile(double lon, double lat);
 
 private:
     void restoreMapState();

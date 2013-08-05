@@ -24,7 +24,7 @@ FGTelnet::~FGTelnet()
 void FGTelnet::connectionSuccess()
 {
     qDebug("Connection to Flightgear established.");
-    this->runCmd(QString("data"));
+    this->dataMode();
     _status=1;
     emit connectedToFGFS();
 }
@@ -67,7 +67,7 @@ void FGTelnet::setProperty(QString prop_name, QString value)
 
 QString FGTelnet::getProperty(QString prop_name)
 {
-    qDebug() << "prop: " << prop_name;
+
     QString command = "get " + prop_name + CRLF;
     _socket.write(command.toUtf8());
     _socket.flush();
@@ -78,16 +78,8 @@ QString FGTelnet::getProperty(QString prop_name)
         if(linelength != -1)
         {
             QString response = QString(value);
-            qDebug() << "response: " << response;
-            QStringList l = response.split("'");
-            if(l.size() >=3)
-            {
-                return QString(l[1]);
-            }
-            else
-            {
-                return QString("1");
-            }
+            QStringList l = response.split("\n");
+            return l[0];
         }
     }
     return QString("1");
@@ -106,6 +98,14 @@ void FGTelnet::cd(QString dir)
 void FGTelnet::runCmd(QString cmd)
 {
     QString command = "run " + cmd + CRLF;
+    _socket.write(command.toUtf8());
+    _socket.flush();
+
+}
+
+void FGTelnet::dataMode()
+{
+    QString command = "data " + CRLF;
     _socket.write(command.toUtf8());
     _socket.flush();
 

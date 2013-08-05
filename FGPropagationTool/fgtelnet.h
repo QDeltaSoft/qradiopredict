@@ -16,6 +16,7 @@ public:
     QString getProperty(QString prop_name);
     void runCmd(QString cmd);
     void cd(QString dir);
+    void dataMode();
     unsigned inline status() {return _status;}
 
 public slots:
