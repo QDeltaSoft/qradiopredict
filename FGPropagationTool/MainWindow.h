@@ -58,8 +58,8 @@ public slots:
     void saveMobile(MobileStation * m);
     void saveGroundStation(GroundStation * g);
     void saveFlightplan(FlightPlanPoints * fp);
-    void deleteGroundStation(int id);
-    void deleteFlightplan(int id);
+    void deleteGroundStation(unsigned id);
+    void deleteFlightplan(unsigned id);
 
 private:
     void restoreMapState();

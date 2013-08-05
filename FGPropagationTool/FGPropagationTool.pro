@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     flightplanpoints.cpp \
     mobileform.cpp \
     groundstationform.cpp \
-    flightplanform.cpp
+    flightplanform.cpp \
+    signal.cpp \
+    updater.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -41,7 +43,9 @@ HEADERS  += MainWindow.h \
     flightplanpoints.h \
     mobileform.h \
     groundstationform.h \
-    flightplanform.h
+    flightplanform.h \
+    signal.h \
+    updater.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \

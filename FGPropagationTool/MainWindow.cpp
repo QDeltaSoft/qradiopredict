@@ -357,6 +357,7 @@ void MainWindow::showEditBoxes()
         QObject::connect(mf,SIGNAL(haveData(MobileStation*)),this,SLOT(saveMobile(MobileStation *)));
         QDockWidget *dw = new QDockWidget;
         dw->setWindowTitle(mobile->name+" "+QString::number( mobile->id));
+        dw->setMaximumWidth(260);
         dw->setWidget(mf);
         this->addDockWidget(Qt::LeftDockWidgetArea,dw);
         _docks.push_back(dw);
@@ -403,12 +404,13 @@ void MainWindow::showEditBoxes()
 
             QDockWidget *dw = new QDockWidget;
             dw->setWindowTitle(QString::number( gs->id));
+            dw->setMaximumWidth(260);
             dw->setWidget(gs_form);
             this->addDockWidget(Qt::LeftDockWidgetArea,dw);
             _docks.push_back(dw);
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(gs_form,SIGNAL(haveData(GroundStation*)),this,SLOT(saveGroundStation(GroundStation *)));
-            QObject::connect(gs_form,SIGNAL(delStation(int)),this,SLOT(deleteGroundStation(int)));
+            QObject::connect(gs_form,SIGNAL(delStation(unsigned)),this,SLOT(deleteGroundStation(unsigned)));
             //gs_form->show();
             delete gs;
         }
@@ -442,9 +444,10 @@ void MainWindow::showEditBoxes()
             fp_form->ui->altitudeLineEdit->setText(QString::number(fp->altitude));
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(fp_form,SIGNAL(haveData(FlightPlanPoints *)),this,SLOT(saveFlightplan(FlightPlanPoints*)));
-            QObject::connect(fp_form,SIGNAL(delFP(int)),this,SLOT(deleteFlightplan(int)));
+            QObject::connect(fp_form,SIGNAL(delFP(unsigned)),this,SLOT(deleteFlightplan(unsigned)));
             QDockWidget *dw = new QDockWidget;
             dw->setWindowTitle(QString::number( fp->id));
+            dw->setMaximumWidth(260);
             dw->setWidget(fp_form);
             this->addDockWidget(Qt::LeftDockWidgetArea,dw);
             _docks.push_back(dw);
@@ -492,7 +495,7 @@ void MainWindow::saveFlightplan(FlightPlanPoints * fp)
 
 }
 
-void MainWindow::deleteGroundStation(int id)
+void MainWindow::deleteGroundStation(unsigned id)
 {
     QPointF dbpos;
     QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
@@ -538,7 +541,7 @@ void MainWindow::deleteGroundStation(int id)
     _db->delete_ground_station(0,id);
 }
 
-void MainWindow::deleteFlightplan(int id)
+void MainWindow::deleteFlightplan(unsigned id)
 {
     QPointF dbpos;
     QVector<FlightPlanPoints *> fp_points = _db->select_flightplan_positions(0);

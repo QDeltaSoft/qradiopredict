@@ -30,6 +30,6 @@ void FlightplanForm::saveFP()
 
 void FlightplanForm::deleteFP()
 {
-    int id = ui->idLineEdit->text().toInt();
+    unsigned id = ui->idLineEdit->text().toInt();
     emit delFP(id);
 }

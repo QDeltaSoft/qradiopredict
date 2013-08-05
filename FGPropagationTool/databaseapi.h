@@ -6,6 +6,7 @@
 #include "mobilestation.h"
 #include "groundstation.h"
 #include "flightplanpoints.h"
+#include "signal.h"
 
 class DatabaseApi
 {
@@ -13,6 +14,24 @@ public:
     DatabaseApi();
     ~DatabaseApi();
 
+    /**
+     * @brief select_commands
+     * @return
+     */
+
+    bool
+    select_commands(const unsigned &id_session);
+
+    QVector<Signal *>
+    select_signals(const unsigned &id_session);
+
+    void
+    update_signals(const unsigned &id_station, const unsigned &id_session, const Signal *s);
+
+    void
+    update_replays(const unsigned &id_station, const unsigned &id_session,
+                                const double &mobile_longitude, const double &mobile_latitude,
+                                QString &id_replay, const Signal *s);
 
 
     /**
@@ -156,6 +175,17 @@ public:
                                        const double &heading_deg, const double &tx_power_watt,
                                        const unsigned &terrain_following,
                                        const double &speed, const unsigned &time);
+
+
+    /**
+     * @brief update_mobile_position
+     * @param id_session
+     * @param longitude
+     * @param latitude
+     */
+    void
+    update_mobile_position(const unsigned &id_session, const double &longitude, const double &latitude);
+
 
     /**
      * @brief update_flightplan_position

@@ -11,9 +11,9 @@
 #include "flightplanpoints.h"
 #include "mobilestation.h"
 
-class FGRemote
+class FGRemote : public QObject
 {
-
+    Q_OBJECT
 public:
     FGRemote(FGTelnet * t, DatabaseApi * db);
     ~FGRemote();

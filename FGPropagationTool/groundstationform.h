@@ -20,7 +20,7 @@ public:
     Ui::GroundStationForm *ui;
 signals:
     void haveData(GroundStation * g);
-    void delStation(int id);
+    void delStation(unsigned id);
 private slots:
     void saveGround();
     void deleteGround();

@@ -49,6 +49,6 @@ void GroundStationForm::saveGround()
 void GroundStationForm::deleteGround()
 {
 
-    int id = ui->idEdit->text().toInt();
+    unsigned id = ui->idEdit->text().toInt();
     emit delStation(id);
 }

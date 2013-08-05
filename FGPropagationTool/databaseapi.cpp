@@ -16,6 +16,142 @@ DatabaseApi::~DatabaseApi()
     _db.close();
 }
 
+bool
+DatabaseApi::select_commands(const unsigned &id_session)
+{
+    QSqlQuery query(_db);
+    query.prepare("SELECT * FROM commands WHERE id_session=:id_session LIMIT 1");
+    query.bindValue(":id_session", id_session);
+    query.exec();
+    int update_signals_idx = query.record().indexOf("update_signals");
+    query.next();
+    QString command = query.value(update_signals_idx).toString();
+    if (command=="false")
+        return false;
+    else
+        return true;
+
+}
+
+QVector<Signal *>
+DatabaseApi::select_signals(const unsigned &id_session)
+{
+    QVector<Signal *> station_signals;
+    QSqlQuery query(_db);
+    query.prepare("SELECT * FROM signals LEFT JOIN ground_stations ON signals.id_station=ground_stations.id"
+                   "WHERE ground_stations.id!='' AND signals.id_session=:id_session");
+    query.bindValue(":id_session", id_session);
+    query.exec();
+
+    int name_idx = query.record().indexOf("name");
+    int frequency_idx = query.record().indexOf("frequency");
+    int signal_dbm_idx = query.record().indexOf("signal_dbm");
+    int signal_idx = query.record().indexOf("signal");
+    int field_strength_uv_idx = query.record().indexOf("field_strength_uv");
+    int link_budget_idx = query.record().indexOf("link_budget");
+    int terrain_attenuation_idx = query.record().indexOf("terrain_attenuation");
+    int clutter_attenuation_idx = query.record().indexOf("clutter_attenuation");
+    int prop_mode_idx = query.record().indexOf("prop_mode");
+    while(query.next())
+    {
+        Signal *s = new Signal;
+        s->station_name = query.value(name_idx).toString();
+        s->frequency = query.value(frequency_idx).toDouble();
+        s->signal_dbm = query.value(signal_dbm_idx).toDouble();
+        s->signal = query.value(signal_idx).toDouble();
+        s->field_strength_uv = query.value(field_strength_uv_idx).toDouble();
+        s->link_budget = query.value(link_budget_idx).toDouble();
+        s->terrain_attenuation = query.value(terrain_attenuation_idx).toDouble();
+        s->clutter_attenuation = query.value(clutter_attenuation_idx).toDouble();
+        s->prop_mode = query.value(prop_mode_idx).toString();
+        station_signals.push_back(s);
+    }
+    return station_signals;
+}
+
+
+void
+DatabaseApi::update_signals(const unsigned &id_station, const unsigned &id_session, const Signal * s)
+{
+    QSqlQuery query(_db);
+    QSqlQuery query2(_db);
+    query2.prepare("SELECT * FROM signals WHERE id_station=:id_station");
+    query2.bindValue(":id_station", id_station);
+    query2.exec();
+    if(query2.size()>0)
+    {
+        query.prepare("UPDATE signals SET signal_dbm=:signal_dbm, signal=:signal,"
+                       "field_strength_uv=:field_strength_uv, link_budget=:link_budget, "
+                       "terrain_attenuation=:terrain_attenuation, "
+                       "clutter_attenuation=:clutter_attenuation, prop_mode=:prop_mode"
+                       "WHERE id_session=:id_session AND id_station=:id_station");
+        query.bindValue(":signal_dbm", s->signal_dbm);
+        query.bindValue(":signal", s->signal);
+        query.bindValue(":field_strength_uv", s->field_strength_uv);
+        query.bindValue(":link_budget", s->link_budget);
+        query.bindValue(":terrain_attenuation", s->terrain_attenuation);
+        query.bindValue(":clutter_attenuation", s->clutter_attenuation);
+        query.bindValue(":prop_mode", s->prop_mode);
+        query.bindValue(":id_session", id_session);
+        query.bindValue(":id_station", id_station);
+        query.exec();
+
+    }
+    else
+    {
+        query.prepare("INSERT INTO signals (signal_dbm, signal,"
+                       "field_strength_uv, link_budget, "
+                       "terrain_attenuation, "
+                       "clutter_attenuation, prop_mode,"
+                       "id_session, id_station) VALUES (:signal_dbm,"
+                      ":signal,:field_strength_uv,:link_budget,"
+                      ":terrain_attenuation,:clutter_attenuation,"
+                      ":prop_mode,:id_session,:id_station)");
+        query.bindValue(":signal_dbm", s->signal_dbm);
+        query.bindValue(":signal", s->signal);
+        query.bindValue(":field_strength_uv", s->field_strength_uv);
+        query.bindValue(":link_budget", s->link_budget);
+        query.bindValue(":terrain_attenuation", s->terrain_attenuation);
+        query.bindValue(":clutter_attenuation", s->clutter_attenuation);
+        query.bindValue(":prop_mode", s->prop_mode);
+        query.bindValue(":id_session", id_session);
+        query.bindValue(":id_station", id_station);
+        query.exec();
+
+    }
+
+}
+
+void
+DatabaseApi::update_replays(const unsigned &id_station, const unsigned &id_session,
+                            const double &mobile_longitude, const double &mobile_latitude,
+                            QString &id_replay, const Signal *s)
+{
+    QSqlQuery query(_db);
+    query.prepare("INSERT INTO replays (mobile_longitude, mobile_latitude, "
+                  "signal_dbm, signal,"
+                   "field_strength_uv, link_budget, "
+                   "terrain_attenuation, "
+                   "clutter_attenuation, prop_mode,"
+                   "id_session, id_station, id_replay) VALUES ("
+                  ":mobile_longitude, :mobile_latitude, :signal_dbm,"
+                  ":signal,:field_strength_uv,:link_budget,"
+                  ":terrain_attenuation,:clutter_attenuation,"
+                  ":prop_mode,:id_session,:id_station, :id_replay)");
+    query.bindValue(":mobile_longitude", mobile_longitude);
+    query.bindValue(":mobile_latitude", mobile_latitude);
+    query.bindValue(":signal_dbm", s->signal_dbm);
+    query.bindValue(":signal", s->signal);
+    query.bindValue(":field_strength_uv", s->field_strength_uv);
+    query.bindValue(":link_budget", s->link_budget);
+    query.bindValue(":terrain_attenuation", s->terrain_attenuation);
+    query.bindValue(":clutter_attenuation", s->clutter_attenuation);
+    query.bindValue(":prop_mode", s->prop_mode);
+    query.bindValue(":id_session", id_session);
+    query.bindValue(":id_station", id_station);
+    query.bindValue(":id_replay", id_replay);
+    query.exec();
+}
 
 
 QVector<MobileStation *>
@@ -346,6 +482,21 @@ DatabaseApi::update_mobile_station(const unsigned &id_session, const unsigned &i
         query.exec();
 
     }
+
+}
+
+
+void
+DatabaseApi::update_mobile_position(const unsigned &id_session, const double &longitude, const double &latitude)
+{
+    QSqlQuery query(_db);
+    query.prepare("UPDATE mobile_stations SET "
+                  "current_longitude =:current_longitude, current_latitude=:current_latitude "
+                  " WHERE id_session=:id_session");
+    query.bindValue(":id_session", id_session);
+    query.bindValue(":current_longitude", longitude);
+    query.bindValue(":current_latitude", latitude);
+    query.exec();
 
 }
 
