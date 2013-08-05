@@ -2,6 +2,8 @@
 #define FGTELNET_H
 
 #include <QTcpSocket>
+#include <QString>
+#include <QStringList>
 
 class FGTelnet : public QObject
 {
@@ -13,6 +15,7 @@ public:
     void setProperty(QString prop_name, QString value);
     QString getProperty(QString prop_name);
     void runCmd(QString cmd);
+    void cd(QString dir);
     unsigned inline status() {return _status;}
 
 public slots:

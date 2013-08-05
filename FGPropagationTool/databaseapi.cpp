@@ -30,7 +30,6 @@ DatabaseApi::select_commands(const unsigned &id_session)
         return false;
     else
         return true;
-
 }
 
 QVector<Signal *>
@@ -308,11 +307,21 @@ DatabaseApi::add_ground_station(const unsigned &id_session,
     QSqlQuery query(_db);
     query.prepare("INSERT INTO ground_stations ("
                   " id_session, longitude, "
-                  "latitude, created_on) VALUES (:id_session, "
-                  ":lon, :lat, :time)");
+                  "latitude, frequency, beacon_delay, transmission_type, elevation_feet, "
+                  "polarization, rx_sensitivity, tx_power_watt, enabled, created_on) VALUES (:id_session, "
+                  ":lon, :lat, :frequency, :beacon_delay, :transmission_type, :elevation_feet, "
+                  ":polarization, :rx_sensitivity, :tx_power_watt, :enabled, :time)");
     query.bindValue(":id_session", id_session);
     query.bindValue(":lon", lon);
     query.bindValue(":lat", lat);
+    query.bindValue(":frequency", 144.5);
+    query.bindValue(":beacon_delay", 2);
+    query.bindValue(":transmission_type", 1);
+    query.bindValue(":elevation_feet", 0);
+    query.bindValue(":polarization", 1);
+    query.bindValue(":rx_sensitivity", -120.0);
+    query.bindValue(":tx_power_watt", 1.0);
+    query.bindValue(":enabled", 1);
     query.bindValue(":time", time);
     query.exec();
 
@@ -366,11 +375,12 @@ DatabaseApi::add_flightplan_position(const unsigned &id_session,
     QSqlQuery query(_db);
     query.prepare("INSERT INTO flightplan_positions ("
                   " id_session, longitude, "
-                  "latitude, created_on) VALUES (:id_session, "
-                  ":lon, :lat, :time)");
+                  "latitude, altitude, created_on) VALUES (:id_session, "
+                  ":lon, :lat, :alt, :time)");
     query.bindValue(":id_session", id_session);
     query.bindValue(":lon", lon);
     query.bindValue(":lat", lat);
+    query.bindValue(":alt", 0);
     query.bindValue(":time", time);
     query.exec();
 

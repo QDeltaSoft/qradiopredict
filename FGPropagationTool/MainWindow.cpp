@@ -90,6 +90,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(setFPType()));
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
 
+    QObject::connect(_tb->ui->startFlightgearButton,SIGNAL(clicked()),this,SLOT(startFGFS()));
+    QObject::connect(_tb->ui->connectTelnetButton,SIGNAL(clicked()),this->_telnet,SLOT(connectToFGFS()));
+
+    QObject::connect(_tb->ui->sendToFlightgearButton,SIGNAL(clicked()),this,SLOT(sendFlightgearData()));
+
     /*\ This needs to go
     QPolygonF polygon;
     polygon << QPointF(10.4, 20.5) << QPointF(20.2, 30.2) << QPointF(24.2, 45.2);
@@ -584,4 +589,9 @@ void MainWindow::deleteFlightplan(unsigned id)
     */
 
     _db->delete_flightplan_position(0,id);
+}
+
+void MainWindow::sendFlightgearData()
+{
+    _remote->sendAllData();
 }

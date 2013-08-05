@@ -1,7 +1,5 @@
 #include "util.h"
-#include <QProcess>
-#include <QStringList>
-#include <cmath>
+
 
 const qreal PI = 3.14159265358979323846;
 
@@ -39,7 +37,9 @@ QPointF Util::convertToXY(QPointF ll, double zoom)
 }
 
 
-void Util::startFlightgear()
+void Util::startFlightgear(const QString &binary, const QString &fgroot, const QString &scenery,
+                           const QString &aircraft, const QString &airport,
+                           const double &lon, const double &lat)
 {
     QProcess p;
     QStringList args;

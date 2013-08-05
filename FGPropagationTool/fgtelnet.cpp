@@ -67,17 +67,39 @@ void FGTelnet::setProperty(QString prop_name, QString value)
 
 QString FGTelnet::getProperty(QString prop_name)
 {
+    qDebug() << "prop: " << prop_name;
     QString command = "get " + prop_name + CRLF;
     _socket.write(command.toUtf8());
     _socket.flush();
-    char value[2048];
-    if(_socket.waitForReadyRead())
+    char value[4096];
+    if(_socket.canReadLine())
     {
         qint64 linelength = _socket.readLine(value,sizeof(value));
-        if(linelength != -1) return QString(value);
+        if(linelength != -1)
+        {
+            QString response = QString(value);
+            qDebug() << "response: " << response;
+            QStringList l = response.split("'");
+            if(l.size() >=3)
+            {
+                return QString(l[1]);
+            }
+            else
+            {
+                return QString("1");
+            }
+        }
     }
-    return QString("");
+    return QString("1");
 
+}
+
+void FGTelnet::cd(QString dir)
+{
+    qDebug() << "dir: " << dir;
+    QString command = "cd " + dir + " " +CRLF;
+    _socket.write(command.toUtf8());
+    _socket.flush();
 }
 
 

@@ -17,6 +17,9 @@ FGRemote::~FGRemote()
 void FGRemote::sendAllData()
 {
     this->set_mobile();
+    QTime delaytime= QTime::currentTime().addSecs(10);
+    while( QTime::currentTime() < delaytime )
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     this->set_ground();
     this->set_fp();
 }
@@ -27,11 +30,13 @@ void FGRemote::set_mobile(unsigned id)
     {
         /*
         while(true)
-        {
+        {          
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
             if(_fg->getProperty("/sim/time/elapsed-sec").toDouble() > 5.0)
                 break;
         }
         */
+
         QVector<MobileStation*> stations = _db->select_mobile_station(id);
         MobileStation *s = stations[0];
         QString str1;
@@ -61,14 +66,6 @@ void FGRemote::set_mobile(unsigned id)
 
         _fg->runCmd("presets-commit");
 
-        /*
-
-        while(true)
-        {
-            if(_fg->getProperty("/sim/sceneryloaded")=="true")
-                break;
-        }
-        */
     }
 }
 
@@ -76,12 +73,23 @@ void FGRemote::set_ground(unsigned id)
 {
     if(_fg->status())
     {
+        /*
+        while(true)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            if(_fg->getProperty("/sim/sceneryloaded") =="true")
+                break;
+        }
+        */
 
         QVector<GroundStation*> stations = _db->select_ground_stations(id);
         for (int i = 0;i< stations.size();++i)
         {
+
             GroundStation *s = stations.at(i);
             QString str1;
+            QString str2;
+            QString str3;
 
             QString st ="["+str1.setNum(s->id)+"]";
 
@@ -89,12 +97,12 @@ void FGRemote::set_ground(unsigned id)
 
             _fg->setProperty("/sim/radio/station"+st+"/name", "");
             _fg->setProperty("/sim/radio/station"+st+"/position/latitude-deg", str1.setNum(s->latitude));
-            _fg->setProperty("/sim/radio/station"+st+"/position/longitude-deg", str1.setNum(s->longitude));
+            _fg->setProperty("/sim/radio/station"+st+"/position/longitude-deg", str2.setNum(s->longitude));
 
 
-            _fg->setProperty("/sim/radio/station"+st+"/nasal/script", "var f= 0; var d = geodinfo("+str1.setNum(s->latitude)+", "+str1.setNum(s->longitude)
+            _fg->setProperty("/sim/radio/station"+st+"/nasal/script", "var f= 0; var d = geodinfo("+str1.setNum(s->latitude)+", "+str2.setNum(s->longitude)
                              +", 20000);"
-                             "if(d != nil) setprop('/sim/radio/station"+st+"/position/elevation-ft', (d[0]+1)*"+str1.setNum(SG_METER_TO_FEET)+");"
+                             "if(d != nil) setprop('/sim/radio/station"+st+"/position/elevation-ft', (d[0]+1)*"+str3.setNum(SG_METER_TO_FEET)+");"
                              "else setprop('/sim/radio/station"+st+"/position/elevation-ft', 1);");
             _fg->runCmd("nasal /sim/radio/station"+st+"/nasal");
 
@@ -129,6 +137,11 @@ void FGRemote::set_fp(unsigned id)
     if(_fg->status())
     {
         QString str;
+        QString str2;
+        QString str3;
+        QString str4;
+        QString str5;
+        QString str6;
         QVector<MobileStation*> stations = _db->select_mobile_station(id);
         MobileStation *mobile = stations[0];
 
@@ -146,37 +159,49 @@ void FGRemote::set_fp(unsigned id)
         _fg->setProperty("/autopilot/route-manager/current-wp","-1");
         _fg->setProperty("/autopilot/route-manager/input", "@posinit");
 
+        /*
+        while(true)
+        {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            if(_fg->getProperty("/sim/sceneryloaded") =="true")
+                break;
+        }
+        */
+
         QVector<FlightPlanPoints*> fp_points = _db->select_flightplan_positions(id);
         for (int i = 0;i< fp_points.size();++i)
         {
 
+
             FlightPlanPoints *fp = fp_points.at(i);
             if(fp->altitude !=0)
             {
-
+                qDebug() << fp->altitude << " we should not be here";
                 _fg->setProperty("/autopilot/route-manager/input", "" +
-                                 str.setNum(fp->longitude)+","+
-                                 str.setNum(fp->latitude)+"@"+str.setNum(fp->altitude));
+                                 str3.setNum(fp->longitude)+","+
+                                 str2.setNum(fp->latitude)+"@"+str6.setNum(fp->altitude));
             }
             else
             {
 
                 _fg->setProperty("/sim/radio/waypoint/nasal/script",
-                                 "var f= 0; var d = geodinfo(" + str.setNum(fp->latitude) + ", " + str.setNum(fp->longitude) +
+                                 "var f= 0; var d = geodinfo(" + str2.setNum(fp->latitude) + ", " + str3.setNum(fp->longitude) +
                                  ", 20000); if(d != nil) setprop('/sim/radio/waypoint/elevation-ft', (d[0]+2)*"
-                                 + str.setNum(SG_METER_TO_FEET) + ");else setprop('/sim/radio/waypoint/elevation-ft', 9);");
+                                 + str4.setNum(SG_METER_TO_FEET) + ");else setprop('/sim/radio/waypoint/elevation-ft', 9);");
 
                 _fg->runCmd("nasal /sim/radio/waypoint/nasal");
 
                 // sleep 2 secs as nasal is processed
-                QTime delaytime= QTime::currentTime().addSecs(2);
+                QTime delaytime= QTime::currentTime().addSecs(3);
                 while( QTime::currentTime() < delaytime )
                     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 
-                QString altitude = _fg->getProperty("/sim/radio/waypoint/elevation-ft");
+                //_fg->cd("/sim/radio/waypoint");
 
+                QString altitude = _fg->getProperty("/sim/radio/waypoint/elevation-ft");
+                qDebug() << str3.setNum(fp->longitude) << " " << str2.setNum(fp->latitude) << " " << altitude << " waypoint coords";
                 _fg->setProperty("/autopilot/route-manager/input", "" +
-                                 str.setNum(fp->longitude) + "," + str.setNum(fp->latitude) + "@" + altitude);
+                                 str3.setNum(fp->longitude) + "," + str2.setNum(fp->latitude) + "@" + altitude);
             }
         }
 
@@ -205,8 +230,8 @@ void FGRemote::set_fp(unsigned id)
         }
         else
         {
-            _fg->setProperty("/autopilot/settings/target-speed-kt", str.setNum(mobile->speed));
-            _fg->setProperty("/engines/engine/speed-max-mps", str.setNum(mobile->speed));
+            _fg->setProperty("/autopilot/settings/target-speed-kt", str5.setNum(mobile->speed));
+            _fg->setProperty("/engines/engine/speed-max-mps", str5.setNum(mobile->speed));
         }
 
         _fg->setProperty("/autopilot/locks/speed", "speed-with-throttle");

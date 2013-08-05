@@ -60,6 +60,7 @@ public slots:
     void saveFlightplan(FlightPlanPoints * fp);
     void deleteGroundStation(unsigned id);
     void deleteFlightplan(unsigned id);
+    void sendFlightgearData();
 
 private:
     void restoreMapState();
