@@ -5,6 +5,9 @@
 #include "fgtelnet.h"
 #include "signal.h"
 #include <QObject>
+#include <QTime>
+#include <QDateTime>
+#include <QVector>
 
 class Updater : public QObject
 {
@@ -17,7 +20,7 @@ public slots:
 
 signals:
     void haveMobilePosition(double lon, double lat);
-    void haveSignalReading(Signal *s);
+    void haveSignalReading(unsigned id, QString name, double freq, Signal *s);
     void finished();
 
 private:

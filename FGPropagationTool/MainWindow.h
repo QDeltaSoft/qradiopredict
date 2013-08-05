@@ -10,6 +10,7 @@
 #include "util.h"
 #include "fgremote.h"
 #include "updater.h"
+#include "signal.h"
 #include "toolbox.h"
 #include "mobileform.h"
 #include "ui_mobileform.h"
@@ -65,6 +66,7 @@ public slots:
     void sendFlightgearData();
     void startUpdate();
     void moveMobile(double lon, double lat);
+    void showSignalReading(uint id_station,QString station_name,double freq,Signal*s);
 
 private:
     void restoreMapState();

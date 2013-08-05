@@ -72,13 +72,13 @@ QString FGTelnet::getProperty(QString prop_name)
     _socket.write(command.toUtf8());
     _socket.flush();
     char value[4096];
-    if(_socket.canReadLine())
+    if(_socket.waitForReadyRead())
     {
         qint64 linelength = _socket.readLine(value,sizeof(value));
         if(linelength != -1)
         {
             QString response = QString(value);
-            QStringList l = response.split("\n");
+            QStringList l = response.split("\r");
             return l[0];
         }
     }

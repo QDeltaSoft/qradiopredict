@@ -603,6 +603,7 @@ void MainWindow::startUpdate()
     Updater *up = new Updater(_telnet, _db);
     up->moveToThread(t);
     connect(up, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
+    connect(up, SIGNAL(haveSignalReading(uint,QString,double,Signal*)), this, SLOT(showSignalReading(uint,QString,double,Signal*)));
     connect(up, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
     connect(t, SIGNAL(started()), up, SLOT(startUpdate()));
     connect(up, SIGNAL(finished()), t, SLOT(quit()));
@@ -617,8 +618,8 @@ void MainWindow::moveMobile(double lon, double lat)
     {
         QMap<QGraphicsPixmapItem *, QPointF>::const_iterator it = _map_mobiles.begin();
         QGraphicsPixmapItem * oldicon = it.key();
-        _map_mobiles.remove(oldicon);
         _view->_childView->scene()->removeItem(oldicon);
+        _map_mobiles.remove(oldicon);
     }
     QPixmap pixmap(":icons/images/phone.png");
     pixmap = pixmap.scaled(32,32);
@@ -630,4 +631,14 @@ void MainWindow::moveMobile(double lon, double lat)
     phone->setOffset(xypos - QPoint(16,16));
     _map_mobiles.insert(phone, pos);
 
+}
+
+
+void MainWindow::showSignalReading(uint id_station,QString station_name,double freq,Signal*s)
+{
+    QString str;
+    this->_tb->ui->stationNameEdit->setText(station_name);
+    this->_tb->ui->signalEdit->setText(str.setNum(s->signal));
+    this->_tb->ui->signal_dbmEdit->setText(str.setNum(s->signal_dbm));
+    delete s;
 }

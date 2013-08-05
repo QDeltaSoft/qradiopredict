@@ -194,19 +194,19 @@ void FGRemote::set_fp(unsigned id)
 
                 _fg->runCmd("nasal /sim/radio/waypoint/nasal");
 
-                /*
+                /** old code, strangely the new nasal one works better
                 // sleep 2 secs as nasal is processed
                 QTime delaytime= QTime::currentTime().addSecs(3);
                 while( QTime::currentTime() < delaytime )
                     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 
-                //_fg->cd("/sim/radio/waypoint");
+
 
                 QString altitude = _fg->getProperty("/sim/radio/waypoint/elevation-ft");
                 qDebug() << str3.setNum(fp->longitude) << " " << str2.setNum(fp->latitude) << " " << altitude << " waypoint coords";
                 _fg->setProperty("/autopilot/route-manager/input", "" +
                                  str3.setNum(fp->longitude) + "," + str2.setNum(fp->latitude) + "@" + altitude);
-                                 */
+                */
             }
         }
 
