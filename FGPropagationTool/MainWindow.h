@@ -9,6 +9,7 @@
 #include "flightplanpoints.h"
 #include "util.h"
 #include "fgremote.h"
+#include "updater.h"
 #include "toolbox.h"
 #include "mobileform.h"
 #include "ui_mobileform.h"
@@ -23,6 +24,7 @@
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QMap>
+#include <QThread>
 
 namespace Ui {
 class MainWindow;
@@ -61,6 +63,7 @@ public slots:
     void deleteGroundStation(unsigned id);
     void deleteFlightplan(unsigned id);
     void sendFlightgearData();
+    void startUpdate();
 
 private:
     void restoreMapState();

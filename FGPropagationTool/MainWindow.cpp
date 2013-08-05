@@ -94,6 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->connectTelnetButton,SIGNAL(clicked()),this->_telnet,SLOT(connectToFGFS()));
 
     QObject::connect(_tb->ui->sendToFlightgearButton,SIGNAL(clicked()),this,SLOT(sendFlightgearData()));
+    QObject::connect(_tb->ui->startUpdateButton,SIGNAL(clicked()),this,SLOT(startUpdate()));
 
     /*\ This needs to go
     QPolygonF polygon;
@@ -594,4 +595,17 @@ void MainWindow::deleteFlightplan(unsigned id)
 void MainWindow::sendFlightgearData()
 {
     _remote->sendAllData();
+}
+
+void MainWindow::startUpdate()
+{
+    QThread *t= new QThread;
+    Updater *up = new Updater(_telnet, _db);
+    up->moveToThread(t);
+    connect(up, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+    connect(t, SIGNAL(started()), up, SLOT(startUpdate()));
+    connect(up, SIGNAL(finished()), t, SLOT(quit()));
+    connect(up, SIGNAL(finished()), up, SLOT(deleteLater()));
+    connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
+    t->start();
 }

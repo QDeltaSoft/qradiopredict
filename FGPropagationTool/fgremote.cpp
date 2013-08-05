@@ -157,7 +157,7 @@ void FGRemote::set_fp(unsigned id)
         _fg->setProperty("/autopilot/route-manager/active", "false");
         _fg->setProperty("/autopilot/route-manager/input", "@clear");
         _fg->setProperty("/autopilot/route-manager/current-wp","-1");
-        _fg->setProperty("/autopilot/route-manager/input", "@posinit");
+        //_fg->setProperty("/autopilot/route-manager/input", "@posinit");
 
         /*
         while(true)
@@ -187,10 +187,14 @@ void FGRemote::set_fp(unsigned id)
                 _fg->setProperty("/sim/radio/waypoint/nasal/script",
                                  "var f= 0; var d = geodinfo(" + str2.setNum(fp->latitude) + ", " + str3.setNum(fp->longitude) +
                                  ", 20000); if(d != nil) setprop('/sim/radio/waypoint/elevation-ft', (d[0]+2)*"
-                                 + str4.setNum(SG_METER_TO_FEET) + ");else setprop('/sim/radio/waypoint/elevation-ft', 9);");
+                                 + str4.setNum(SG_METER_TO_FEET) + ");else setprop('/sim/radio/waypoint/elevation-ft', 9);"
+                                 "var alt=getprop('/sim/radio/waypoint/elevation-ft');"
+                                 "setprop('/autopilot/route-manager/input',\""+str3.setNum(fp->longitude)+","+
+                                 str2.setNum(fp->latitude)+ "@\"~alt);");
 
                 _fg->runCmd("nasal /sim/radio/waypoint/nasal");
 
+                /*
                 // sleep 2 secs as nasal is processed
                 QTime delaytime= QTime::currentTime().addSecs(3);
                 while( QTime::currentTime() < delaytime )
@@ -202,6 +206,7 @@ void FGRemote::set_fp(unsigned id)
                 qDebug() << str3.setNum(fp->longitude) << " " << str2.setNum(fp->latitude) << " " << altitude << " waypoint coords";
                 _fg->setProperty("/autopilot/route-manager/input", "" +
                                  str3.setNum(fp->longitude) + "," + str2.setNum(fp->latitude) + "@" + altitude);
+                                 */
             }
         }
 
