@@ -14,8 +14,12 @@
 #include "toolbox.h"
 #include "mobileform.h"
 #include "ui_mobileform.h"
+#include "settingsdialog.h"
+#include "ui_settingsdialog.h"
 #include "groundstationform.h"
 #include "ui_groundstationform.h"
+#include "stationsignalform.h"
+#include "ui_stationsignalform.h"
 #include "flightplanform.h"
 #include "ui_flightplanform.h"
 #include <vector>
@@ -49,14 +53,16 @@ private slots:
     void connectionSuccess();
     void connectionFailure();
     void startFGFS();
-
+    void showSettingsDialog();
     void setMobileType();
     void setGroundType();
     void setFPType();
     void showEditBoxes();
+    void clearLeftDocks();
 
 public slots:
     void mapClick(QPointF pos);
+    void getMouseCoord(QPointF coord);
     void setMapItems(quint8 zoom);
     void saveMobile(MobileStation * m);
     void saveGroundStation(GroundStation * g);
@@ -64,9 +70,9 @@ public slots:
     void deleteGroundStation(unsigned id);
     void deleteFlightplan(unsigned id);
     void sendFlightgearData();
-    void startUpdate();
+    void startSignalUpdate();
     void moveMobile(double lon, double lat);
-    void showSignalReading(uint id_station,QString station_name,double freq,Signal*s);
+    void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
 
 private:
     void restoreMapState();
@@ -79,7 +85,10 @@ private:
     QMap<QGraphicsPixmapItem *, QPointF> _map_ground;
     QMap<QGraphicsPixmapItem *, QPointF> _map_fppos;
     QVector<QDockWidget *> _docks;
-
+    QString _start_time;
+    bool _show_signals;
+    int _last_station_id;
+    QVector<int> _station_ids;
 };
 
 #endif // MAINWINDOW_H

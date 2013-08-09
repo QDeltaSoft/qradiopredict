@@ -76,6 +76,7 @@ public:
 signals:
     void zoomLevelChanged(quint8 nZoom);
     void map_clicked(QPointF where);
+    void mouse_moved(QPointF coord);
     
 public slots:
 

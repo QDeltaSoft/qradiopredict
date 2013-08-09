@@ -16,12 +16,16 @@ FGRemote::~FGRemote()
 
 void FGRemote::sendAllData()
 {
-    this->set_mobile();
-    QTime delaytime= QTime::currentTime().addSecs(10);
-    while( QTime::currentTime() < delaytime )
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-    this->set_ground();
-    this->set_fp();
+    if(_fg->status())
+    {
+        this->set_mobile();
+        QTime delaytime= QTime::currentTime().addSecs(10);
+        while( QTime::currentTime() < delaytime )
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        this->set_ground();
+        this->set_fp();
+        emit readyUpdate();
+    }
 }
 
 void FGRemote::set_mobile(unsigned id)

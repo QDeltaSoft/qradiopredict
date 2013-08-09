@@ -4,3 +4,4 @@ SUBDIRS += MapGraphics \
     FGPropagationTool
 
 FGPropagationTool.depends += MapGraphics
+

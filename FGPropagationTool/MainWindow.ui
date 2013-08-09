@@ -51,7 +51,14 @@
     <addaction name="actionConnect_to_Flightgear"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="action_Settings"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_Edit"/>
    <addaction name="menuWindow"/>
   </widget>
   <widget class="QDockWidget" name="dockWidget3">
@@ -79,6 +86,11 @@
   <action name="actionStart_Flightgear">
    <property name="text">
     <string>Start Flightgear</string>
+   </property>
+  </action>
+  <action name="action_Settings">
+   <property name="text">
+    <string>&amp;Settings</string>
    </property>
   </action>
  </widget>

@@ -34,11 +34,14 @@ MainWindow::MainWindow(QWidget *parent) :
     _telnet = new FGTelnet;
     _db = new DatabaseApi;
     _remote = new FGRemote(_telnet, _db);
+    _show_signals = false;
+    _last_station_id = -1;
 
     ui->setupUi(this);
     //!!!!!!!! connections must always come after setupUi!!!
     QObject::connect(ui->actionConnect_to_Flightgear,SIGNAL(triggered()),this->_telnet,SLOT(connectToFGFS()));
     QObject::connect(ui->actionStart_Flightgear,SIGNAL(triggered()),this,SLOT(startFGFS()));
+    QObject::connect(ui->action_Settings,SIGNAL(triggered()),this,SLOT(showSettingsDialog()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
     QObject::connect(this->_telnet,SIGNAL(connectionFailure()),this,SLOT(connectionFailure()));
 
@@ -80,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->dockWidget3->toggleViewAction()->setText("&Toolbox");
 
     QObject::connect(view,SIGNAL(map_clicked(QPointF)),this,SLOT(mapClick(QPointF)));
+    QObject::connect(view,SIGNAL(mouse_moved(QPointF)),this,SLOT(getMouseCoord(QPointF)));
     QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(setMapItems(quint8)));
 
 
@@ -89,12 +93,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->addGroundButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(setFPType()));
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
+    QObject::connect(_tb->ui->clearLeftButton,SIGNAL(clicked()),this,SLOT(clearLeftDocks()));
 
     QObject::connect(_tb->ui->startFlightgearButton,SIGNAL(clicked()),this,SLOT(startFGFS()));
     QObject::connect(_tb->ui->connectTelnetButton,SIGNAL(clicked()),this->_telnet,SLOT(connectToFGFS()));
 
     QObject::connect(_tb->ui->sendToFlightgearButton,SIGNAL(clicked()),this,SLOT(sendFlightgearData()));
-    QObject::connect(_tb->ui->startUpdateButton,SIGNAL(clicked()),this,SLOT(startUpdate()));
+    QObject::connect(_tb->ui->startUpdateButton,SIGNAL(clicked()),this,SLOT(startSignalUpdate()));
 
     /*\ This needs to go
     QPolygonF polygon;
@@ -134,7 +139,7 @@ void MainWindow::startFGFS()
 void MainWindow::connectionSuccess()
 {
     ConnectionSuccessDialog *dialog = new ConnectionSuccessDialog;
-
+    this->_tb->ui->connectTelnetButton->setEnabled(false);
     dialog->show();
     this->ui->dockWidget3->toggleViewAction()->setText("&Toolbox (active)");
 }
@@ -142,9 +147,27 @@ void MainWindow::connectionSuccess()
 void MainWindow::connectionFailure()
 {
     ConnectionSuccessDialog *dialog = new ConnectionSuccessDialog;
+    this->_tb->ui->connectTelnetButton->setEnabled(true);
     dialog->ui->label->setText("Could not connect to Flightgear. Maybe it's not running?");
     dialog->show();
     this->ui->dockWidget3->toggleViewAction()->setText("&Toolbox (active)");
+}
+
+
+void MainWindow::showSettingsDialog()
+{
+    SettingsDialog *dialog = new SettingsDialog;
+
+    dialog->show();
+
+}
+
+void MainWindow::getMouseCoord(QPointF coord)
+{
+    double zoom = _view->zoomLevel();
+    QPointF newpos = Util::convertToLL(coord,zoom);
+    _tb->ui->label_lat->setText(QString::number(newpos.rx()));
+    _tb->ui->label_lon->setText(QString::number(newpos.ry()));
 }
 
 void MainWindow::mapClick(QPointF pos)
@@ -333,6 +356,16 @@ void MainWindow::restoreMapState()
 
 }
 
+
+void MainWindow::clearLeftDocks()
+{
+    for (int j=0;j<_docks.size();++j)
+    {
+        this->removeDockWidget(_docks.at(j));
+        delete _docks.at(j);
+    }
+}
+
 void MainWindow::showEditBoxes()
 {
 
@@ -341,6 +374,7 @@ void MainWindow::showEditBoxes()
     case 1:
     {
         //mobile
+        _show_signals =false;
         for (int j=0;j<_docks.size();++j)
         {
             this->removeDockWidget(_docks.at(j));
@@ -376,6 +410,7 @@ void MainWindow::showEditBoxes()
     case 2:
     {
         //ground
+        _show_signals =false;
         for (int j=0;j<_docks.size();++j)
         {
             this->removeDockWidget(_docks.at(j));
@@ -433,6 +468,7 @@ void MainWindow::showEditBoxes()
     case 3:
     {
         //fp pos
+        _show_signals =false;
         for (int j=0;j<_docks.size();++j)
         {
             this->removeDockWidget(_docks.at(j));
@@ -594,22 +630,27 @@ void MainWindow::deleteFlightplan(unsigned id)
 
 void MainWindow::sendFlightgearData()
 {
+    connect(_remote, SIGNAL(readyUpdate()), this, SLOT(startSignalUpdate()));
     _remote->sendAllData();
 }
 
-void MainWindow::startUpdate()
+void MainWindow::startSignalUpdate()
 {
+    _start_time= QDateTime::currentDateTime().toString("d/MMM/yyyy hh:mm:ss");
     QThread *t= new QThread;
-    Updater *up = new Updater(_telnet, _db);
+    Updater *up = new Updater(_db);
     up->moveToThread(t);
     connect(up, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
-    connect(up, SIGNAL(haveSignalReading(uint,QString,double,Signal*)), this, SLOT(showSignalReading(uint,QString,double,Signal*)));
-    connect(up, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+    connect(up, SIGNAL(haveSignalReading(double, double, uint,QString,double,Signal*)), this, SLOT(showSignalReading(double, double, uint,QString,double,Signal*)));
+    //connect(up, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
     connect(t, SIGNAL(started()), up, SLOT(startUpdate()));
     connect(up, SIGNAL(finished()), t, SLOT(quit()));
     connect(up, SIGNAL(finished()), up, SLOT(deleteLater()));
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
     t->start();
+
+
+
 }
 
 void MainWindow::moveMobile(double lon, double lat)
@@ -630,15 +671,121 @@ void MainWindow::moveMobile(double lon, double lat)
     QPointF xypos = Util::convertToXY(pos, zoom);
     phone->setOffset(xypos - QPoint(16,16));
     _map_mobiles.insert(phone, pos);
+    _db->update_mobile_position(0,lon,lat);
 
 }
 
 
-void MainWindow::showSignalReading(uint id_station,QString station_name,double freq,Signal*s)
+void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString station_name,double freq,Signal*s)
 {
+    /*
     QString str;
     this->_tb->ui->stationNameEdit->setText(station_name);
     this->_tb->ui->signalEdit->setText(str.setNum(s->signal));
     this->_tb->ui->signal_dbmEdit->setText(str.setNum(s->signal_dbm));
+    */
+
+
+    _db->update_signals(id_station,0,s);
+    _db->update_replays(id_station,0,lon,lat,_start_time,s);
+
+
+    if(_show_signals == false)
+    {
+        for (int j=0;j<_docks.size();++j)
+        {
+            this->removeDockWidget(_docks.at(j));
+            delete _docks.at(j);
+        }
+        _docks.clear();
+    }
+    _show_signals =true;
+    QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
+
+    for (int i=0;i<ground_stations.size();++i)
+    {
+
+        GroundStation *gs = ground_stations.at(i);
+        if(id_station == gs->id)
+        {
+            bool has_been =false;
+            for(int k=0;k < _station_ids.size();++k)
+            {
+                unsigned id = _station_ids.at(k);
+                if(id == id_station)
+                {
+                    has_been =true;
+                }
+            }
+            if((_last_station_id != id_station) && !has_been)
+            {
+                StationSignalForm *signal_form = new StationSignalForm;
+                signal_form->ui->stationName->setText(station_name);
+                signal_form->ui->frequency->setText(QString::number(freq));
+                signal_form->ui->signal->setText(QString::number(s->signal));
+                signal_form->ui->signalDbm->setText(QString::number(s->signal_dbm));
+                signal_form->ui->fieldStrength->setText(QString::number(s->field_strength_uv));
+                signal_form->ui->linkBudget->setText(QString::number(s->link_budget));
+                signal_form->ui->propMode->setText(s->prop_mode);
+
+
+                QDockWidget *dw = new QDockWidget;
+                dw->setWindowTitle(QString::number( gs->id));
+                dw->setMaximumWidth(260);
+                dw->setWidget(signal_form);
+                this->addDockWidget(Qt::LeftDockWidgetArea,dw);
+                _docks.push_back(dw);
+                _station_ids.push_back(id_station);
+            }
+            else
+            {
+                for (int j=0;j<_docks.size();++j)
+                {
+                    QDockWidget *dw = _docks.at(j);
+                    if(dw->windowTitle().toInt() == id_station)
+                    {
+                        QWidget *w = dw->widget();
+                        QLabel * stationName = w->findChild<QLabel *>("stationName");
+                        QLabel * frequency = w->findChild<QLabel *>("frequency");
+                        QLabel * signal = w->findChild<QLabel *>("signal");
+                        QLabel * signalDbm = w->findChild<QLabel *>("signalDbm");
+                        QLabel * fieldStrength = w->findChild<QLabel *>("fieldStrength");
+                        QLabel * linkBudget = w->findChild<QLabel *>("linkBudget");
+                        QLabel * propMode = w->findChild<QLabel *>("propMode");
+
+                        stationName->setText(station_name);
+                        frequency->setText(QString::number(freq));
+                        if(s->signal <= 2)
+                        {
+                            signal->setText("<font color=\"red\">"+QString::number(s->signal)+"</font>");
+                        }
+                        else if((s->signal < 10) && (s->signal >2) )
+                        {
+                            signal->setText("<font color=\"yellow\">"+QString::number(s->signal)+"</font>");
+                        }
+                        else
+                        {
+                            signal->setText("<font color=\"green\">"+QString::number(s->signal)+"</font>");
+                        }
+                        signalDbm->setText(QString::number(s->signal_dbm));
+                        fieldStrength->setText(QString::number(s->field_strength_uv));
+                        linkBudget->setText(QString::number(s->link_budget));
+                        propMode->setText(s->prop_mode);
+                    }
+                }
+
+            }
+            _last_station_id = id_station;
+
+        }
+        delete gs;
+    }
+    for (int j=0;j<_docks.size();++j)
+    {
+        if((j+1)==_docks.size()) continue;
+        this->tabifyDockWidget(_docks.at(j),_docks.at(j+1));
+    }
+    ground_stations.clear();
+
     delete s;
 }

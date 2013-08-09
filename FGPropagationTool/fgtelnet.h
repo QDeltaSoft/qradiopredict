@@ -4,6 +4,8 @@
 #include <QTcpSocket>
 #include <QString>
 #include <QStringList>
+#include <QTime>
+#include <QCoreApplication>
 
 class FGTelnet : public QObject
 {
@@ -17,6 +19,7 @@ public:
     void runCmd(QString cmd);
     void cd(QString dir);
     void dataMode();
+    void promptMode();
     unsigned inline status() {return _status;}
 
 public slots:
@@ -28,7 +31,7 @@ signals:
     void connectedToFGFS();
 
 private:
-    QTcpSocket _socket;
+    QTcpSocket *_socket;
     unsigned _connection_tries;
     unsigned _status;
 

@@ -320,7 +320,11 @@ void MapGraphicsView::handleChildMouseDoubleClick(QMouseEvent *event)
 //protected slot
 void MapGraphicsView::handleChildMouseMove(QMouseEvent *event)
 {
+
     event->setAccepted(false);
+    return;
+    QPointF movePosition = _childView->mapToScene(_childView->mapFromGlobal(QCursor::pos()));
+    emit mouse_moved(movePosition);
 }
 
 //protected slot

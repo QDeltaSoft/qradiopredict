@@ -4,6 +4,7 @@
 #include "databaseapi.h"
 #include "fgtelnet.h"
 #include "signal.h"
+#include <math.h>
 #include <QObject>
 #include <QTime>
 #include <QDateTime>
@@ -13,14 +14,15 @@ class Updater : public QObject
 {
     Q_OBJECT
 public:
-    Updater(FGTelnet *t, DatabaseApi *db);
+    Updater( DatabaseApi *d);
+    ~Updater();
 
 public slots:
     void startUpdate();
 
 signals:
     void haveMobilePosition(double lon, double lat);
-    void haveSignalReading(unsigned id, QString name, double freq, Signal *s);
+    void haveSignalReading(double lon, double lat, unsigned id, QString name, double freq, Signal *s);
     void finished();
 
 private:

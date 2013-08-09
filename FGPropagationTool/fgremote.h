@@ -22,7 +22,8 @@ public:
     void set_fp(unsigned id =0);
     void sendAllData();
 
-
+signals:
+    void readyUpdate();
 private:
     FGTelnet *_fg;
     DatabaseApi * _db;
