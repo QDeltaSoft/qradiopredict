@@ -320,17 +320,23 @@ void MapGraphicsView::handleChildMouseDoubleClick(QMouseEvent *event)
 //protected slot
 void MapGraphicsView::handleChildMouseMove(QMouseEvent *event)
 {
-
-    event->setAccepted(false);
-    return;
-    QPointF movePosition = _childView->mapToScene(_childView->mapFromGlobal(QCursor::pos()));
-    emit mouse_moved(movePosition);
+    if (!_mouse_pressed)
+    {
+        event->setAccepted(true);
+        QPointF movePosition = _childView->mapToScene(_childView->mapFromGlobal(event->pos()));
+        emit mouse_moved(movePosition);
+    }
+    else
+    {
+        event->setAccepted(false);
+        return;
+    }
 }
 
 //protected slot
 void MapGraphicsView::handleChildMousePress(QMouseEvent *event)
 {
-
+    _mouse_pressed = true;
     event->setAccepted(false);
     this->setCursor(Qt::OpenHandCursor);
 }
@@ -338,6 +344,7 @@ void MapGraphicsView::handleChildMousePress(QMouseEvent *event)
 //protected slot
 void MapGraphicsView::handleChildMouseRelease(QMouseEvent *event)
 {
+    _mouse_pressed =false;
     this->_childView->viewport()->setCursor(Qt::CrossCursor);
     event->setAccepted(true);
     //this->setCursor(Qt::ArrowCursor);

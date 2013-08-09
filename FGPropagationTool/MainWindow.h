@@ -30,6 +30,7 @@
 #include <QPixmap>
 #include <QMap>
 #include <QThread>
+#include <QTabBar>
 
 namespace Ui {
 class MainWindow;

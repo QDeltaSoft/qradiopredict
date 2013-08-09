@@ -108,6 +108,8 @@ private:
     quint8 _zoomLevel;
 
     DragMode _dragMode;
+
+    bool _mouse_pressed;
 };
 
 inline uint qHash(const QPointF& key)

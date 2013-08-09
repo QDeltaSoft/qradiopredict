@@ -684,7 +684,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
     this->_tb->ui->signalEdit->setText(str.setNum(s->signal));
     this->_tb->ui->signal_dbmEdit->setText(str.setNum(s->signal_dbm));
     */
-
+    this->_tb->ui->clearLeftButton->setEnabled(false);
 
     _db->update_signals(id_station,0,s);
     _db->update_replays(id_station,0,lon,lat,_start_time,s);
@@ -735,16 +735,23 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 dw->setWidget(signal_form);
                 this->addDockWidget(Qt::LeftDockWidgetArea,dw);
                 _docks.push_back(dw);
+                for (int j=0;j<_docks.size();++j)
+                {
+                    if((j+1)==_docks.size()) continue;
+                    this->tabifyDockWidget(_docks.at(j),_docks.at(j+1));
+                }
                 _station_ids.push_back(id_station);
             }
             else
             {
                 for (int j=0;j<_docks.size();++j)
                 {
+
                     QDockWidget *dw = _docks.at(j);
                     if(dw->windowTitle().toInt() == id_station)
                     {
                         QWidget *w = dw->widget();
+
                         QLabel * stationName = w->findChild<QLabel *>("stationName");
                         QLabel * frequency = w->findChild<QLabel *>("frequency");
                         QLabel * signal = w->findChild<QLabel *>("signal");
@@ -780,11 +787,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
         }
         delete gs;
     }
-    for (int j=0;j<_docks.size();++j)
-    {
-        if((j+1)==_docks.size()) continue;
-        this->tabifyDockWidget(_docks.at(j),_docks.at(j+1));
-    }
+
     ground_stations.clear();
 
     delete s;

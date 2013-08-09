@@ -118,7 +118,7 @@ QString FGTelnet::getProperty(QString prop_name)
     }
 
 
-    return QString(line);
+    return line.toLatin1();
 
 
 }
