@@ -5,7 +5,11 @@
 #include <QString>
 #include <QProcess>
 #include <QStringList>
+#include <QVector>
 #include <cmath>
+#include "databaseapi.h"
+#include "flightgearprefs.h"
+#include "mobilestation.h"
 
 class Util
 {
@@ -15,9 +19,7 @@ public:
 
     static QPointF convertToLL(QPointF pos, double zoom);
     static QPointF convertToXY(QPointF ll, double zoom);
-    static void startFlightgear(const QString &binary="", const QString &fgroot="", const QString &scenery="",
-                                const QString &aircraft="", const QString &airport="",
-                                const double &lon=-9999.0, const double &lat=-9999.0);
+    static void startFlightgear();
 };
 
 #endif // UTIL_H

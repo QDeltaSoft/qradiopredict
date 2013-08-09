@@ -2,6 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include "databaseapi.h"
 
 namespace Ui {
 class SettingsDialog;
@@ -14,9 +15,15 @@ class SettingsDialog : public QDialog
 public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
+
+private slots:
+    void saveData();
     
 private:
     Ui::SettingsDialog *ui;
+    DatabaseApi *_db;
+
+    void fillEmptyFields();
 };
 
 #endif // SETTINGSDIALOG_H

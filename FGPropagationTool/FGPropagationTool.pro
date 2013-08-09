@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     signal.cpp \
     updater.cpp \
     settingsdialog.cpp \
-    stationsignalform.cpp
+    stationsignalform.cpp \
+    flightgearprefs.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -49,7 +50,8 @@ HEADERS  += MainWindow.h \
     signal.h \
     updater.h \
     settingsdialog.h \
-    stationsignalform.h
+    stationsignalform.h \
+    flightgearprefs.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \

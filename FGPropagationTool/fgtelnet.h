@@ -6,6 +6,7 @@
 #include <QStringList>
 #include <QTime>
 #include <QCoreApplication>
+#include <QLatin1String>
 
 class FGTelnet : public QObject
 {

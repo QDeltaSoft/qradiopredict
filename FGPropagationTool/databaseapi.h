@@ -7,6 +7,7 @@
 #include "groundstation.h"
 #include "flightplanpoints.h"
 #include "signal.h"
+#include "flightgearprefs.h"
 
 class DatabaseApi
 {
@@ -17,6 +18,12 @@ public:
 
     bool
     select_commands(const unsigned &id_session);
+
+    QVector<FlightgearPrefs *>
+    select_prefs();
+
+    void
+    savePrefs(FlightgearPrefs *p);
 
     QVector<Signal *>
     select_signals(const unsigned &id_session);

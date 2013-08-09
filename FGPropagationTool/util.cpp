@@ -37,17 +37,46 @@ QPointF Util::convertToXY(QPointF ll, double zoom)
 }
 
 
-void Util::startFlightgear(const QString &binary, const QString &fgroot, const QString &scenery,
-                           const QString &aircraft, const QString &airport,
-                           const double &lon, const double &lat)
+void Util::startFlightgear()
 {
     QProcess p;
     QStringList args;
-    args << "--fg-root=/home/adrian/games/fgfs/install/fgfs/fgdata/"
-         <<   "--aircraft=ufo"
-         <<     "--airport=LRBC"
-         //<<   "--lon="
-         //<<     "--lat="
+
+    DatabaseApi *db = new DatabaseApi;
+    QVector<FlightgearPrefs *> prefs = db->select_prefs();
+    QVector<MobileStation *> mobiles = db->select_mobile_station(0);
+    double lon = -1;
+    double lat = -1;
+    if(mobiles.size()>0)
+    {
+        MobileStation *mobile = mobiles[0];
+        lon = mobile->longitude;
+        lat = mobile->latitude;
+    }
+    FlightgearPrefs *pref;
+    if(prefs.size()>0)
+    {
+        pref = prefs[0];
+        args << "--fg-root="+pref->_fgdata_path
+                <<   "--aircraft="+pref->_aircraft
+                <<  "--airport=" + pref->_airport;
+    }
+    else
+    {
+
+        args << "--fg-root=/home/adrian/games/fgfs/install/fgfs/fgdata/"
+             <<   "--aircraft=ufo";
+    }
+    if((lon==-1) || (lat==-1))
+    {
+        args  <<  "--airport=LRBC";
+    }
+    if((lon!=-1) && (lat!=-1))
+    {
+        args <<   "--lon="+QString::number(lon)
+            <<     "--lat="+QString::number(lat);
+    }
+    args
          <<       "--on-ground"
          <<       "--timeofday=noon"
          <<   "--control=joystick"
@@ -61,12 +90,29 @@ void Util::startFlightgear(const QString &binary, const QString &fgroot, const Q
          <<     "--disable-hud"
          <<     "--disable-hud-3d"
          <<   "--log-level=normal"
-         <<     "--prop:/sim/radio/use-radio=true"
-         <<   "--fg-scenery=/home/adrian/games/fgfs/scenery:/home/adrian/games/fgfs/terrasync:/home/adrian/games/fgfs/install/fgfs/fgdata/Scenery"
+         <<     "--prop:/sim/radio/use-radio=true";
+    if(prefs.size()>0)
+    {
+        args << "--fg-scenery=" + pref->_scenery_path;
+    }
+    else
+    {
+        args
+         <<   "--fg-scenery=/home/adrian/games/fgfs/scenery:/home/adrian/games/fgfs/terrasync:/home/adrian/games/fgfs/install/fgfs/fgdata/Scenery";
+    }
+    args
          <<   "--prop:/sim/radio/use-clutter-attenuation=true"
          <<   "--prop:/sim/radio/use-antenna-pattern=true"
          <<     "--telnet=5500";
-    p.startDetached("/home/adrian/games/fgfs/install/fgfs/bin/fgfs", args);
+
+    if(prefs.size()>0)
+    {
+        p.startDetached("/home/adrian/games/fgfs/install/fgfs/bin/fgfs", args);
+    }
+    else
+    {
+        p.startDetached(pref->_fgfs_bin, args);
+    }
 }
 
 

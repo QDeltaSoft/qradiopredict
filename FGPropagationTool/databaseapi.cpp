@@ -32,6 +32,58 @@ DatabaseApi::select_commands(const unsigned &id_session)
         return true;
 }
 
+QVector<FlightgearPrefs *>
+DatabaseApi::select_prefs()
+{
+    QVector<FlightgearPrefs *> prefs;
+    QSqlQuery query(_db);
+    query.prepare("SELECT * FROM fgfs_settings WHERE id=1");
+    query.exec();
+
+    int fgfs_binary_idx = query.record().indexOf("fgfs_binary");
+    int fgdata_path_idx = query.record().indexOf("fgdata_path");
+    int aircraft_idx = query.record().indexOf("aircraft");
+    int airport_idx = query.record().indexOf("airport");
+    int scenery_path_idx = query.record().indexOf("scenery_path");
+    int use_clutter_idx = query.record().indexOf("use_clutter");
+    int use_antenna_pattern_idx = query.record().indexOf("use_antenna_pattern");
+
+    while(query.next())
+    {
+        FlightgearPrefs *p = new FlightgearPrefs;
+        p->_fgfs_bin = query.value(fgfs_binary_idx).toString();
+        p->_fgdata_path = query.value(fgdata_path_idx).toString();
+        p->_scenery_path = query.value(scenery_path_idx).toString();
+        p->_aircraft = query.value(aircraft_idx).toString();
+        p->_airport = query.value(airport_idx).toString();
+        p->_use_clutter = query.value(use_clutter_idx).toInt();
+        p->_use_antenna_pattern = query.value(use_antenna_pattern_idx).toInt();
+
+        prefs.push_back(p);
+    }
+    return prefs;
+}
+
+void
+DatabaseApi::savePrefs(FlightgearPrefs *p)
+{
+    QSqlQuery query(_db);
+    query.prepare("UPDATE fgfs_settings SET "
+                  "fgfs_binary =:fgfs_binary, fgdata_path=:fgdata_path, "
+                  "scenery_path = :scenery_path, aircraft=:aircraft,"
+                  "airport = :airport, use_clutter= :use_clutter,"
+                  "use_antenna_pattern = :use_antenna_pattern "
+                  " WHERE id=1");
+    query.bindValue(":fgfs_binary", p->_fgfs_bin);
+    query.bindValue(":fgdata_path", p->_fgdata_path);
+    query.bindValue(":scenery_path", p->_scenery_path);
+    query.bindValue(":aircraft", p->_aircraft);
+    query.bindValue(":airport", p->_airport);
+    query.bindValue(":use_clutter", p->_use_clutter);
+    query.bindValue(":use_antenna_pattern", p->_use_antenna_pattern);
+    query.exec();
+}
+
 QVector<Signal *>
 DatabaseApi::select_signals(const unsigned &id_session)
 {
