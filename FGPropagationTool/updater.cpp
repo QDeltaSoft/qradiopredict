@@ -19,8 +19,8 @@ void Updater::startUpdate()
     while(true)
     {
 
-        QTime delaytime= QTime::currentTime().addSecs(2);
-        while( QTime::currentTime() < delaytime ) {}
+        //QTime delaytime= QTime::currentTime().addSecs(2);
+        //while( QTime::currentTime() < delaytime ) {}
 
 
 

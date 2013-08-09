@@ -364,6 +364,8 @@ void MainWindow::clearLeftDocks()
         this->removeDockWidget(_docks.at(j));
         delete _docks.at(j);
     }
+    _show_signals =false;
+    _station_ids.clear();
 }
 
 void MainWindow::showEditBoxes()
@@ -375,6 +377,7 @@ void MainWindow::showEditBoxes()
     {
         //mobile
         _show_signals =false;
+        _station_ids.clear();
         for (int j=0;j<_docks.size();++j)
         {
             this->removeDockWidget(_docks.at(j));
@@ -411,6 +414,7 @@ void MainWindow::showEditBoxes()
     {
         //ground
         _show_signals =false;
+        _station_ids.clear();
         for (int j=0;j<_docks.size();++j)
         {
             this->removeDockWidget(_docks.at(j));
@@ -469,6 +473,7 @@ void MainWindow::showEditBoxes()
     {
         //fp pos
         _show_signals =false;
+        _station_ids.clear();
         for (int j=0;j<_docks.size();++j)
         {
             this->removeDockWidget(_docks.at(j));
@@ -678,12 +683,7 @@ void MainWindow::moveMobile(double lon, double lat)
 
 void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString station_name,double freq,Signal*s)
 {
-    /*
-    QString str;
-    this->_tb->ui->stationNameEdit->setText(station_name);
-    this->_tb->ui->signalEdit->setText(str.setNum(s->signal));
-    this->_tb->ui->signal_dbmEdit->setText(str.setNum(s->signal_dbm));
-    */
+
     this->_tb->ui->clearLeftButton->setEnabled(false);
 
     _db->update_signals(id_station,0,s);

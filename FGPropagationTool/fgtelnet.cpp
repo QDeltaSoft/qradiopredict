@@ -12,10 +12,6 @@ FGTelnet::FGTelnet()
     _connection_tries=0;
     _status=0;
     this->connectToFGFS();
-
-    //if (_socket.waitForConnected(2000))
-    //    qDebug("Connected!");
-    //else qDebug("Could not connect to Flightgear!");
 }
 
 FGTelnet::~FGTelnet()
@@ -50,8 +46,9 @@ void FGTelnet::connectionFailed(QAbstractSocket::SocketError error)
             qDebug("Giving up! Flightgear is not running.");
             emit connectionFailure();
         }
-        _status=0;
+
     }
+    _status=0;
 }
 
 
@@ -59,9 +56,7 @@ void FGTelnet::connectToFGFS()
 {
     if(_status==1) return;
     _socket->connectToHost("localhost", 5500);
-    //if (_socket->waitForConnected(2000))
-    //    qDebug("Connected!");
-    //else qDebug("Could not connect to Flightgear!");
+
 }
 
 
@@ -90,23 +85,27 @@ QString FGTelnet::getProperty(QString prop_name)
     {
         while ((!endOfLine))
         {
-            char ch;
-            int bytesRead = _socket->read(&ch, sizeof(ch));
-            if (bytesRead == sizeof(ch))
+            if(_status==1)
             {
-                //cnt++;
+                char ch;
+                int bytesRead = _socket->read(&ch, sizeof(ch));
+                if (bytesRead == sizeof(ch))
+                {
+                    //cnt++;
 
-                if ((ch == '\r'))
-                {
-                    endOfLine = true;
-                    while(_socket->bytesAvailable()>0)
+                    if ((ch == '\r'))
                     {
-                        _socket->read(&ch, sizeof(ch));
+                        endOfLine = true;
+                        while(_socket->bytesAvailable()>0)
+                        {
+                            char f;
+                            _socket->read(&f, sizeof(f));
+                        }
                     }
-                }
-                else
-                {
-                    line.append( ch );
+                    else
+                    {
+                        line.append( ch );
+                    }
                 }
             }
 
