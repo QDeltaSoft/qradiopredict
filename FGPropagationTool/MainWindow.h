@@ -31,6 +31,7 @@
 #include <QMap>
 #include <QThread>
 #include <QTabBar>
+#include <QGraphicsScene>
 
 namespace Ui {
 class MainWindow;

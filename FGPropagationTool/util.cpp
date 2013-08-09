@@ -13,10 +13,6 @@ Util::~Util()
 
 QPointF Util::convertToLL(QPointF pos, double zoom)
 {
-    //QRectF sr = _view->_childView->sceneRect();
-    //qDebug() << sr.width() << " " << sr.height() << " " << _view->zoomLevel();
-
-
 
     const qreal tilesOnOneEdge = pow(2.0,zoom);
     const quint16 tileSize = 256;
@@ -58,8 +54,8 @@ void Util::startFlightgear()
     {
         pref = prefs[0];
         args << "--fg-root="+pref->_fgdata_path
-                <<   "--aircraft="+pref->_aircraft
-                <<  "--airport=" + pref->_airport;
+                <<   "--aircraft="+pref->_aircraft;
+
     }
     else
     {
@@ -69,7 +65,14 @@ void Util::startFlightgear()
     }
     if((lon==-1) || (lat==-1))
     {
-        args  <<  "--airport=LRBC";
+        if(prefs.size()>0)
+        {
+            args <<  "--airport=" + pref->_airport;
+        }
+        else
+        {
+            args  <<  "--airport=LRBC";
+        }
     }
     if((lon!=-1) && (lat!=-1))
     {
