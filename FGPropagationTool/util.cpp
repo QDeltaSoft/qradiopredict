@@ -106,6 +106,7 @@ void Util::startFlightgear()
     args
          <<   "--prop:/sim/radio/use-clutter-attenuation=true"
          <<   "--prop:/sim/radio/use-antenna-pattern=true"
+         //<<     "--telnet=socket,bi,80,,5500,tcp";
          <<     "--telnet=5500";
 
     if(prefs.size()>0)

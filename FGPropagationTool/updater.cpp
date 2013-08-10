@@ -54,8 +54,7 @@ void Updater::startUpdate()
             s->terrain_attenuation = terrain_attenuation.toDouble();
             s->clutter_attenuation = clutter_attenuation.toDouble();
             s->prop_mode = prop_mode;
-            //_db->update_signals(g->id,0,s);
-            //_db->update_replays(g->id,0,lon.toDouble(,lat.toDouble(),start_time,s);
+
             emit haveSignalReading(longitude,latitude,g->id,g->name,g->frequency,s);
         }
 

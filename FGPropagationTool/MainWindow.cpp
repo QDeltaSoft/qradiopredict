@@ -727,7 +727,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 signal_form->ui->fieldStrength->setText(QString::number(s->field_strength_uv));
                 signal_form->ui->linkBudget->setText(QString::number(s->link_budget));
                 signal_form->ui->propMode->setText(s->prop_mode);
-                /** scale has to be added here */
+                /** scale has to be added here*/
                 QPixmap pixmap(":icons/images/s-meter-scale.png");
                 pixmap = pixmap.scaled(191,32);
                 QGraphicsScene *scene = new QGraphicsScene;
@@ -735,7 +735,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 QGraphicsPixmapItem *scale= signal_form->ui->graphicsView->scene()->addPixmap(pixmap);
                 double img_width=s->signal / 3 *12;
                 if(img_width < 0) img_width=0;
-                if(img_width > 382) img_width=191;
+                if(img_width > 191) img_width=191;
                 scale->setOffset(img_width,0);
 
 

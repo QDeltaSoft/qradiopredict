@@ -33,21 +33,20 @@ void FGTelnet::connectionSuccess()
 
 void FGTelnet::connectionFailed(QAbstractSocket::SocketError error)
 {
-    if(error == 0 || error==2)
-    {
-        qDebug("OOps! Could not connect to FGFS. Trying again.");
-        _connection_tries++;
-        if(_connection_tries < 10)
-        {
-            this->connectToFGFS();
-        }
-        else
-        {
-            qDebug("Giving up! Flightgear is not running.");
-            emit connectionFailure();
-        }
 
+    qDebug("OOps! Could not connect to FGFS. Trying again.");
+    _connection_tries++;
+    if(_connection_tries < 10)
+    {
+        this->connectToFGFS();
     }
+    else
+    {
+        qDebug("Giving up! Flightgear is not running.");
+        emit connectionFailure();
+    }
+
+
     _status=0;
 }
 
@@ -56,6 +55,14 @@ void FGTelnet::connectToFGFS()
 {
     if(_status==1) return;
     _socket->connectToHost("localhost", 5500);
+
+}
+
+void FGTelnet::disconnectFromFGFS()
+{
+    _socket->disconnectFromHost();
+    _status=0;
+    _connection_tries=0;
 
 }
 

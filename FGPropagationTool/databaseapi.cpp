@@ -393,11 +393,12 @@ DatabaseApi::add_mobile_station(const unsigned &id_session,
     {
         query.prepare("INSERT INTO mobile_stations ("
                       " id_session, longitude, "
-                      "latitude, created_on) VALUES (:id_session, "
-                      ":lon, :lat, :time)");
+                      "latitude, terrain_following, created_on) VALUES (:id_session, "
+                      ":lon, :lat, :terrain_following, :time)");
         query.bindValue(":id_session", id_session);
         query.bindValue(":lon", lon);
         query.bindValue(":lat", lat);
+        query.bindValue(":terrain_following", 1);
         query.bindValue(":time", time);
         query.exec();
     }
@@ -406,10 +407,11 @@ DatabaseApi::add_mobile_station(const unsigned &id_session,
 
         query.prepare("UPDATE mobile_stations SET "
                       " id_session=:id_session, longitude=:lon, "
-                      "latitude=:lat, created_on=:time WHERE id=:id");
+                      "latitude=:lat, terrain_following=1, created_on=:time WHERE id=:id");
         query.bindValue(":id_session", id_session);
         query.bindValue(":lon", lon);
         query.bindValue(":lat", lat);
+        query.bindValue(":terrain_following", 1);
         query.bindValue(":time", time);
         query.bindValue(":id", query2.value(0));
         query.exec();
