@@ -32,6 +32,9 @@
 #include <QThread>
 #include <QTabBar>
 #include <QGraphicsScene>
+#include <QLineF>
+#include <QPen>
+#include <QBrush>
 
 namespace Ui {
 class MainWindow;
@@ -91,6 +94,7 @@ private:
     bool _show_signals;
     int _last_station_id;
     QVector<int> _station_ids;
+    QVector<QGraphicsLineItem*> _signal_lines;
 };
 
 #endif // MAINWINDOW_H

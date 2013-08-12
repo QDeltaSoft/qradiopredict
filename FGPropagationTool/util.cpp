@@ -93,6 +93,9 @@ void Util::startFlightgear()
          <<     "--disable-hud"
          <<     "--disable-hud-3d"
          <<   "--log-level=normal"
+#if 1
+           <<     "--prop:/sim/rendering/materials-file=Materials/my_mappings/materials.xml"
+#endif
          <<     "--prop:/sim/radio/use-radio=true";
     if(prefs.size()>0)
     {
@@ -106,8 +109,11 @@ void Util::startFlightgear()
     args
          <<   "--prop:/sim/radio/use-clutter-attenuation=true"
          <<   "--prop:/sim/radio/use-antenna-pattern=true"
-         //<<     "--telnet=socket,bi,80,,5500,tcp";
+#if 0
+         <<     "--telnet=socket,bi,100,,5500,tcp";
+#else
          <<     "--telnet=5500";
+#endif
 
     if(prefs.size()>0)
     {

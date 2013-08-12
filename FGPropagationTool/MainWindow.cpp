@@ -663,6 +663,11 @@ void MainWindow::moveMobile(double lon, double lat)
     if(_map_mobiles.size() > 0)
     {
         QMap<QGraphicsPixmapItem *, QPointF>::const_iterator it = _map_mobiles.begin();
+        QPointF pos = it.value();
+        if( (fabs(pos.rx()-lon)> 0.1) || ( fabs(pos.ry()-lat)>0.1) )
+        {
+            return;
+        }
         QGraphicsPixmapItem * oldicon = it.key();
         _view->_childView->scene()->removeItem(oldicon);
         _map_mobiles.remove(oldicon);
@@ -683,6 +688,12 @@ void MainWindow::moveMobile(double lon, double lat)
 
 void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString station_name,double freq,Signal*s)
 {
+    for (int j=0;j<_signal_lines.size();++j)
+    {
+        _view->_childView->scene()->removeItem(_signal_lines.at(j));
+        delete _signal_lines.at(j);
+    }
+    _signal_lines.clear();
 
     this->_tb->ui->clearLeftButton->setEnabled(false);
 
@@ -708,6 +719,40 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
         GroundStation *gs = ground_stations.at(i);
         if(id_station == gs->id)
         {
+            if(s->signal >0)
+            {
+                if(_map_mobiles.size() > 0)
+                {
+                    QMap<QGraphicsPixmapItem *, QPointF>::const_iterator it = _map_mobiles.begin();
+                    QPointF pos = it.value();
+                    if( (fabs(pos.rx()-lon)> 0.1) || ( fabs(pos.ry()-lat)>0.1) )
+                    {
+                        continue;
+                    }
+                }
+                QPointF gs_pos(gs->longitude,gs->latitude);
+                QPointF mobile_pos(lon,lat);
+                QPointF xy_gs_pos = Util::convertToXY(gs_pos,_view->zoomLevel());
+                QPointF xy_mobile_pos = Util::convertToXY(mobile_pos,_view->zoomLevel());
+                QLineF signal_line(xy_gs_pos,xy_mobile_pos);
+                QBrush brush;
+                if(s->signal >0 && s->signal <=10)
+                {
+                    brush= Qt::yellow;
+                }
+                else if(s->signal > 10 && s->signal <=30)
+                {
+                    brush = Qt::green;
+                }
+                else if(s->signal > 30)
+                {
+                    brush = Qt::red;
+                }
+                QPen pen(brush, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+                QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(signal_line,pen);
+                _signal_lines.push_back(line1);
+            }
+
             bool has_been =false;
             for(int k=0;k < _station_ids.size();++k)
             {
@@ -736,7 +781,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 double img_width=s->signal / 3 *12;
                 if(img_width < 0) img_width=0;
                 if(img_width > 191) img_width=191;
-                scale->setOffset(img_width,0);
+                scale->setPos(img_width,0);
 
 
 
