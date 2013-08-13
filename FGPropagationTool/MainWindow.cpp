@@ -133,7 +133,7 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::startFGFS()
 {
-    Util::startFlightgear();
+    Util::startFlightgear(_db);
 }
 
 void MainWindow::connectionSuccess()
@@ -156,7 +156,7 @@ void MainWindow::connectionFailure()
 
 void MainWindow::showSettingsDialog()
 {
-    SettingsDialog *dialog = new SettingsDialog;
+    SettingsDialog *dialog = new SettingsDialog(_db);
 
     dialog->show();
 
@@ -772,16 +772,12 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 signal_form->ui->fieldStrength->setText(QString::number(s->field_strength_uv));
                 signal_form->ui->linkBudget->setText(QString::number(s->link_budget));
                 signal_form->ui->propMode->setText(s->prop_mode);
-                /** scale has to be added here*/
-                QPixmap pixmap(":icons/images/s-meter-scale.png");
-                pixmap = pixmap.scaled(191,32);
-                QGraphicsScene *scene = new QGraphicsScene;
-                signal_form->ui->graphicsView->setScene(scene);
-                QGraphicsPixmapItem *scale= signal_form->ui->graphicsView->scene()->addPixmap(pixmap);
+
                 double img_width=s->signal / 3 *12;
-                if(img_width < 0) img_width=0;
+                if(img_width <= 0) img_width=0;
                 if(img_width > 191) img_width=191;
-                scale->setPos(img_width,0);
+                signal_form->ui->labelSmeter->setMaximumWidth(img_width);
+                signal_form->ui->labelSmeter->setMinimumWidth(img_width);
 
 
 
@@ -815,6 +811,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         QLabel * fieldStrength = w->findChild<QLabel *>("fieldStrength");
                         QLabel * linkBudget = w->findChild<QLabel *>("linkBudget");
                         QLabel * propMode = w->findChild<QLabel *>("propMode");
+                        QLabel * labelSmeter = w->findChild<QLabel *>("labelSmeter");
 
                         stationName->setText(station_name);
                         frequency->setText(QString::number(freq));
@@ -834,6 +831,11 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         fieldStrength->setText(QString::number(s->field_strength_uv));
                         linkBudget->setText(QString::number(s->link_budget));
                         propMode->setText(s->prop_mode);
+                        double img_width=s->signal / 3 *12;
+                        if(img_width <= 0) img_width=0;
+                        if(img_width > 191) img_width=191;
+                        labelSmeter->setMaximumWidth(img_width);
+                        labelSmeter->setMinimumWidth(img_width);
                     }
                 }
 

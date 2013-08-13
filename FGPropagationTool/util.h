@@ -19,7 +19,7 @@ public:
 
     static QPointF convertToLL(QPointF pos, double zoom);
     static QPointF convertToXY(QPointF ll, double zoom);
-    static void startFlightgear();
+    static void startFlightgear(DatabaseApi *db);
 };
 
 #endif // UTIL_H

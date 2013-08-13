@@ -4,5 +4,6 @@
         <file>flag.png</file>
         <file>phone.png</file>
         <file>s-meter-scale.png</file>
+        <file>s-meter-scale2.png</file>
     </qresource>
 </RCC>

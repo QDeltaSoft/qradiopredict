@@ -33,12 +33,12 @@ QPointF Util::convertToXY(QPointF ll, double zoom)
 }
 
 
-void Util::startFlightgear()
+void Util::startFlightgear(DatabaseApi *db)
 {
     QProcess p;
     QStringList args;
 
-    DatabaseApi *db = new DatabaseApi;
+
     QVector<FlightgearPrefs *> prefs = db->select_prefs();
     QVector<MobileStation *> mobiles = db->select_mobile_station(0);
     double lon = -1;
@@ -109,7 +109,7 @@ void Util::startFlightgear()
     args
          <<   "--prop:/sim/radio/use-clutter-attenuation=true"
          <<   "--prop:/sim/radio/use-antenna-pattern=true"
-#if 0
+#if 1
          <<     "--telnet=socket,bi,100,,5500,tcp";
 #else
          <<     "--telnet=5500";

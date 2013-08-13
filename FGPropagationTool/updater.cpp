@@ -49,6 +49,7 @@ void Updater::startUpdate()
             Signal *s = new Signal;
             s->signal = signal.toDouble();
             s->signal_dbm = signal_dbm.toDouble();
+
             s->field_strength_uv = field_strength_uv.toDouble();
             s->link_budget = link_budget.toDouble();
             s->terrain_attenuation = terrain_attenuation.toDouble();

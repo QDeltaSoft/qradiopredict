@@ -33,7 +33,7 @@ void FGTelnet::connectionSuccess()
 
 void FGTelnet::connectionFailed(QAbstractSocket::SocketError error)
 {
-
+    _status=0;
     qDebug("OOps! Could not connect to FGFS. Trying again.");
     _connection_tries++;
     if(_connection_tries < 10)
@@ -46,8 +46,6 @@ void FGTelnet::connectionFailed(QAbstractSocket::SocketError error)
         emit connectionFailure();
     }
 
-
-    _status=0;
 }
 
 
@@ -79,14 +77,24 @@ QString FGTelnet::getProperty(QString prop_name)
 {
 
     QString command = "get " + prop_name +CRLF;
-    _socket->write(command.toLatin1());
-    _socket->flush();
+    int check = _socket->write(command.toLatin1());
+    if(check==-1)
+    {
+        qDebug() << "Command was not written, an error has occured";
+    }
+    else if(check < qstrlen(command.toLatin1()))
+    {
+        qDebug() << "Fewer than required bytes written to socket";
+    }
+
+    //_socket->flush();
 
 
     while(!_socket->canReadLine()){}
 
 
     QString line;
+
     bool endOfLine = false;
     try
     {
@@ -95,24 +103,33 @@ QString FGTelnet::getProperty(QString prop_name)
             if(_status==1)
             {
                 char ch;
-                int bytesRead = _socket->read(&ch, sizeof(ch));
-                if (bytesRead == sizeof(ch))
+                if(_socket->bytesAvailable()>0)
                 {
-                    //cnt++;
-
-                    if ((ch == '\r'))
+                    int bytesRead = _socket->read(&ch, sizeof(ch));
+                    if (bytesRead == sizeof(ch))
                     {
-                        endOfLine = true;
-                        while(_socket->bytesAvailable()>0)
+                        //cnt++;
+
+                        if ((ch == '\r'))
                         {
-                            char f;
-                            _socket->read(&f, sizeof(f));
+                            endOfLine = true;
+
+                            while(_socket->bytesAvailable()>0)
+                            {
+                                char f;
+                                _socket->read(&f, sizeof(f));
+
+                            }
+                        }
+                        else
+                        {
+                            line.append( ch );
                         }
                     }
-                    else
-                    {
-                        line.append( ch );
-                    }
+                }
+                else
+                {
+                    continue;
                 }
             }
 
@@ -124,7 +141,7 @@ QString FGTelnet::getProperty(QString prop_name)
     }
 
 
-    return line.toLatin1();
+    return line.toUtf8();
 
 
 }
