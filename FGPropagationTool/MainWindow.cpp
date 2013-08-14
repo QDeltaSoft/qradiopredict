@@ -364,6 +364,7 @@ void MainWindow::clearLeftDocks()
         this->removeDockWidget(_docks.at(j));
         delete _docks.at(j);
     }
+    _docks.clear();
     _show_signals =false;
     _station_ids.clear();
 }
