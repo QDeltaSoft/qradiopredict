@@ -19,8 +19,8 @@ void Updater::startUpdate()
     while(true)
     {
 
-        //QTime delaytime= QTime::currentTime().addSecs(2);
-        //while( QTime::currentTime() < delaytime ) {}
+        QTime delaytime= QTime::currentTime().addSecs(2);
+        while( QTime::currentTime() < delaytime ) {}
 
 
 
@@ -57,6 +57,8 @@ void Updater::startUpdate()
             s->prop_mode = prop_mode;
 
             emit haveSignalReading(longitude,latitude,g->id,g->name,g->frequency,s);
+            QTime delaytime= QTime::currentTime().addSecs(1);
+            while( QTime::currentTime() < delaytime ) {}
         }
 
 

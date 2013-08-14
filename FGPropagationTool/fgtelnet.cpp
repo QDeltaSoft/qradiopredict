@@ -89,7 +89,7 @@ QString FGTelnet::getProperty(QString prop_name)
 
     //_socket->flush();
 
-
+    _socket->waitForBytesWritten();
     while(!_socket->canReadLine()){}
 
 
