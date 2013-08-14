@@ -205,7 +205,7 @@ void MainWindow::mapClick(QPointF pos)
 
         break;
     case 2:
-        //_remote->set_ground(newpos);
+
         if(_map_ground.size() > 3)
             break;
 
@@ -222,7 +222,6 @@ void MainWindow::mapClick(QPointF pos)
     }
         break;
     case 3:
-        //_remote->set_fp(newpos);
 
         _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));
         _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
@@ -241,6 +240,7 @@ void MainWindow::mapClick(QPointF pos)
         break;
 
     }
+    this->showEditBoxes();
 
 }
 
@@ -573,7 +573,7 @@ void MainWindow::deleteGroundStation(unsigned id)
 
     }
 
-    /** experimental
+    /** experimental*/
     for (int j=0;j<_docks.size();++j)
     {
         if(_docks.at(j)->windowTitle().toInt() == id)
@@ -582,9 +582,10 @@ void MainWindow::deleteGroundStation(unsigned id)
             QWidget *widget = _docks.at(j)->widget();
             delete widget;
             delete _docks.at(j);
+            _docks.remove(j);
         }
     }
-    */
+
 
     _db->delete_ground_station(0,id);
 }
@@ -618,7 +619,7 @@ void MainWindow::deleteFlightplan(unsigned id)
         }
 
     }
-    /** experimental
+    /** experimental*/
     for (int j=0;j<_docks.size();++j)
     {
         if(_docks.at(j)->windowTitle().toInt() == id)
@@ -627,9 +628,10 @@ void MainWindow::deleteFlightplan(unsigned id)
             QWidget *widget = _docks.at(j)->widget();
             delete widget;
             delete _docks.at(j);
+            _docks.remove(j);
         }
     }
-    */
+
 
     _db->delete_flightplan_position(0,id);
 }
