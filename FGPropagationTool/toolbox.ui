@@ -100,11 +100,14 @@
     </item>
     <item row="2" column="3">
      <widget class="QToolButton" name="clearLeftButton">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string/>
       </property>
       <property name="icon">
-       <iconset resource="../MapGraphics/resources.qrc">
+       <iconset resource="resources.qrc">
         <normaloff>:/icons/images/editdelete.png</normaloff>:/icons/images/editdelete.png</iconset>
       </property>
      </widget>
@@ -221,7 +224,6 @@
  </widget>
  <resources>
   <include location="resources.qrc"/>
-  <include location="../MapGraphics/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

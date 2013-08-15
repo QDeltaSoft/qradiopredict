@@ -140,7 +140,7 @@ QString FGTelnet::getProperty(QString prop_name)
         std::cerr << e.what() << std::endl;
     }
 
-
+    //qDebug() << line.toUtf8();
     return line.toUtf8();
 
 

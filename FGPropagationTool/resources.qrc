@@ -5,5 +5,7 @@
         <file>phone.png</file>
         <file>s-meter-scale.png</file>
         <file>s-meter-scale2.png</file>
+        <file>edit_add.png</file>
+        <file>editdelete.png</file>
     </qresource>
 </RCC>
