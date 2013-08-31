@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _telnet = new FGTelnet;
     _db = new DatabaseApi;
     _remote = new FGRemote(_telnet, _db);
+    _aprs = new Aprs();
     _show_signals = false;
     _last_station_id = -1;
 
@@ -85,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(view,SIGNAL(map_clicked(QPointF)),this,SLOT(mapClick(QPointF)));
     QObject::connect(view,SIGNAL(mouse_moved(QPointF)),this,SLOT(getMouseCoord(QPointF)));
     QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(setMapItems(quint8)));
+    QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(newAPRSquery(quint8)));
 
 
     QObject::connect(_tb->ui->addMobileButton,SIGNAL(clicked()),this,SLOT(setMobileType()));
@@ -242,6 +244,15 @@ void MainWindow::mapClick(QPointF pos)
     }
     this->showEditBoxes();
 
+}
+
+void MainWindow::newAPRSquery(quint8 zoom)
+{
+    QPointF cursor_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()));
+    //QThread *t = new QThread;
+    //_aprs->moveToThread(t);
+    QPointF pos = Util::convertToLL(cursor_pos, zoom);
+    _aprs->queryall(pos);
 }
 
 

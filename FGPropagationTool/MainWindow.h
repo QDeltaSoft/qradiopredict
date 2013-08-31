@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "fgtelnet.h"
+#include "aprs.h"
 #include "databaseapi.h"
 #include "mobilestation.h"
 #include "groundstation.h"
@@ -51,6 +52,7 @@ public:
     FGTelnet *_telnet;
     DatabaseApi *_db;
     FGRemote *_remote;
+    Aprs *_aprs;
 
     
 private slots:
@@ -78,6 +80,7 @@ public slots:
     void startSignalUpdate();
     void moveMobile(double lon, double lat);
     void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
+    void newAPRSquery(quint8 zoom);
 
 private:
     void restoreMapState();

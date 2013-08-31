@@ -7,6 +7,7 @@ FGRemote::FGRemote(FGTelnet *t, DatabaseApi * db)
 {
     _fg = t;
     _db = db;
+    _received =0;
 }
 
 FGRemote::~FGRemote()

@@ -9,6 +9,7 @@ FGTelnet::FGTelnet()
     _socket = new QTcpSocket;
     QObject::connect(_socket,SIGNAL(error(QAbstractSocket::SocketError )),this,SLOT(connectionFailed(QAbstractSocket::SocketError)));
     QObject::connect(_socket,SIGNAL(connected()),this,SLOT(connectionSuccess()));
+    //QObject::connect(_socket,SIGNAL(readyRead()),this,SLOT(processData()));
     _connection_tries=0;
     _status=0;
     this->connectToFGFS();
@@ -141,7 +142,7 @@ QString FGTelnet::getProperty(QString prop_name)
     }
 
     //qDebug() << line.toUtf8();
-    return line.toUtf8();
+    return line.toLatin1();
 
 
 }
