@@ -27,7 +27,6 @@ signals:
 private:
     FGTelnet *_fg;
     DatabaseApi * _db;
-    unsigned _received;
 
 };
 
