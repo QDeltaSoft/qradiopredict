@@ -2,13 +2,22 @@
 
 Updater::Updater( DatabaseApi * d)
 {
-    _fg = new FGTelnet;
+
     _db = d;
+    _received= 0;
+
 }
 
 Updater::~Updater()
 {
-    delete _fg;
+
+}
+
+void Updater::setReceived(QString prop_data)
+{
+
+    _prop_data = prop_data;
+    _received =1;
 }
 
 void Updater::startUpdate()
@@ -19,15 +28,26 @@ void Updater::startUpdate()
     while(true)
     {
 
-        QTime delaytime= QTime::currentTime().addSecs(2);
-        while( QTime::currentTime() < delaytime ) {}
+        //QTime delaytime= QTime::currentTime().addSecs(2);
+        //while( QTime::currentTime() < delaytime ){}
 
 
 
+        _received = 0;
+        emit getProperty("/position/longitude-deg");
+        while(_received==0)
+        {
 
-        QString lon = _fg->getProperty("/position/longitude-deg");
+        }
+        QString lon = _prop_data;
+
+        _received = 0;
         double longitude = lon.toDouble();
-        QString lat = _fg->getProperty("/position/latitude-deg");
+
+        emit getProperty("/position/latitude-deg");
+        while(_received==0){}
+        QString lat = _prop_data;
+        _received = 0;
         double latitude = lat.toDouble();
 
         emit haveMobilePosition(longitude,latitude);
@@ -39,13 +59,42 @@ void Updater::startUpdate()
             QString str1;
             GroundStation *g = stations.at(i);
             QString st ="["+str1.setNum(g->id)+"]";
-            QString signal = _fg->getProperty("/sim/radio/station"+st+"/signal");
-            QString signal_dbm = _fg->getProperty("/sim/radio/station"+st+"/signal-dbm");
-            QString field_strength_uv = _fg->getProperty("/sim/radio/station"+st+"/field-strength-uV");
-            QString link_budget = _fg->getProperty("/sim/radio/station"+st+"/link-budget");
-            QString terrain_attenuation = _fg->getProperty("/sim/radio/station"+st+"/terrain-attenuation");
-            QString clutter_attenuation = _fg->getProperty("/sim/radio/station"+st+"/clutter-attenuation");
-            QString prop_mode = _fg->getProperty("/sim/radio/station"+st+"/prop-mode");
+
+            emit getProperty("/sim/radio/station"+st+"/signal");
+            while(_received==0){}
+            QString signal = _prop_data;
+            _received = 0;
+
+            emit getProperty("/sim/radio/station"+st+"/signal-dbm");
+            while(_received==0){}
+            QString signal_dbm = _prop_data;
+            _received = 0;
+
+            emit getProperty("/sim/radio/station"+st+"/field-strength-uV");
+            while(_received==0){}
+            QString field_strength_uv = _prop_data;
+            _received = 0;
+
+            emit getProperty("/sim/radio/station"+st+"/link-budget");
+            while(_received==0){}
+            QString link_budget = _prop_data;
+            _received = 0;
+
+            emit getProperty("/sim/radio/station"+st+"/terrain-attenuation");
+            while(_received==0){}
+            QString terrain_attenuation = _prop_data;
+            _received = 0;
+
+            emit getProperty("/sim/radio/station"+st+"/clutter-attenuation");
+            while(_received==0){}
+            QString clutter_attenuation = _prop_data;
+            _received = 0;
+
+            emit getProperty("/sim/radio/station"+st+"/prop-mode");
+            while(_received==0){}
+            QString prop_mode = _prop_data;
+            _received = 0;
+
             Signal *s = new Signal;
             s->signal = signal.toDouble();
             s->signal_dbm = signal_dbm.toDouble();
@@ -57,8 +106,8 @@ void Updater::startUpdate()
             s->prop_mode = prop_mode;
 
             emit haveSignalReading(longitude,latitude,g->id,g->name,g->frequency,s);
-            QTime delaytime= QTime::currentTime().addSecs(1);
-            while( QTime::currentTime() < delaytime ) {}
+            //QTime delaytime= QTime::currentTime().addSecs(1);
+            //while( QTime::currentTime() < delaytime ) {}
         }
 
 

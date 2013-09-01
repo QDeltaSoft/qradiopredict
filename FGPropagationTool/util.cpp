@@ -109,7 +109,7 @@ void Util::startFlightgear(DatabaseApi *db)
     args
          <<   "--prop:/sim/radio/use-clutter-attenuation=true"
          <<   "--prop:/sim/radio/use-antenna-pattern=true"
-#if 0
+#if 1
          <<     "--telnet=socket,bi,100,,5500,tcp";
 #else
          <<     "--telnet=5500";

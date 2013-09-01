@@ -19,16 +19,19 @@ public:
 
 public slots:
     void startUpdate();
+    void setReceived(QString prop_data);
 
 signals:
     void haveMobilePosition(double lon, double lat);
     void haveSignalReading(double lon, double lat, unsigned id, QString name, double freq, Signal *s);
     void finished();
+    void getProperty(QString prop_data);
 
 private:
     FGTelnet *_fg;
     DatabaseApi *_db;
-
+    unsigned _received;
+    QString _prop_data;
 };
 
 #endif // UPDATER_H

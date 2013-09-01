@@ -54,6 +54,8 @@ public:
     FGRemote *_remote;
     Aprs *_aprs;
 
+signals:
+    void haveProperty(QString data);
     
 private slots:
     void on_actionExit_triggered();
@@ -66,6 +68,7 @@ private slots:
     void setFPType();
     void showEditBoxes();
     void clearLeftDocks();
+
 
 public slots:
     void mapClick(QPointF pos);
@@ -81,6 +84,7 @@ public slots:
     void moveMobile(double lon, double lat);
     void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
     void newAPRSquery(quint8 zoom);
+    void setReceived(QString data);
 
 private:
     void restoreMapState();
@@ -98,6 +102,7 @@ private:
     int _last_station_id;
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
+    Updater * _updater;
 };
 
 #endif // MAINWINDOW_H

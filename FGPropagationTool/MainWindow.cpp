@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _telnet = new FGTelnet;
     _db = new DatabaseApi;
     _remote = new FGRemote(_telnet, _db);
-    _aprs = new Aprs();
+    //_aprs = new Aprs();
     _show_signals = false;
     _last_station_id = -1;
 
@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(view,SIGNAL(map_clicked(QPointF)),this,SLOT(mapClick(QPointF)));
     QObject::connect(view,SIGNAL(mouse_moved(QPointF)),this,SLOT(getMouseCoord(QPointF)));
     QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(setMapItems(quint8)));
-    QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(newAPRSquery(quint8)));
+    //QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(newAPRSquery(quint8)));
 
 
     QObject::connect(_tb->ui->addMobileButton,SIGNAL(clicked()),this,SLOT(setMobileType()));
@@ -115,8 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setZoomLevel(4);
     view->centerOn(24.658752, 46.255456);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
-    WeatherManager * weatherMan = new WeatherManager(scene, this);
-    Q_UNUSED(weatherMan)
+    ///WeatherManager * weatherMan = new WeatherManager(scene, this);
+    ///Q_UNUSED(weatherMan)
 }
 
 MainWindow::~MainWindow()
@@ -666,10 +666,20 @@ void MainWindow::startSignalUpdate()
     connect(up, SIGNAL(finished()), t, SLOT(quit()));
     connect(up, SIGNAL(finished()), up, SLOT(deleteLater()));
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
+    QObject::connect(_telnet,SIGNAL(haveProperty(QString)),this,SLOT(setReceived(QString)),Qt::QueuedConnection);
+    QObject::connect(up,SIGNAL(getProperty(QString)),_telnet,SLOT(getProperty(QString)),Qt::QueuedConnection);
+    //QObject::connect(this,SIGNAL(haveProperty(QString)),up,SLOT(setReceived(QString)),Qt::QueuedConnection);
     t->start();
+    _updater = up;
 
 
+}
 
+void MainWindow::setReceived(QString data)
+{
+    //qDebug() << "main received: " << data;
+    //emit haveProperty(data);
+    _updater->setReceived(data);
 }
 
 void MainWindow::moveMobile(double lon, double lat)

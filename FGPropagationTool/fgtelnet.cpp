@@ -9,7 +9,7 @@ FGTelnet::FGTelnet()
     _socket = new QTcpSocket;
     QObject::connect(_socket,SIGNAL(error(QAbstractSocket::SocketError )),this,SLOT(connectionFailed(QAbstractSocket::SocketError)));
     QObject::connect(_socket,SIGNAL(connected()),this,SLOT(connectionSuccess()));
-    //QObject::connect(_socket,SIGNAL(readyRead()),this,SLOT(processData()));
+    QObject::connect(_socket,SIGNAL(readyRead()),this,SLOT(processData()));
     _connection_tries=0;
     _status=0;
     this->connectToFGFS();
@@ -74,7 +74,54 @@ void FGTelnet::setProperty(QString prop_name, QString value)
 
 }
 
-QString FGTelnet::getProperty(QString prop_name)
+void FGTelnet::processData()
+{
+    if (_status !=1) return;
+
+    QString line;
+
+    bool endOfLine = false;
+
+    while ((!endOfLine))
+    {
+        if(_status==1)
+        {
+            char ch;
+            if(_socket->bytesAvailable()>0)
+            {
+                int bytesRead = _socket->read(&ch, sizeof(ch));
+                if (bytesRead == sizeof(ch))
+                {
+                    //cnt++;
+
+                    if ((ch == '\r'))
+                    {
+                        endOfLine = true;
+
+
+                    }
+                    else
+                    {
+                        line.append( ch );
+                    }
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+    }
+
+
+
+    //qDebug() << line.toUtf8();
+
+    emit haveProperty(line);
+}
+
+void FGTelnet::getProperty(QString prop_name)
 {
 
     QString command = "get " + prop_name +CRLF;
@@ -88,62 +135,7 @@ QString FGTelnet::getProperty(QString prop_name)
         qDebug() << "Fewer than required bytes written to socket";
     }
 
-    //_socket->flush();
-
-    _socket->waitForBytesWritten();
-    while(!_socket->canReadLine()){}
-
-
-    QString line;
-
-    bool endOfLine = false;
-    try
-    {
-        while ((!endOfLine))
-        {
-            if(_status==1)
-            {
-                char ch;
-                if(_socket->bytesAvailable()>0)
-                {
-                    int bytesRead = _socket->read(&ch, sizeof(ch));
-                    if (bytesRead == sizeof(ch))
-                    {
-                        //cnt++;
-
-                        if ((ch == '\r'))
-                        {
-                            endOfLine = true;
-
-                            while(_socket->bytesAvailable()>0)
-                            {
-                                char f;
-                                _socket->read(&f, sizeof(f));
-
-                            }
-                        }
-                        else
-                        {
-                            line.append( ch );
-                        }
-                    }
-                }
-                else
-                {
-                    continue;
-                }
-            }
-
-        }
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-
-    //qDebug() << line.toUtf8();
-    return line.toLatin1();
-
+    _socket->flush();
 
 }
 
