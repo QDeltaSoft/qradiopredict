@@ -47,6 +47,9 @@ DatabaseApi::select_prefs()
     int scenery_path_idx = query.record().indexOf("scenery_path");
     int use_clutter_idx = query.record().indexOf("use_clutter");
     int use_antenna_pattern_idx = query.record().indexOf("use_antenna_pattern");
+    int windowX_idx = query.record().indexOf("windowX");
+    int windowY_idx = query.record().indexOf("windowY");
+    int aprs_server_idx = query.record().indexOf("aprs_server");
 
     while(query.next())
     {
@@ -58,6 +61,9 @@ DatabaseApi::select_prefs()
         p->_airport = query.value(airport_idx).toString();
         p->_use_clutter = query.value(use_clutter_idx).toInt();
         p->_use_antenna_pattern = query.value(use_antenna_pattern_idx).toInt();
+        p->_windowX = query.value(windowX_idx).toInt();
+        p->_windowY = query.value(windowY_idx).toInt();
+        p->_aprs_server = query.value(aprs_server_idx).toString();
 
         prefs.push_back(p);
     }
@@ -72,7 +78,8 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
                   "fgfs_binary =:fgfs_binary, fgdata_path=:fgdata_path, "
                   "scenery_path = :scenery_path, aircraft=:aircraft,"
                   "airport = :airport, use_clutter= :use_clutter,"
-                  "use_antenna_pattern = :use_antenna_pattern "
+                  "use_antenna_pattern = :use_antenna_pattern, windowX= :windowX, windowY= :windowY, "
+                  "aprs_server= :aprs_server "
                   " WHERE id=1");
     query.bindValue(":fgfs_binary", p->_fgfs_bin);
     query.bindValue(":fgdata_path", p->_fgdata_path);
@@ -81,6 +88,9 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     query.bindValue(":airport", p->_airport);
     query.bindValue(":use_clutter", p->_use_clutter);
     query.bindValue(":use_antenna_pattern", p->_use_antenna_pattern);
+    query.bindValue(":windowX", p->_windowX);
+    query.bindValue(":windowY", p->_windowY);
+    query.bindValue(":aprs_server", p->_aprs_server);
     query.exec();
 }
 

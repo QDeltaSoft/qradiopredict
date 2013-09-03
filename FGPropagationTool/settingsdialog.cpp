@@ -36,6 +36,9 @@ void SettingsDialog::fillEmptyFields()
         {
             this->ui->clutterCheckBox->setChecked(true);
         }
+        this->ui->windowXEdit->setText(QString::number(p->_windowX));
+        this->ui->windowYEdit->setText(QString::number(p->_windowY));
+        this->ui->aprsServerEdit->setText(p->_aprs_server);
         delete p;
     }
     prefs.clear();
@@ -57,6 +60,9 @@ void SettingsDialog::saveData()
     {
         p->_use_clutter =1;
     }
+    p->_windowX = this->ui->windowXEdit->text().toInt();
+    p->_windowY = this->ui->windowYEdit->text().toInt();
+    p->_aprs_server = this->ui->aprsServerEdit->text();
     _db->savePrefs(p);
     delete p;
 }

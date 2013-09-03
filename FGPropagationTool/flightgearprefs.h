@@ -16,6 +16,7 @@ public:
     unsigned _use_antenna_pattern;
     unsigned _windowX;
     unsigned _windowY;
+    QString _aprs_server;
 };
 
 #endif // FLIGHTGEARPREFS_H
