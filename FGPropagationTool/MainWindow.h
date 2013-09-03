@@ -37,6 +37,7 @@
 #include <QLineF>
 #include <QPen>
 #include <QBrush>
+#include <QGraphicsTextItem>
 
 namespace Ui {
 class MainWindow;
@@ -100,6 +101,7 @@ private:
     QMap<QGraphicsPixmapItem *, QPointF> _map_ground;
     QMap<QGraphicsPixmapItem *, QPointF> _map_fppos;
     QMap<QGraphicsPixmapItem *, QPointF> _map_aprs;
+    QMap<QGraphicsTextItem *, QPointF> _map_aprs_text;
     QVector<QDockWidget *> _docks;
     QString _start_time;
     bool _show_signals;

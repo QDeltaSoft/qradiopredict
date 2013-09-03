@@ -175,6 +175,14 @@ void MainWindow::processAPRSData(AprsStation *st)
     QPointF xypos = Util::convertToXY(pos, zoom);
     img->setOffset(xypos - QPoint(8,8));
     _map_aprs.insert(img, pos);
+
+
+    QGraphicsTextItem * callsign = new QGraphicsTextItem;
+    callsign->setPos(xypos - QPoint(0,16));
+    callsign->setPlainText(st->callsign);
+
+    _view->_childView->scene()->addItem(callsign);
+    _map_aprs_text.insert(callsign,pos);
     delete st;
 }
 
@@ -339,7 +347,19 @@ void MainWindow::setMapItems(quint8 zoom)
             QPointF pos = i.value();
             QPointF xypos = Util::convertToXY(pos, zoom);
             QGraphicsPixmapItem * img = i.key();
-            img->setOffset(xypos - QPoint(16,16));
+            img->setOffset(xypos - QPoint(8,8));
+
+        }
+    }
+
+    {
+        QMapIterator<QGraphicsTextItem *, QPointF> i(_map_aprs_text);
+        while (i.hasNext()) {
+            i.next();
+            QPointF pos = i.value();
+            QPointF xypos = Util::convertToXY(pos, zoom);
+            QGraphicsTextItem * callsign = i.key();
+            callsign->setPos(xypos - QPoint(0,16));
 
         }
     }
