@@ -116,13 +116,13 @@ void Aprs::processData()
 
         QString lat;
         QString lon;
-        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)");
+        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)(.)*");
         QRegularExpressionMatch match = re.match(payload);
         if (match.hasMatch()) {
             lat = match.captured(1);
             lon = match.captured(3);
             QString symbol = match.captured(4);
-
+            QString message = match.captured(5);
             QString lat_degrees;
             QString lon_degrees;
             lat_degrees.append(lat[0]).append(lat[1]);
@@ -143,6 +143,7 @@ void Aprs::processData()
             st->via = via;
             st->symbol = symbol;
             st->payload = payload;
+            st->message = message;
             st->latitude = latitude;
             st->longitude = longitude;
             emit aprsData(st);

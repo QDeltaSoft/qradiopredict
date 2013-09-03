@@ -12,6 +12,7 @@ public:
     QString via;
     QString symbol;
     QString payload;
+    QString message;
     double latitude;
     double longitude;
     QString getImage();
