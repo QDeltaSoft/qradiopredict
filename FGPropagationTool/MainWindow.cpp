@@ -151,6 +151,7 @@ void MainWindow::processAPRSData(AprsStation st)
     QGraphicsPixmapItem *img= _view->_childView->scene()->addPixmap(pixmap);
     QPointF xypos = Util::convertToXY(pos, zoom);
     img->setOffset(xypos - QPoint(16,16));
+    _map_aprs.insert(img, pos);
 }
 
 void MainWindow::startFGFS()
@@ -311,6 +312,18 @@ void MainWindow::setMapItems(quint8 zoom)
             QPointF xypos = Util::convertToXY(pos, zoom);
             QGraphicsPixmapItem * img = i.key();
             img->setOffset(xypos - QPoint(7,25));
+
+        }
+    }
+
+    {
+        QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_aprs);
+        while (i.hasNext()) {
+            i.next();
+            QPointF pos = i.value();
+            QPointF xypos = Util::convertToXY(pos, zoom);
+            QGraphicsPixmapItem * img = i.key();
+            img->setOffset(xypos - QPoint(16,16));
 
         }
     }
