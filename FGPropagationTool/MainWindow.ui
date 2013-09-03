@@ -49,6 +49,7 @@
     </property>
     <addaction name="actionStart_Flightgear"/>
     <addaction name="actionConnect_to_Flightgear"/>
+    <addaction name="actionConnect_APRS"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -91,6 +92,11 @@
   <action name="action_Settings">
    <property name="text">
     <string>&amp;Settings</string>
+   </property>
+  </action>
+  <action name="actionConnect_APRS">
+   <property name="text">
+    <string>Connect APRS</string>
    </property>
   </action>
  </widget>

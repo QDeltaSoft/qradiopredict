@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "fgtelnet.h"
 #include "aprs.h"
+#include "aprsstation.h"
 #include "databaseapi.h"
 #include "mobilestation.h"
 #include "groundstation.h"
@@ -68,6 +69,7 @@ private slots:
     void setFPType();
     void showEditBoxes();
     void clearLeftDocks();
+    void connectToAPRS();
 
 
 public slots:
@@ -85,6 +87,7 @@ public slots:
     void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
     void newAPRSquery(quint8 zoom);
     void setReceived(QString data);
+    void processAPRSData(AprsStation st);
 
 private:
     void restoreMapState();
@@ -103,6 +106,7 @@ private:
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
     Updater * _updater;
+
 };
 
 #endif // MAINWINDOW_H

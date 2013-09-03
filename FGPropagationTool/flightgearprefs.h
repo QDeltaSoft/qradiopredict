@@ -14,6 +14,8 @@ public:
     QString _airport;
     unsigned _use_clutter;
     unsigned _use_antenna_pattern;
+    unsigned _windowX;
+    unsigned _windowY;
 };
 
 #endif // FLIGHTGEARPREFS_H

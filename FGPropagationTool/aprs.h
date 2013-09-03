@@ -4,6 +4,11 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QPointF>
+#include <QString>
+#include <QStringList>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include "aprsstation.h"
 
 class Aprs : public QObject
 {
@@ -17,6 +22,7 @@ public:
 signals:
     void connectedToAPRS();
     void connectionFailure();
+    void aprsData(AprsStation st);
     
 public slots:
     void connectionSuccess();

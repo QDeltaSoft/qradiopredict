@@ -55,7 +55,7 @@ void Aprs::connectionFailed(QAbstractSocket::SocketError error)
 void Aprs::connectToAPRS()
 {
     if(_status==1) return;
-    _socket->connectToHost("euro.aprs2.net", 14580);
+    _socket->connectToHost("romania.aprs2.net", 14580);
 
 }
 
@@ -91,6 +91,57 @@ void Aprs::processData()
     else
     {
         //we have a position report
+        QStringList v = response.split(":");
+        QStringList v1 = v[0].split(">");
+        QString from = v1[0];
+        QStringList v2 = v1[1].split(",");
+        unsigned via_size = v2.size();
+        QString to = v2[0];
+        QString via;
+        for(uint i = 1;i<via_size ; ++i)
+        {
+            via.append(v2[i]);
+        }
+
+        QString payload = v[1];
+
+
+        QString lat;
+        QString lon;
+        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)");
+        QRegularExpressionMatch match = re.match(payload);
+        if (match.hasMatch()) {
+            lat = match.captured(1);
+            lon = match.captured(3);
+            qDebug() << lat << " / " << lon;
+
+            QString lat_degrees;
+            QString lon_degrees;
+            lat_degrees.append(lat[0]).append(lat[1]);
+            lon_degrees.append(lon[0]).append(lon[1]).append(lon[2]);
+            lat.chop(1);
+            lon.chop(1);
+            lat.remove(0,2);
+            lon.remove(0,3);
+            double lat_minutes = lat.toDouble();
+            double lon_minutes = lon.toDouble();
+            double latitude = lat_degrees.toDouble();
+            double longitude = lon_degrees.toDouble();
+            latitude = latitude + lat_minutes / 60;
+            longitude = longitude + lon_minutes / 60;
+            AprsStation st;
+            st.adressee=to;
+            st.callsign = from;
+            st.via = via;
+            st.payload = payload;
+            st.latitude = latitude;
+            st.longitude = longitude;
+            emit aprsData(st);
+
+            qDebug() << latitude << " : " << longitude;
+        }
+
+
 
     }
 

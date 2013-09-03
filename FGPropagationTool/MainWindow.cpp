@@ -34,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _telnet = new FGTelnet;
     _db = new DatabaseApi;
     _remote = new FGRemote(_telnet, _db);
-    //_aprs = new Aprs();
     _show_signals = false;
     _last_station_id = -1;
 
@@ -43,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionConnect_to_Flightgear,SIGNAL(triggered()),this->_telnet,SLOT(connectToFGFS()));
     QObject::connect(ui->actionStart_Flightgear,SIGNAL(triggered()),this,SLOT(startFGFS()));
     QObject::connect(ui->action_Settings,SIGNAL(triggered()),this,SLOT(showSettingsDialog()));
+    QObject::connect(ui->actionConnect_APRS,SIGNAL(triggered()),this,SLOT(connectToAPRS()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
     QObject::connect(this->_telnet,SIGNAL(connectionFailure()),this,SLOT(connectionFailure()));
 
@@ -67,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CompositeTileSourceConfigurationWidget * tileConfigWidget = new CompositeTileSourceConfigurationWidget(composite.toWeakRef(),
                                                                                          this->ui->dockWidget);
     this->ui->dockWidget->setWidget(tileConfigWidget);
+    this->ui->dockWidget->setVisible(false);
     delete this->ui->dockWidgetContents;
 
     _tb = new toolbox();
@@ -115,8 +116,10 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setZoomLevel(4);
     view->centerOn(24.658752, 46.255456);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
-    ///WeatherManager * weatherMan = new WeatherManager(scene, this);
-    ///Q_UNUSED(weatherMan)
+    /* THis shows some pretty radar images, we are not using
+    WeatherManager * weatherMan = new WeatherManager(scene, this);
+    Q_UNUSED(weatherMan)
+    */
 }
 
 MainWindow::~MainWindow()
@@ -131,6 +134,23 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionExit_triggered()
 {
     this->close();
+}
+
+void MainWindow::connectToAPRS()
+{
+    _aprs = new Aprs();
+    QObject::connect(_aprs,SIGNAL(aprsData(AprsStation)),this,SLOT(processAPRSData(AprsStation)));
+}
+
+void MainWindow::processAPRSData(AprsStation st)
+{
+    QPointF pos(st.longitude,st.latitude);
+    double zoom = _view->zoomLevel();
+    QPixmap pixmap(":icons/images/antenna.png");
+    pixmap = pixmap.scaled(32,32);
+    QGraphicsPixmapItem *img= _view->_childView->scene()->addPixmap(pixmap);
+    QPointF xypos = Util::convertToXY(pos, zoom);
+    img->setOffset(xypos - QPoint(16,16));
 }
 
 void MainWindow::startFGFS()
@@ -249,8 +269,7 @@ void MainWindow::mapClick(QPointF pos)
 void MainWindow::newAPRSquery(quint8 zoom)
 {
     QPointF cursor_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()));
-    //QThread *t = new QThread;
-    //_aprs->moveToThread(t);
+
     QPointF pos = Util::convertToLL(cursor_pos, zoom);
     _aprs->queryall(pos);
 }

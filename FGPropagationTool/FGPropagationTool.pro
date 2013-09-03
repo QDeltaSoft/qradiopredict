@@ -6,7 +6,7 @@
 
 QT       += core gui network sql widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-TARGET = FGPropagationTool
+TARGET = qFGRadio
 TEMPLATE = app
 
 
@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     settingsdialog.cpp \
     stationsignalform.cpp \
     flightgearprefs.cpp \
-    aprs.cpp
+    aprs.cpp \
+    aprsstation.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -53,7 +54,8 @@ HEADERS  += MainWindow.h \
     settingsdialog.h \
     stationsignalform.h \
     flightgearprefs.h \
-    aprs.h
+    aprs.h \
+    aprsstation.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \

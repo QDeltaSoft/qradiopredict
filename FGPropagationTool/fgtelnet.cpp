@@ -115,9 +115,6 @@ void FGTelnet::processData()
     }
 
 
-
-    //qDebug() << line.toUtf8();
-
     emit haveProperty(line);
 }
 
