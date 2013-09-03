@@ -1,7 +1,6 @@
 #include "aprs.h"
 
-Aprs::Aprs(QObject *parent) :
-    QObject(parent)
+Aprs::Aprs(QString aprs_server)
 {
     _socket = new QTcpSocket;
     QObject::connect(_socket,SIGNAL(error(QAbstractSocket::SocketError )),this,SLOT(connectionFailed(QAbstractSocket::SocketError)));
@@ -10,6 +9,8 @@ Aprs::Aprs(QObject *parent) :
     _connection_tries=0;
     _status=0;
     _authenticated = 0;
+    _hostname = aprs_server;
+    _delaytime = QTime::currentTime();
     this->connectToAPRS();
 }
 
@@ -55,7 +56,14 @@ void Aprs::connectionFailed(QAbstractSocket::SocketError error)
 void Aprs::connectToAPRS()
 {
     if(_status==1) return;
-    _socket->connectToHost("romania.aprs2.net", 14580);
+    _socket->connectToHost(_hostname, 14580);
+
+}
+
+void Aprs::disconnectAPRS()
+{
+    if(_status==0) return;
+    _socket->disconnectFromHost();
 
 }
 
@@ -90,7 +98,7 @@ void Aprs::processData()
     }
     else
     {
-        //we have a position report
+        //we have a station report
         QStringList v = response.split(":");
         QStringList v1 = v[0].split(">");
         QString from = v1[0];
@@ -108,12 +116,12 @@ void Aprs::processData()
 
         QString lat;
         QString lon;
-        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)");
+        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)");
         QRegularExpressionMatch match = re.match(payload);
         if (match.hasMatch()) {
             lat = match.captured(1);
             lon = match.captured(3);
-            qDebug() << lat << " / " << lon;
+            QString symbol = match.captured(4);
 
             QString lat_degrees;
             QString lon_degrees;
@@ -129,16 +137,16 @@ void Aprs::processData()
             double longitude = lon_degrees.toDouble();
             latitude = latitude + lat_minutes / 60;
             longitude = longitude + lon_minutes / 60;
-            AprsStation st;
-            st.adressee=to;
-            st.callsign = from;
-            st.via = via;
-            st.payload = payload;
-            st.latitude = latitude;
-            st.longitude = longitude;
+            AprsStation *st = new AprsStation;
+            st->adressee=to;
+            st->callsign = from;
+            st->via = via;
+            st->symbol = symbol;
+            st->payload = payload;
+            st->latitude = latitude;
+            st->longitude = longitude;
             emit aprsData(st);
 
-            qDebug() << latitude << " : " << longitude;
         }
 
 
@@ -147,13 +155,15 @@ void Aprs::processData()
 
 }
 
-void Aprs::queryall(QPointF &pos)
+void Aprs::setFilter(QPointF &pos)
 {
     if ((_status!=1)) return;
-    QString query = "?APRS?";
-    //QString query = "filter r/"+QString::number(pos.ry())+"/"+QString::number(pos.rx())+"/0200\r\n";
+    if( QTime::currentTime() < _delaytime ) return;
+    //QString query = "?APRS?";
+    QString query = "#filter r/"+QString::number(pos.ry())+"/"+QString::number(pos.rx())+"/0200\r\n";
     qDebug() << query;
     _socket->write(query.toLatin1());
     _socket->flush();
+    _delaytime = QTime::currentTime().addSecs(1);
 
 }

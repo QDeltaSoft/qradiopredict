@@ -79,7 +79,7 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
                   "scenery_path = :scenery_path, aircraft=:aircraft,"
                   "airport = :airport, use_clutter= :use_clutter,"
                   "use_antenna_pattern = :use_antenna_pattern, windowX= :windowX, windowY= :windowY, "
-                  "aprs_server= :aprs_server "
+                  "aprs_server= :aprs_server"
                   " WHERE id=1");
     query.bindValue(":fgfs_binary", p->_fgfs_bin);
     query.bindValue(":fgdata_path", p->_fgdata_path);

@@ -10,9 +10,11 @@ public:
     QString callsign;
     QString adressee;
     QString via;
+    QString symbol;
     QString payload;
     double latitude;
     double longitude;
+    QString getImage();
 };
 
 #endif // APRSSTATION_H

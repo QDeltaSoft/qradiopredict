@@ -88,9 +88,16 @@ void Util::startFlightgear(DatabaseApi *db)
          <<   "--disable-real-weather-fetch"
          <<     "--fov=90"
          <<   "--visibility-miles=40"
-         <<     "--disable-fullscreen"
-         <<   "--geometry=1024x768"
-         <<     "--disable-hud"
+         <<     "--disable-fullscreen";
+    if(prefs.size()>0 && pref->_windowX!=0 && pref->_windowY!=0)
+    {
+        args << "--geometry=" << QString::number(pref->_windowX) << "x" << QString::number(pref->_windowY);
+    }
+    else
+    {
+         args <<   "--geometry=1024x768";
+    }
+         args <<     "--disable-hud"
          <<     "--disable-hud-3d"
          <<   "--log-level=normal"
 #if 1

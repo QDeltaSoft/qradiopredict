@@ -87,7 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(view,SIGNAL(map_clicked(QPointF)),this,SLOT(mapClick(QPointF)));
     QObject::connect(view,SIGNAL(mouse_moved(QPointF)),this,SLOT(getMouseCoord(QPointF)));
     QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(setMapItems(quint8)));
-    //QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(newAPRSquery(quint8)));
+    QObject::connect(view,SIGNAL(zoomLevelChanged(quint8)),this,SLOT(newAPRSquery(quint8)));
 
 
     QObject::connect(_tb->ui->addMobileButton,SIGNAL(clicked()),this,SLOT(setMobileType()));
@@ -138,20 +138,44 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::connectToAPRS()
 {
-    _aprs = new Aprs();
-    QObject::connect(_aprs,SIGNAL(aprsData(AprsStation)),this,SLOT(processAPRSData(AprsStation)));
+    QVector<FlightgearPrefs *> prefs = _db->select_prefs();
+    FlightgearPrefs *p;
+    QString aprs_server;
+    if(prefs.size()>0)
+    {
+         p = prefs[0];
+         aprs_server = p->_aprs_server;
+    }
+    else
+    {
+        aprs_server = "rotate.aprs.net";
+    }
+    _aprs = new Aprs(aprs_server);
+    QObject::connect(_aprs,SIGNAL(aprsData(AprsStation*)),this,SLOT(processAPRSData(AprsStation*)));
 }
 
-void MainWindow::processAPRSData(AprsStation st)
+void MainWindow::newAPRSquery(quint8 zoom)
 {
-    QPointF pos(st.longitude,st.latitude);
+    QPointF cursor_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()));
+
+    QPointF pos = Util::convertToLL(cursor_pos, zoom);
+    _aprs->setFilter(pos);
+}
+
+void MainWindow::processAPRSData(AprsStation *st)
+{
+    QPointF pos(st->longitude,st->latitude);
     double zoom = _view->zoomLevel();
-    QPixmap pixmap(":icons/images/antenna.png");
-    pixmap = pixmap.scaled(32,32);
+    QString filename = ":aprs/aprs_icons/slice_";
+    QString icon = st->getImage();
+    filename.append(icon).append(".png");
+    QPixmap pixmap(filename);
+    pixmap = pixmap.scaled(16,16);
     QGraphicsPixmapItem *img= _view->_childView->scene()->addPixmap(pixmap);
     QPointF xypos = Util::convertToXY(pos, zoom);
-    img->setOffset(xypos - QPoint(16,16));
+    img->setOffset(xypos - QPoint(8,8));
     _map_aprs.insert(img, pos);
+    delete st;
 }
 
 void MainWindow::startFGFS()
@@ -265,14 +289,6 @@ void MainWindow::mapClick(QPointF pos)
     }
     this->showEditBoxes();
 
-}
-
-void MainWindow::newAPRSquery(quint8 zoom)
-{
-    QPointF cursor_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()));
-
-    QPointF pos = Util::convertToLL(cursor_pos, zoom);
-    _aprs->queryall(pos);
 }
 
 

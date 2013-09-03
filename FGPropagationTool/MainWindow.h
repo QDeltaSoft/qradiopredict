@@ -87,7 +87,7 @@ public slots:
     void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
     void newAPRSquery(quint8 zoom);
     void setReceived(QString data);
-    void processAPRSData(AprsStation st);
+    void processAPRSData(AprsStation *st);
 
 private:
     void restoreMapState();
