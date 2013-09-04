@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     stationsignalform.cpp \
     flightgearprefs.cpp \
     aprs.cpp \
-    aprsstation.cpp
+    aprsstation.cpp \
+    rawmessagesform.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -55,7 +56,8 @@ HEADERS  += MainWindow.h \
     stationsignalform.h \
     flightgearprefs.h \
     aprs.h \
-    aprsstation.h
+    aprsstation.h \
+    rawmessagesform.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
@@ -64,7 +66,8 @@ FORMS    += MainWindow.ui \
     groundstationform.ui \
     flightplanform.ui \
     settingsdialog.ui \
-    stationsignalform.ui
+    stationsignalform.ui \
+    rawmessagesform.ui
 
 #Linkage for MapGraphics shared library
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/release/ -lMapGraphics

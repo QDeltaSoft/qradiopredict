@@ -25,6 +25,7 @@ signals:
     void connectedToAPRS();
     void connectionFailure();
     void aprsData(AprsStation *st);
+    void rawAprsData(QString data);
     
 public slots:
     void connectionSuccess();

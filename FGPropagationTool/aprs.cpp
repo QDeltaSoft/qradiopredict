@@ -86,6 +86,7 @@ void Aprs::processData()
         response.append(a);
     }
     qDebug() << response;
+
     if(response.contains("verified"))
     {
         _authenticated=1;
@@ -99,6 +100,7 @@ void Aprs::processData()
     else
     {
         //we have a station report
+        emit rawAprsData(response);
         QStringList v = response.split(":");
         QStringList v1 = v[0].split(">");
         QString from = v1[0];
@@ -162,7 +164,7 @@ void Aprs::setFilter(QPointF &pos)
     if( QTime::currentTime() < _delaytime ) return;
     //QString query = "?APRS?";
     QString query = "#filter r/"+QString::number(pos.ry())+"/"+QString::number(pos.rx())+"/0200\r\n";
-    qDebug() << query;
+
     _socket->write(query.toLatin1());
     _socket->flush();
     _delaytime = QTime::currentTime().addSecs(1);

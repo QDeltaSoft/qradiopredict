@@ -128,6 +128,7 @@ MainWindow::~MainWindow()
     delete _telnet;
     delete _db;
     delete _remote;
+    _raw_aprs_messages.clear();
 }
 
 //private slot
@@ -152,6 +153,19 @@ void MainWindow::connectToAPRS()
     }
     _aprs = new Aprs(aprs_server);
     QObject::connect(_aprs,SIGNAL(aprsData(AprsStation*)),this,SLOT(processAPRSData(AprsStation*)));
+    QObject::connect(_aprs,SIGNAL(rawAprsData(QString)),this,SLOT(processRawAPRSData(QString)));
+    QObject::connect(ui->actionRaw_APRS_messages,SIGNAL(triggered()),this,SLOT(showRawAPRSMessages()));
+}
+
+void MainWindow::showRawAPRSMessages()
+{
+    RawMessagesForm *f = new RawMessagesForm;
+    for(uint i=0; i<_raw_aprs_messages.size();++i)
+    {
+        f->ui->messagesTextEdit->append(*_raw_aprs_messages[i]);
+    }
+    QObject::connect(this,SIGNAL(newMessage(QString)),f,SLOT(addMessage(QString)));
+    f->show();
 }
 
 void MainWindow::newAPRSquery(quint8 zoom)
@@ -160,6 +174,13 @@ void MainWindow::newAPRSquery(quint8 zoom)
 
     QPointF pos = Util::convertToLL(cursor_pos, zoom);
     _aprs->setFilter(pos);
+}
+
+void MainWindow::processRawAPRSData(QString data)
+{
+    QString * raw_message = new QString(data);
+    _raw_aprs_messages.push_back(raw_message);
+    emit newMessage(data);
 }
 
 void MainWindow::processAPRSData(AprsStation *st)

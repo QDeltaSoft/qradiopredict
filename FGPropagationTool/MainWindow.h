@@ -24,6 +24,8 @@
 #include "ui_stationsignalform.h"
 #include "flightplanform.h"
 #include "ui_flightplanform.h"
+#include "rawmessagesform.h"
+#include "ui_rawmessagesform.h"
 #include <vector>
 #include <math.h>
 #include "MapGraphicsView.h"
@@ -57,7 +59,7 @@ public:
     Aprs *_aprs;
 
 signals:
-    void haveProperty(QString data);
+    void newMessage(QString data);
     
 private slots:
     void on_actionExit_triggered();
@@ -71,6 +73,7 @@ private slots:
     void showEditBoxes();
     void clearLeftDocks();
     void connectToAPRS();
+    void showRawAPRSMessages();
 
 
 public slots:
@@ -89,6 +92,8 @@ public slots:
     void newAPRSquery(quint8 zoom);
     void setReceived(QString data);
     void processAPRSData(AprsStation *st);
+    void processRawAPRSData(QString data);
+
 
 private:
     void restoreMapState();
@@ -103,6 +108,7 @@ private:
     QMap<QGraphicsPixmapItem *, QPointF> _map_aprs;
     QMap<QGraphicsTextItem *, QPointF> _map_aprs_text;
     QVector<QDockWidget *> _docks;
+    QVector<QString *> _raw_aprs_messages;
     QString _start_time;
     bool _show_signals;
     int _last_station_id;
