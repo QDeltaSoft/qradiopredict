@@ -10,6 +10,7 @@
 #include <QRegularExpressionMatch>
 #include "aprsstation.h"
 #include <QTime>
+#include <QDateTime>
 
 class Aprs : public QObject
 {

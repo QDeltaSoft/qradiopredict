@@ -204,6 +204,7 @@ void MainWindow::processAPRSData(AprsStation *st)
 
     _view->_childView->scene()->addItem(callsign);
     _map_aprs_text.insert(callsign,pos);
+    _db->update_aprs_stations(st);
     delete st;
 }
 
@@ -453,6 +454,33 @@ void MainWindow::restoreMapState()
         delete fp;
     }
     fp_points.clear();
+
+    // restore aprs stations from previous sessions
+    QVector<AprsStation *> aprs_stations = _db->select_aprs_stations();
+    for (int i=0;i<aprs_stations.size();++i)
+    {
+        AprsStation *st = aprs_stations.at(i);
+        QString filename = ":aprs/aprs_icons/slice_";
+        QString icon = st->getImage();
+        filename.append(icon).append(".png");
+        QPixmap pixmap(filename);
+        pixmap = pixmap.scaled(16,16);
+        QGraphicsPixmapItem *pic= _view->_childView->scene()->addPixmap(pixmap);
+        QPointF pos = QPointF(st->longitude,st->latitude);
+        int zoom = _view->zoomLevel();
+        QPointF xypos = Util::convertToXY(pos, zoom);
+        pic->setOffset(xypos - QPoint(7,25));
+        _map_aprs.insert(pic, pos);
+
+        QGraphicsTextItem * callsign = new QGraphicsTextItem;
+        callsign->setPos(xypos - QPoint(0,16));
+        callsign->setPlainText(st->callsign);
+
+        _view->_childView->scene()->addItem(callsign);
+        _map_aprs_text.insert(callsign,pos);
+        delete st;
+    }
+    aprs_stations.clear();
 
 }
 

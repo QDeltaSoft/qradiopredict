@@ -16,6 +16,113 @@ DatabaseApi::~DatabaseApi()
     _db.close();
 }
 
+
+QVector<AprsStation *>
+DatabaseApi::select_aprs_stations()
+{
+    QVector<AprsStation *> stations;
+    QSqlQuery query(_db);
+    query.prepare("SELECT * FROM aprs_stations ORDER BY time_seen,id DESC");
+    query.exec();
+
+    int callsign_idx = query.record().indexOf("callsign");
+    int adressee_idx = query.record().indexOf("adressee");
+    int via_idx = query.record().indexOf("via");
+    int symbol_idx = query.record().indexOf("symbol");
+    int payload_idx = query.record().indexOf("payload");
+    int message_idx = query.record().indexOf("message");
+    int latitude_idx = query.record().indexOf("latitude");
+    int longitude_idx = query.record().indexOf("longitude");
+    int time_seen_idx = query.record().indexOf("time_seen");
+
+
+    while(query.next())
+    {
+        AprsStation *s = new AprsStation;
+        s->callsign = query.value(callsign_idx).toString();
+        s->adressee = query.value(adressee_idx).toString();
+        s->via = query.value(via_idx).toString();
+        s->symbol = query.value(symbol_idx).toString();
+        s->payload = query.value(payload_idx).toString();
+        s->message = query.value(message_idx).toString();
+        s->latitude = query.value(latitude_idx).toDouble();
+        s->longitude = query.value(longitude_idx).toDouble();
+        s->time_seen = query.value(time_seen_idx).toInt();
+
+        stations.push_back(s);
+    }
+    return stations;
+}
+
+
+void
+DatabaseApi::update_aprs_stations(AprsStation * s)
+{
+    int id = -1;
+    QSqlQuery query(_db);
+    QSqlQuery query2(_db);
+    query2.prepare("SELECT * FROM aprs_stations WHERE callsign=:callsign");
+    query2.bindValue(":callsign", s->callsign);
+    query2.exec();
+    if(query2.size()>0)
+    {
+        int latitude_idx = query2.record().indexOf("latitude");
+        int longitude_idx = query2.record().indexOf("longitude");
+        int id_idx = query2.record().indexOf("id");
+
+        while(query2.next())
+        {
+            double latitude = query2.value(latitude_idx).toDouble();
+            double longitude = query2.value(longitude_idx).toDouble();
+            if( (fabs( latitude - s->latitude) <= 0.001) && (fabs(longitude - s->longitude) <= 0.001))
+            {
+                id = query2.value(id_idx).toInt();
+                break;
+            }
+        }
+    }
+    if(id!=-1)
+    {
+        query.prepare("UPDATE aprs_stations SET adressee=:adressee, via=:via,"
+                       "symbol=:symbol, payload=:payload, "
+                       "message=:message, "
+                       "time_seen=:time_seen"
+                       "WHERE id=:id ");
+        query.bindValue(":adressee", s->adressee);
+        query.bindValue(":via", s->via);
+        query.bindValue(":symbol", s->symbol);
+        query.bindValue(":payload", s->payload);
+        query.bindValue(":message", s->message);
+        query.bindValue(":time_seen", s->time_seen);
+        query.bindValue(":id", id);
+        query.exec();
+
+    }
+    else
+    {
+        query.prepare("INSERT INTO aprs_stations (callsign, adressee,"
+                       "via, symbol, "
+                       "payload, "
+                       "message, latitude,"
+                       "longitude, time_seen) VALUES (:callsign,"
+                      ":adressee,:via,:symbol,"
+                      ":payload,:message,"
+                      ":latitude,:longitude, :time_seen)");
+        query.bindValue(":callsign", s->callsign);
+        query.bindValue(":adressee", s->adressee);
+        query.bindValue(":via", s->via);
+        query.bindValue(":symbol", s->symbol);
+        query.bindValue(":payload", s->payload);
+        query.bindValue(":message", s->message);
+        query.bindValue(":latitude", s->latitude);
+        query.bindValue(":longitude", s->longitude);
+        query.bindValue(":time_seen", s->time_seen);
+        query.exec();
+
+    }
+
+}
+
 bool
 DatabaseApi::select_commands(const unsigned &id_session)
 {

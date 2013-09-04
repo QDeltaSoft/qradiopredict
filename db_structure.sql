@@ -1,8 +1,31 @@
 BEGIN TRANSACTION;
 CREATE TABLE aprs_stations (id INTEGER PRIMARY KEY, callsign TEXT, adressee TEXT, via TEXT, symbol TEXT, payload TEXT, message TEXT, latitude NUMERIC, longitude NUMERIC, time_seen NUMERIC);
+INSERT INTO aprs_stations VALUES(1,'YO6KNE-2','APNU19-3','WIDE2-1qARYO6KSU-10','#','!4623.83NS02537.30E#PHG20304/W2, ROn-n Vf. Harghita Ciceu 1780m
+','',46.3971666666667,25.6216666666667,1378282643);
+INSERT INTO aprs_stations VALUES(2,'YO3FBD-9','APGWM9','TCPIPqARYO3JWM-2','>','@081801h4423.08N/02444.64E>277/014/A=000551 GSM/APRS www.aprs.ro
+','',44.3846666666667,24.744,1378282685);
+INSERT INTO aprs_stations VALUES(3,'YO3RU-2','APU25N','TCPIP*qACT2CSNGRAD','_','@040817z4436.88N/02604.85E_308/000g004t071r000p007P000h45b10235 / WX-Balotesti
+','',44.6146666666667,26.0808333333333,1378282686);
+INSERT INTO aprs_stations VALUES(4,'YO8SBY-13','APOTW1','WIDE1-1qARYO8RBY-10','_','!4655.60N/02621.85E_270/000g000t068V117P000h42b10204OTW1
+','',46.9266666666667,26.3641666666667,1378282694);
+INSERT INTO aprs_stations VALUES(5,'YO8RBY-10','BEACON','TCPIP*qASYO8RBY','h',';Hospital**040818z4655.70N/02622.42EhNEAMT-County Hospital
+','',46.9283333333333,26.3736666666667,1378282700);
+INSERT INTO aprs_stations VALUES(6,'YO8RBY-10','BEACON','TCPIP*qASYO8RBY',';',';YO8KGP-p *040818z4713.62N/02621.01E;FieldDayCamp-NTcounty
+','',47.227,26.3501666666667,1378282704);
+INSERT INTO aprs_stations VALUES(7,'YO8RBY-10','BEACON','TCPIP*qASYO8RBY','K',';YO8KGP   *040818z4656.20N/02621.65EKsunday club*10',0,46.9366666666667,26.3608333333333,1378282710);
+INSERT INTO aprs_stations VALUES(8,'YO6KSU-10','APRX22','TCPIP*qACT2SWEDEN2','_','@040910z4539.36N/02535.72E_332/004g016t061r000p000P000h60b09495.open2300v1.11
+','',45.656,25.5953333333333,1378282719);
+INSERT INTO aprs_stations VALUES(9,'YO8RBY-10','APNW01','TCPIP*qASYO8RBY','&','@040818z4655.59N/02621.86E&*I-GATE*Piatra Neamt-NTcounty
+','',46.9265,26.3643333333333,1378282725);
+INSERT INTO aprs_stations VALUES(10,'YO8RBY-2','GPS','qARYO8RBY-10','r',';YO8G-uhf *111111z4656.68N/02622.05Er438.950MHz_TOFF_-760_R100k UHF R.
+','',46.9446666666667,26.3675,1378282730);
+INSERT INTO aprs_stations VALUES(11,'YO8CLN-10','APNW01','TCPIP*qASyo8cln-10','_','@040820z4715.56N/02521.15E_000/114g114t055r000P014h70b09886WX3in1 weather
+','',47.2593333333333,25.3525,1378282740);
+INSERT INTO aprs_stations VALUES(12,'YO3FBD-9','APGWM9','TCPIPqARYO3JWM-2','>','@081901h4423.17N/02444.45E>000/000/A=000551 GSM/APRS www.aprs.ro
+','',44.3861666666667,24.7408333333333,1378282746);
 CREATE TABLE commands (id INTEGER PRIMARY KEY, id_session NUMERIC, update_signals TEXT);
 CREATE TABLE fgfs_settings (aprs_server TEXT, windowY NUMERIC, windowX NUMERIC, id INTEGER PRIMARY KEY, fgfs_binary TEXT, fgdata_path TEXT, aircraft TEXT, airport TEXT, scenery_path TEXT, use_clutter NUMERIC, use_antenna_pattern NUMERIC);
-INSERT INTO fgfs_settings VALUES('euro.aprs2.net',768,1024,1,'/home/adrian/games/fgfs/install/fgfs/bin/fgfs','/home/adrian/games/fgfs/install/fgfs/fgdata/','ufo','LRBC','/home/adrian/games/fgfs/scenery:/home/adrian/games/fgfs/terrasync:/home/adrian/games/fgfs/install/fgfs/fgdata/Scenery',1,1);
+INSERT INTO fgfs_settings VALUES('romania.aprs2.net',768,1024,1,'/home/adrian/games/fgfs/install/fgfs/bin/fgfs','/home/adrian/games/fgfs/install/fgfs/fgdata/','ufo','LRBC','/home/adrian/games/fgfs/scenery:/home/adrian/games/fgfs/terrasync:/home/adrian/games/fgfs/install/fgfs/fgdata/Scenery',1,1);
 CREATE TABLE flightplan_positions (id INTEGER PRIMARY KEY, id_session NUMERIC, longitude TEXT, latitude TEXT, altitude NUMERIC, created_on NUMERIC);
 INSERT INTO flightplan_positions VALUES(1,0,25.7612228393555,46.436437289996,0,1376481214);
 INSERT INTO flightplan_positions VALUES(2,0,25.766544342041,46.4345444257616,0,1376481216);

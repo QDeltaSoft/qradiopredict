@@ -3,9 +3,11 @@
 
 #include <QtSql>
 #include <QVector>
+#include <math.h>
 #include "mobilestation.h"
 #include "groundstation.h"
 #include "flightplanpoints.h"
+#include "aprsstation.h"
 #include "signal.h"
 #include "flightgearprefs.h"
 
@@ -15,6 +17,12 @@ public:
     DatabaseApi();
     ~DatabaseApi();
 
+
+    QVector<AprsStation *>
+    select_aprs_stations();
+
+    void
+    update_aprs_stations(AprsStation * s);
 
     bool
     select_commands(const unsigned &id_session);

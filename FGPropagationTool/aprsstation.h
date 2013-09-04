@@ -15,6 +15,7 @@ public:
     QString message;
     double latitude;
     double longitude;
+    uint time_seen;
     QString getImage();
 };
 

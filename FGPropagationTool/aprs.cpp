@@ -148,6 +148,8 @@ void Aprs::processData()
             st->message = message;
             st->latitude = latitude;
             st->longitude = longitude;
+            QDateTime dt = QDateTime::currentDateTime();
+            st->time_seen = dt.toTime_t();
             emit aprsData(st);
 
         }
