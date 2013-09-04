@@ -118,7 +118,7 @@ void Aprs::processData()
 
         QString lat;
         QString lon;
-        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)(.)*");
+        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)(.+)");
         QRegularExpressionMatch match = re.match(payload);
         if (match.hasMatch()) {
             lat = match.captured(1);

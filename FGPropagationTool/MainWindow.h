@@ -5,6 +5,7 @@
 #include "fgtelnet.h"
 #include "aprs.h"
 #include "aprsstation.h"
+#include "aprsicon.h"
 #include "databaseapi.h"
 #include "mobilestation.h"
 #include "groundstation.h"
@@ -105,7 +106,7 @@ private:
     QMap<QGraphicsPixmapItem *, QPointF> _map_mobiles;
     QMap<QGraphicsPixmapItem *, QPointF> _map_ground;
     QMap<QGraphicsPixmapItem *, QPointF> _map_fppos;
-    QMap<QGraphicsPixmapItem *, QPointF> _map_aprs;
+    QMap<QGraphicsPixmapItem *, AprsIcon> _map_aprs;
     QMap<QGraphicsTextItem *, QPointF> _map_aprs_text;
     QVector<QDockWidget *> _docks;
     QVector<QString *> _raw_aprs_messages;

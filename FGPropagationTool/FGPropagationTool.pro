@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     flightgearprefs.cpp \
     aprs.cpp \
     aprsstation.cpp \
-    rawmessagesform.cpp
+    rawmessagesform.cpp \
+    aprsicon.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -57,7 +58,8 @@ HEADERS  += MainWindow.h \
     flightgearprefs.h \
     aprs.h \
     aprsstation.h \
-    rawmessagesform.h
+    rawmessagesform.h \
+    aprsicon.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \

@@ -185,17 +185,32 @@ void MainWindow::processRawAPRSData(QString data)
 
 void MainWindow::processAPRSData(AprsStation *st)
 {
+    QMapIterator<QGraphicsPixmapItem*, AprsIcon> i(_map_aprs);
+    while(i.hasNext())
+    {
+        i.next();
+        AprsIcon ic = i.value();
+        QPointF pos= ic.position;
+        if( (fabs(pos.rx() - st->longitude) <= 0.001) && (fabs(pos.ry() - st->latitude) <=0.001 )
+                && (ic.icon==st->getImage()) )
+        {
+            return;
+        }
+    }
     QPointF pos(st->longitude,st->latitude);
     double zoom = _view->zoomLevel();
     QString filename = ":aprs/aprs_icons/slice_";
+    AprsIcon ic;
     QString icon = st->getImage();
+    ic.icon = icon;
+    ic.position = pos;
     filename.append(icon).append(".png");
     QPixmap pixmap(filename);
     pixmap = pixmap.scaled(16,16);
     QGraphicsPixmapItem *img= _view->_childView->scene()->addPixmap(pixmap);
     QPointF xypos = Util::convertToXY(pos, zoom);
     img->setOffset(xypos - QPoint(8,8));
-    _map_aprs.insert(img, pos);
+    _map_aprs.insert(img, ic);
 
 
     QGraphicsTextItem * callsign = new QGraphicsTextItem;
@@ -363,10 +378,11 @@ void MainWindow::setMapItems(quint8 zoom)
     }
 
     {
-        QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_aprs);
+        QMapIterator<QGraphicsPixmapItem *, AprsIcon> i(_map_aprs);
         while (i.hasNext()) {
             i.next();
-            QPointF pos = i.value();
+            AprsIcon ic = i.value();
+            QPointF pos = ic.position;
             QPointF xypos = Util::convertToXY(pos, zoom);
             QGraphicsPixmapItem * img = i.key();
             img->setOffset(xypos - QPoint(8,8));
@@ -470,7 +486,10 @@ void MainWindow::restoreMapState()
         int zoom = _view->zoomLevel();
         QPointF xypos = Util::convertToXY(pos, zoom);
         pic->setOffset(xypos - QPoint(7,25));
-        _map_aprs.insert(pic, pos);
+        AprsIcon ic;
+        ic.position = pos;
+        ic.icon = icon;
+        _map_aprs.insert(pic, ic);
 
         QGraphicsTextItem * callsign = new QGraphicsTextItem;
         callsign->setPos(xypos - QPoint(0,16));
