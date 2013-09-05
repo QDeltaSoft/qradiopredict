@@ -110,7 +110,7 @@ void Aprs::processData()
         QString via;
         for(uint i = 1;i<via_size ; ++i)
         {
-            via.append(v2[i]);
+            via.append(v2[i]).append(",");
         }
 
         QString payload = v[1];

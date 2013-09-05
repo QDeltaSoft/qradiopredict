@@ -187,7 +187,7 @@ void MainWindow::processRawAPRSData(QString data)
 
 void MainWindow::processAPRSData(AprsStation *st)
 {
-    QMapIterator<QGraphicsPixmapItem*, AprsIcon> i(_map_aprs);
+    QMapIterator<AprsPixmapItem*, AprsIcon> i(_map_aprs);
     while(i.hasNext())
     {
         i.next();
@@ -209,8 +209,13 @@ void MainWindow::processAPRSData(AprsStation *st)
     filename.append(icon).append(".png");
     QPixmap pixmap(filename);
     pixmap = pixmap.scaled(16,16);
-    QGraphicsPixmapItem *img= _view->_childView->scene()->addPixmap(pixmap);
+    AprsPixmapItem *img = new AprsPixmapItem(pixmap);
+    img->setAcceptHoverEvents(true);
+
+    _view->_childView->scene()->addItem(img);
     QPointF xypos = Util::convertToXY(pos, zoom);
+    img->setMessage(st->adressee,st->via,st->message);
+    img->setPosition(xypos);
     img->setOffset(xypos - QPoint(8,8));
     _map_aprs.insert(img, ic);
 
@@ -380,14 +385,15 @@ void MainWindow::setMapItems(quint8 zoom)
     }
 
     {
-        QMapIterator<QGraphicsPixmapItem *, AprsIcon> i(_map_aprs);
+        QMapIterator<AprsPixmapItem *, AprsIcon> i(_map_aprs);
         while (i.hasNext()) {
             i.next();
             AprsIcon ic = i.value();
             QPointF pos = ic.position;
             QPointF xypos = Util::convertToXY(pos, zoom);
-            QGraphicsPixmapItem * img = i.key();
+            AprsPixmapItem * img = i.key();
             img->setOffset(xypos - QPoint(8,8));
+            img->setPosition(xypos);
 
         }
     }
@@ -483,10 +489,15 @@ void MainWindow::restoreMapState()
         filename.append(icon).append(".png");
         QPixmap pixmap(filename);
         pixmap = pixmap.scaled(16,16);
-        QGraphicsPixmapItem *pic= _view->_childView->scene()->addPixmap(pixmap);
+        AprsPixmapItem *pic = new AprsPixmapItem(pixmap);
+        pic->setAcceptHoverEvents(true);
+
+        _view->_childView->scene()->addItem(pic);
         QPointF pos = QPointF(st->longitude,st->latitude);
         int zoom = _view->zoomLevel();
         QPointF xypos = Util::convertToXY(pos, zoom);
+        pic->setMessage(st->adressee,st->via,st->message);
+        pic->setPosition(xypos);
         pic->setOffset(xypos - QPoint(7,25));
         AprsIcon ic;
         ic.position = pos;

@@ -322,7 +322,8 @@ void MapGraphicsView::handleChildMouseMove(QMouseEvent *event)
 {
     if (!_mouse_pressed)
     {
-        event->setAccepted(true);
+        event->setAccepted(false);
+        return;
         QPointF movePosition = _childView->mapToScene(_childView->mapFromGlobal(event->pos()));
         emit mouse_moved(movePosition);
     }
@@ -346,7 +347,7 @@ void MapGraphicsView::handleChildMouseRelease(QMouseEvent *event)
 {
     _mouse_pressed =false;
     this->_childView->viewport()->setCursor(Qt::CrossCursor);
-    event->setAccepted(true);
+    event->setAccepted(false);
     //this->setCursor(Qt::ArrowCursor);
 }
 
