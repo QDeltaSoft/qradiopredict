@@ -157,6 +157,8 @@ void MainWindow::connectToAPRS()
     QObject::connect(_aprs,SIGNAL(aprsData(AprsStation*)),this,SLOT(processAPRSData(AprsStation*)));
     QObject::connect(_aprs,SIGNAL(rawAprsData(QString)),this,SLOT(processRawAPRSData(QString)));
     QObject::connect(ui->actionRaw_APRS_messages,SIGNAL(triggered()),this,SLOT(showRawAPRSMessages()));
+    delete p;
+    prefs.clear();
 }
 
 void MainWindow::showRawAPRSMessages()
@@ -219,10 +221,20 @@ void MainWindow::processAPRSData(AprsStation *st)
     img->setOffset(xypos - QPoint(8,8));
     _map_aprs.insert(img, ic);
 
-
+    QString callsign_text;
+    QRegularExpression re(";(.+)\*(.+)");
+    QRegularExpressionMatch match = re.match(st->payload);
+    if(match.hasMatch())
+    {
+        callsign_text = match.captured(1);
+    }
+    else
+    {
+        callsign_text = st->callsign;
+    }
     QGraphicsTextItem * callsign = new QGraphicsTextItem;
     callsign->setPos(xypos - QPoint(0,16));
-    callsign->setPlainText(st->callsign);
+    callsign->setPlainText(callsign_text);
 
     _view->_childView->scene()->addItem(callsign);
     _map_aprs_text.insert(callsign,pos);
@@ -504,9 +516,20 @@ void MainWindow::restoreMapState()
         ic.icon = icon;
         _map_aprs.insert(pic, ic);
 
+        QString callsign_text;
+        QRegularExpression re(";(.+?)\\*");
+        QRegularExpressionMatch match = re.match(st->payload);
+        if(match.hasMatch())
+        {
+            callsign_text = match.captured(1);
+        }
+        else
+        {
+            callsign_text = st->callsign;
+        }
         QGraphicsTextItem * callsign = new QGraphicsTextItem;
         callsign->setPos(xypos - QPoint(0,16));
-        callsign->setPlainText(st->callsign);
+        callsign->setPlainText(callsign_text);
 
         _view->_childView->scene()->addItem(callsign);
         _map_aprs_text.insert(callsign,pos);
