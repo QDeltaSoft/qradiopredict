@@ -13,6 +13,7 @@ public:
     double link_budget;
     double terrain_attenuation;
     double clutter_attenuation;
+    double distance;
     QString prop_mode;
     QString station_name;
     double frequency;

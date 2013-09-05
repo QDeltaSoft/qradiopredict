@@ -89,7 +89,7 @@ void Util::startFlightgear(DatabaseApi *db)
          <<     "--fov=90"
          <<   "--visibility-miles=40"
          <<     "--disable-fullscreen";
-    if(prefs.size()>0 && pref->_windowX!=0 && pref->_windowY!=0)
+    if(prefs.size()==-1 && pref->_windowX!=0 && pref->_windowY!=0)
     {
         args << "--geometry=" << QString::number(pref->_windowX) << "x" << QString::number(pref->_windowY);
     }

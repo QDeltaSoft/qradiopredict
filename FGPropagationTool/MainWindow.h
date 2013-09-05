@@ -6,6 +6,7 @@
 #include "aprs.h"
 #include "aprsstation.h"
 #include "aprsicon.h"
+
 #include "databaseapi.h"
 #include "mobilestation.h"
 #include "groundstation.h"
@@ -77,6 +78,7 @@ private slots:
     void showRawAPRSMessages();
 
 
+
 public slots:
     void mapClick(QPointF pos);
     void getMouseCoord(QPointF coord);
@@ -87,7 +89,9 @@ public slots:
     void deleteGroundStation(unsigned id);
     void deleteFlightplan(unsigned id);
     void sendFlightgearData();
+    void enableStartButton();
     void startSignalUpdate();
+    void stopSignalUpdate();
     void moveMobile(double lon, double lat);
     void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
     void newAPRSquery(quint8 zoom);

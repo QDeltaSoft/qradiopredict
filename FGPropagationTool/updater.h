@@ -20,6 +20,7 @@ public:
 public slots:
     void startUpdate();
     void setReceived(QString prop_data);
+    void stop();
 
 signals:
     void haveMobilePosition(double lon, double lat);
@@ -32,6 +33,7 @@ private:
     DatabaseApi *_db;
     unsigned _received;
     QString _prop_data;
+    unsigned _run;
 };
 
 #endif // UPDATER_H

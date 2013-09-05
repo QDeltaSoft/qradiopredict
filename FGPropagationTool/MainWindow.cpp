@@ -103,6 +103,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(_tb->ui->sendToFlightgearButton,SIGNAL(clicked()),this,SLOT(sendFlightgearData()));
     QObject::connect(_tb->ui->startUpdateButton,SIGNAL(clicked()),this,SLOT(startSignalUpdate()));
+    QObject::connect(_tb->ui->stopUpdateButton,SIGNAL(clicked()),this,SLOT(stopSignalUpdate()));
+
 
     /*\ This needs to go
     QPolygonF polygon;
@@ -785,12 +787,17 @@ void MainWindow::deleteFlightplan(unsigned id)
 
 void MainWindow::sendFlightgearData()
 {
-    connect(_remote, SIGNAL(readyUpdate()), this, SLOT(startSignalUpdate()));
+    QObject::connect(_remote, SIGNAL(readyUpdate()), this, SLOT(startSignalUpdate()));
     _remote->sendAllData();
 }
 
 void MainWindow::startSignalUpdate()
 {
+    _tb->ui->startUpdateButton->setEnabled(false);
+    _tb->ui->startUpdateButton->setStyleSheet("background:rgb(220,220,220);");
+    _tb->ui->stopUpdateButton->setEnabled(true);
+    _tb->ui->stopUpdateButton->setStyleSheet("background:yellow;");
+
     _start_time= QDateTime::currentDateTime().toString("d/MMM/yyyy hh:mm:ss");
     QThread *t= new QThread;
     Updater *up = new Updater(_db);
@@ -804,19 +811,35 @@ void MainWindow::startSignalUpdate()
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
     QObject::connect(_telnet,SIGNAL(haveProperty(QString)),this,SLOT(setReceived(QString)),Qt::QueuedConnection);
     QObject::connect(up,SIGNAL(getProperty(QString)),_telnet,SLOT(getProperty(QString)),Qt::QueuedConnection);
-    //QObject::connect(this,SIGNAL(haveProperty(QString)),up,SLOT(setReceived(QString)),Qt::QueuedConnection);
     t->start();
     _updater = up;
 
+}
 
+void MainWindow::enableStartButton()
+{
+    _tb->ui->startUpdateButton->setEnabled(true);
+    _tb->ui->startUpdateButton->setStyleSheet("background:yellow;");
+    _tb->ui->stopUpdateButton->setEnabled(false);
+    _tb->ui->stopUpdateButton->setStyleSheet("background:rgb(220,220,220);");
+    QObject::connect(_tb->ui->startUpdateButton, SIGNAL(clicked()), this, SLOT(startSignalUpdate()));
+}
+
+void MainWindow::stopSignalUpdate()
+{
+    _updater->stop();
+    _tb->ui->startUpdateButton->setEnabled(true);
+    _tb->ui->startUpdateButton->setStyleSheet("background:yellow;");
+    _tb->ui->stopUpdateButton->setEnabled(false);
+    _tb->ui->stopUpdateButton->setStyleSheet("background:rgb(220,220,220);");
 }
 
 void MainWindow::setReceived(QString data)
 {
-    //qDebug() << "main received: " << data;
-    //emit haveProperty(data);
+
     _updater->setReceived(data);
 }
+
 
 void MainWindow::moveMobile(double lon, double lat)
 {
@@ -927,6 +950,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 StationSignalForm *signal_form = new StationSignalForm;
                 signal_form->ui->stationName->setText(station_name);
                 signal_form->ui->frequency->setText(QString::number(freq));
+                signal_form->ui->distance->setText(QString::number(s->distance));
                 signal_form->ui->signal->setText(QString::number(s->signal));
                 signal_form->ui->signalDbm->setText(QString::number(s->signal_dbm));
                 signal_form->ui->fieldStrength->setText(QString::number(s->field_strength_uv));
@@ -966,6 +990,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
 
                         QLabel * stationName = w->findChild<QLabel *>("stationName");
                         QLabel * frequency = w->findChild<QLabel *>("frequency");
+                        QLabel * distance = w->findChild<QLabel *>("distance");
                         QLabel * signal = w->findChild<QLabel *>("signal");
                         QLabel * signalDbm = w->findChild<QLabel *>("signalDbm");
                         QLabel * fieldStrength = w->findChild<QLabel *>("fieldStrength");
@@ -975,6 +1000,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
 
                         stationName->setText(station_name);
                         frequency->setText(QString::number(freq));
+                        distance->setText(QString::number(s->distance));
                         if(s->signal <= 2)
                         {
                             signal->setText("<font color=\"red\">"+QString::number(s->signal)+"</font>");

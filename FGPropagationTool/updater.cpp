@@ -5,7 +5,7 @@ Updater::Updater( DatabaseApi * d)
 
     _db = d;
     _received= 0;
-
+    _run=1;
 }
 
 Updater::~Updater()
@@ -18,6 +18,11 @@ void Updater::setReceived(QString prop_data)
 
     _prop_data = prop_data;
     _received =1;
+}
+
+void Updater::stop()
+{
+    _run=0;
 }
 
 void Updater::startUpdate()
@@ -80,6 +85,11 @@ void Updater::startUpdate()
             QString link_budget = _prop_data;
             _received = 0;
 
+            emit getProperty("/sim/radio/station"+st+"/distance");
+            while(_received==0){}
+            QString distance = _prop_data;
+            _received = 0;
+
             emit getProperty("/sim/radio/station"+st+"/terrain-attenuation");
             while(_received==0){}
             QString terrain_attenuation = _prop_data;
@@ -98,7 +108,7 @@ void Updater::startUpdate()
             Signal *s = new Signal;
             s->signal = signal.toDouble();
             s->signal_dbm = signal_dbm.toDouble();
-
+            s->distance = distance.toDouble();
             s->field_strength_uv = field_strength_uv.toDouble();
             s->link_budget = link_budget.toDouble();
             s->terrain_attenuation = terrain_attenuation.toDouble();
@@ -108,9 +118,15 @@ void Updater::startUpdate()
             emit haveSignalReading(longitude,latitude,g->id,g->name,g->frequency,s);
             //QTime delaytime= QTime::currentTime().addSecs(1);
             //while( QTime::currentTime() < delaytime ) {}
+
         }
+        if(_run==0)
+            break;
 
-
+    }
+    for(int i=0;i<stations.size();++i)
+    {
+        delete stations[i];
     }
     stations.clear();
     emit finished();

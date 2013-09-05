@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     aprs.cpp \
     aprsstation.cpp \
     rawmessagesform.cpp \
-    aprsicon.cpp
+    aprsicon.cpp \
+    aprspixmapitem.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -59,7 +60,8 @@ HEADERS  += MainWindow.h \
     aprs.h \
     aprsstation.h \
     rawmessagesform.h \
-    aprsicon.h
+    aprsicon.h \
+    aprspixmapitem.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
