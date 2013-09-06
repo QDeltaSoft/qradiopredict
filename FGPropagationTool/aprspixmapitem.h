@@ -20,7 +20,7 @@ public:
 private:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    QString _adressee;
+    QString _callsign;
     QString _via;
     QString _message;
     QGraphicsTextItem * _item_text;

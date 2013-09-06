@@ -164,7 +164,7 @@ void MainWindow::connectToAPRS()
 void MainWindow::showRawAPRSMessages()
 {
     RawMessagesForm *f = new RawMessagesForm;
-    for(uint i=0; i<_raw_aprs_messages.size();++i)
+    for(int i=0; i<_raw_aprs_messages.size();++i)
     {
         f->ui->messagesTextEdit->append(*_raw_aprs_messages[i]);
     }
@@ -216,13 +216,13 @@ void MainWindow::processAPRSData(AprsStation *st)
 
     _view->_childView->scene()->addItem(img);
     QPointF xypos = Util::convertToXY(pos, zoom);
-    img->setMessage(st->adressee,st->via,st->message);
+    img->setMessage(st->callsign,st->via,st->message);
     img->setPosition(xypos);
     img->setOffset(xypos - QPoint(8,8));
     _map_aprs.insert(img, ic);
 
     QString callsign_text;
-    QRegularExpression re(";(.+)\*(.+)");
+    QRegularExpression re(";(.+?)\\*");
     QRegularExpressionMatch match = re.match(st->payload);
     if(match.hasMatch())
     {
@@ -508,7 +508,7 @@ void MainWindow::restoreMapState()
         QPointF pos = QPointF(st->longitude,st->latitude);
         int zoom = _view->zoomLevel();
         QPointF xypos = Util::convertToXY(pos, zoom);
-        pic->setMessage(st->adressee,st->via,st->message);
+        pic->setMessage(st->callsign,st->via,st->message);
         pic->setPosition(xypos);
         pic->setOffset(xypos - QPoint(7,25));
         AprsIcon ic;
