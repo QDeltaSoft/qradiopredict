@@ -36,6 +36,10 @@ void SettingsDialog::fillEmptyFields()
         {
             this->ui->clutterCheckBox->setChecked(true);
         }
+        if(p->_itm_radio_performance == 1)
+        {
+            this->ui->ITMCheckBox->setChecked(true);
+        }
         this->ui->windowXEdit->setText(QString::number(p->_windowX));
         this->ui->windowYEdit->setText(QString::number(p->_windowY));
         this->ui->aprsServerEdit->setText(p->_aprs_server);
@@ -59,6 +63,10 @@ void SettingsDialog::saveData()
     if(this->ui->clutterCheckBox->isChecked())
     {
         p->_use_clutter =1;
+    }
+    if(this->ui->ITMCheckBox->isChecked())
+    {
+        p->_itm_radio_performance =1;
     }
     p->_windowX = this->ui->windowXEdit->text().toInt();
     p->_windowY = this->ui->windowYEdit->text().toInt();

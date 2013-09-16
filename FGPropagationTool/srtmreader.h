@@ -1,17 +1,33 @@
 #ifndef SRTMREADER_H
 #define SRTMREADER_H
 
-#include <QObject>
+#include <QString>
+#include <QVector>
+#include <QFile>
+#include <QDir>
+#include "flightgearprefs.h"
+#include "databaseapi.h"
 
-class SRTMReader : public QObject
+/**
+ * @brief A simple SRTM hgt file reader
+ */
+class SRTMReader
 {
-    Q_OBJECT
+
 public:
-    explicit SRTMReader(QObject *parent = 0);
-    
-signals:
-    
-public slots:
+    explicit SRTMReader(DatabaseApi *db);
+    void setCoordinates(double &lat, double &lon);
+    double readHeight();
+
+
+private:
+    double _latitude;
+    double _longitude;
+    double _latitude_secs;
+    double _longitude_secs;
+    QString getFilename();
+    FlightgearPrefs *_settings;
+    QString _last_filename;
     
 };
 

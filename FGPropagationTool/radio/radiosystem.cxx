@@ -30,7 +30,7 @@
 #include "itm.cpp"
 
 
-FGRadio::FGRadio() {
+FGRadio::FGRadio(DatabaseApi *db) {
 	
 	
 	_antennas.insert(std::pair<std::string, FGRadioAntenna*>("yagi4", new FGRadioAntenna("yagi4")));
@@ -39,7 +39,13 @@ FGRadio::FGRadio() {
 	if(_radio_props.size() < 2) {
         qDebug() << "Radio: Unable to read materials properties from file;using static definitions";
 	}
-
+    QVector<FlightgearPrefs *> prefs = db->select_prefs();
+    if(prefs.size()>0)
+    {
+        _settings = prefs[0];
+    }
+    else
+        _settings = 0;
 	
 	_propagation_model = 2; 
 	
@@ -279,7 +285,7 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	*	this decreases precision for large distances, but improves performance
 	*/
 	
-    if( _settings->itm_radio_performance == true )  {
+    if( _settings->_itm_radio_performance == 1 )  {
 		if (transmission->distance_m > 50000) {
 			
 			transmission->point_distance= transmission->distance_m * 2 /1000; 
@@ -437,7 +443,7 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 		ITM::point_to_point(itm_elev.get(), transmission->receiver_height, transmission->transmitter_height,
 			eps_dielect, sgm_conductivity, eno, transmission->freq, radio_climate,
 			pol, conf, rel, dbloss, strmode, p_mode, horizons, errnum);
-        if( _settings->use_clutter_attenuation == true )
+        if( _settings->_use_clutter == 1 )
 			attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
 				transmission->receiver_height, transmission->transmitter_height, p_mode, horizons, clutter_loss);
 	}
@@ -445,7 +451,7 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 		ITM::point_to_point(itm_elev.get(), transmission->transmitter_height, transmission->receiver_height,
 			eps_dielect, sgm_conductivity, eno, transmission->freq, radio_climate,
 			pol, conf, rel, dbloss, strmode, p_mode, horizons, errnum);
-        if( _settings->use_clutter_attenuation == true )
+        if( _settings->_use_clutter == 1 )
 			attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
 				transmission->transmitter_height, transmission->receiver_height, p_mode, horizons, clutter_loss);
 	}
@@ -467,7 +473,7 @@ void FGRadio::attenuationITM(Transmission* transmission) {
     s->clutter_attenuation = clutter_loss;
     s->polarization_attenuation = pol_loss;
 		
-    if( _settings->use_antenna_pattern ==true )
+    if( _settings->_use_antenna_pattern ==1 )
 		attenuationAntenna(transmission);
 	
 	signal = link_budget - dbloss - clutter_loss + pol_loss + transmission->rx_pattern_gain + transmission->tx_pattern_gain;
@@ -1095,7 +1101,7 @@ void FGRadio::attenuationLOS(Transmission* transmission) {
 			transmission->tx_line_losses + transmission->rx_antenna_gain + transmission->tx_antenna_gain;	
 	double tx_erp = dbm_to_watt(transmission->transmitter_power + transmission->tx_antenna_gain - transmission->tx_line_losses);
 	
-    if( _settings->use_antenna_pattern == true )
+    if( _settings->_use_antenna_pattern == 1 )
 		attenuationAntenna(transmission);
 	
 	// extra 10 db loss to fit the ITM conf and rel params (this should be linked to speed maybe)

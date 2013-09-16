@@ -42,13 +42,6 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="7" column="1">
-     <widget class="QCheckBox" name="clutterCheckBox">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4">
       <property name="font">
@@ -62,59 +55,14 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Aircraft</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="fgfsEdit"/>
-    </item>
-    <item row="7" column="0">
-     <widget class="QLabel" name="label_6">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Use clutter attenuation</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="fgdataEdit"/>
-    </item>
-    <item row="10" column="1">
-     <widget class="QLineEdit" name="aprsServerEdit"/>
-    </item>
     <item row="2" column="1">
      <widget class="QLineEdit" name="aircraftEdit"/>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>FGDATA path</string>
-      </property>
-     </widget>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="windowXEdit"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="airportEdit"/>
     </item>
     <item row="4" column="1">
      <widget class="QLineEdit" name="sceneryEdit"/>
@@ -132,14 +80,18 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="windowXEdit"/>
+    <item row="7" column="1">
+     <widget class="QCheckBox" name="clutterCheckBox">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="airportEdit"/>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="fgdataEdit"/>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_3">
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
         <weight>75</weight>
@@ -147,7 +99,33 @@
        </font>
       </property>
       <property name="text">
-       <string>Flightgear executable</string>
+       <string>Use clutter attenuation</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="1">
+     <widget class="QCheckBox" name="antennaCheckBox">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Use antenna radiation pattern</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -164,7 +142,7 @@
       </property>
      </widget>
     </item>
-    <item row="10" column="0">
+    <item row="11" column="0">
      <widget class="QLabel" name="label_12">
       <property name="font">
        <font>
@@ -177,15 +155,70 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="2">
-     <widget class="QLabel" name="label_7">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
-       <string/>
+       <string>Flightgear executable</string>
       </property>
      </widget>
     </item>
-    <item row="8" column="1">
-     <widget class="QCheckBox" name="antennaCheckBox">
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="fgfsEdit"/>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>FGDATA path</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Aircraft</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="1">
+     <widget class="QLineEdit" name="aprsServerEdit"/>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="windowYEdit"/>
+    </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="label_13">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>APRS Settings</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QLabel" name="label_7">
       <property name="text">
        <string/>
       </property>
@@ -204,11 +237,8 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
-     <widget class="QLineEdit" name="windowYEdit"/>
-    </item>
-    <item row="8" column="0">
-     <widget class="QLabel" name="label_8">
+    <item row="9" column="0">
+     <widget class="QLabel" name="label_14">
       <property name="font">
        <font>
         <weight>75</weight>
@@ -216,24 +246,14 @@
        </font>
       </property>
       <property name="text">
-       <string>Use antenna radiation pattern</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
+       <string>ITM Performance</string>
       </property>
      </widget>
     </item>
-    <item row="9" column="0">
-     <widget class="QLabel" name="label_13">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>true</underline>
-       </font>
-      </property>
+    <item row="9" column="1">
+     <widget class="QCheckBox" name="ITMCheckBox">
       <property name="text">
-       <string>APRS Settings</string>
+       <string/>
       </property>
      </widget>
     </item>

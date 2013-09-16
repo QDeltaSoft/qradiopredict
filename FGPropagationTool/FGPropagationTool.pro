@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     sg/SGGeodesy.cxx \
     radio/antenna.cxx \
     radio/radiosystem.cxx \
-    radio/itm.cpp
+    radio/itm.cpp \
+    radio/scenerymanager.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -88,7 +89,8 @@ HEADERS  += MainWindow.h \
     sg/constants.h \
     sg/sg_inlines.h \
     radio/antenna.hxx \
-    radio/radiosystem.hxx
+    radio/radiosystem.hxx \
+    radio/scenerymanager.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \

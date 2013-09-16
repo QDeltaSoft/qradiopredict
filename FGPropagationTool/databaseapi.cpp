@@ -153,6 +153,7 @@ DatabaseApi::select_prefs()
     int airport_idx = query.record().indexOf("airport");
     int scenery_path_idx = query.record().indexOf("scenery_path");
     int use_clutter_idx = query.record().indexOf("use_clutter");
+    int itm_perfomance_idx = query.record().indexOf("itm_perfomance_mode");
     int use_antenna_pattern_idx = query.record().indexOf("use_antenna_pattern");
     int windowX_idx = query.record().indexOf("windowX");
     int windowY_idx = query.record().indexOf("windowY");
@@ -167,6 +168,7 @@ DatabaseApi::select_prefs()
         p->_aircraft = query.value(aircraft_idx).toString();
         p->_airport = query.value(airport_idx).toString();
         p->_use_clutter = query.value(use_clutter_idx).toInt();
+        p->_itm_radio_performance = query.value(itm_perfomance_idx).toInt();
         p->_use_antenna_pattern = query.value(use_antenna_pattern_idx).toInt();
         p->_windowX = query.value(windowX_idx).toInt();
         p->_windowY = query.value(windowY_idx).toInt();
@@ -184,7 +186,7 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     query.prepare("UPDATE fgfs_settings SET "
                   "fgfs_binary =:fgfs_binary, fgdata_path=:fgdata_path, "
                   "scenery_path = :scenery_path, aircraft=:aircraft,"
-                  "airport = :airport, use_clutter= :use_clutter,"
+                  "airport = :airport, use_clutter= :use_clutter, itm_performance_mode=:itm_performance, "
                   "use_antenna_pattern = :use_antenna_pattern, windowX= :windowX, windowY= :windowY, "
                   "aprs_server= :aprs_server"
                   " WHERE id=1");
@@ -194,6 +196,7 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     query.bindValue(":aircraft", p->_aircraft);
     query.bindValue(":airport", p->_airport);
     query.bindValue(":use_clutter", p->_use_clutter);
+    query.bindValue(":itm_performance", p->_itm_radio_performance);
     query.bindValue(":use_antenna_pattern", p->_use_antenna_pattern);
     query.bindValue(":windowX", p->_windowX);
     query.bindValue(":windowY", p->_windowY);

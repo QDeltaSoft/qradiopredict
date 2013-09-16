@@ -32,6 +32,8 @@
 #include <QTime>
 #include <QString>
 #include "../signal.h"
+#include "../flightgearprefs.h"
+#include "../databaseapi.h"
 
 using std::string;
 
@@ -193,7 +195,7 @@ private:
 	
     QTime _last_beacon_update;
 	
-	
+    FlightgearPrefs *_settings;
 	double _terrain_sampling_distance;
 	
 	std::map<string, double[2]> _mat_database;
@@ -251,7 +253,7 @@ private:
 	
 public:
 
-    FGRadio();
+    FGRadio(DatabaseApi *db);
     ~FGRadio();
     
     void init();
