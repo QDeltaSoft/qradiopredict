@@ -37,7 +37,11 @@ SOURCES += main.cpp\
     aprsicon.cpp \
     aprspixmapitem.cpp \
     srtmreader.cpp \
-    shpreader.cpp
+    shpreader.cpp \
+    sg/SGGeodesy.cxx \
+    radio/antenna.cxx \
+    radio/radiosystem.cxx \
+    radio/itm.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -65,7 +69,26 @@ HEADERS  += MainWindow.h \
     aprsicon.h \
     aprspixmapitem.h \
     srtmreader.h \
-    shpreader.h
+    shpreader.h \
+    sg/SGGeodesy.hxx \
+    sg/SGMath.hxx \
+    sg/SGCMath.hxx \
+    sg/SGQuat.hxx \
+    sg/SGLocation.hxx \
+    sg/SGMatrix.hxx \
+    sg/SGMathFwd.hxx \
+    sg/sg_geodesy.hxx \
+    sg/SGGeoc.hxx \
+    sg/SGGeod.hxx \
+    sg/SGVec2.hxx \
+    sg/SGVec3.hxx \
+    sg/SGMisc.hxx \
+    sg/SGLimits.hxx \
+    sg/compiler.h \
+    sg/constants.h \
+    sg/sg_inlines.h \
+    radio/antenna.hxx \
+    radio/radiosystem.hxx
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
