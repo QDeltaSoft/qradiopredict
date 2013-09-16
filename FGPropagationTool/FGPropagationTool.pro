@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     aprsstation.cpp \
     rawmessagesform.cpp \
     aprsicon.cpp \
-    aprspixmapitem.cpp
+    aprspixmapitem.cpp \
+    srtmreader.cpp \
+    shpreader.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -61,7 +63,9 @@ HEADERS  += MainWindow.h \
     aprsstation.h \
     rawmessagesform.h \
     aprsicon.h \
-    aprspixmapitem.h
+    aprspixmapitem.h \
+    srtmreader.h \
+    shpreader.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
