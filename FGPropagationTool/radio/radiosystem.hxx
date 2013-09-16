@@ -26,11 +26,12 @@
 #include <deque>
 
 #include "sg/sg_geodesy.hxx"
-#include "groundstation.h"
+#include "../groundstation.h"
 #include "antenna.hxx"
 #include <QDebug>
 #include <QTime>
 #include <QString>
+#include "../signal.h"
 
 using std::string;
 

@@ -13,7 +13,14 @@ public:
     double link_budget;
     double terrain_attenuation;
     double clutter_attenuation;
+    double polarization_attenuation;
+    double field_strength_uv_meter;
+    double tx_pattern_gain;
+    double rx_pattern_gain;
     double distance;
+    double rx_height;
+    double tx_height;
+    double tx_erp;
     QString prop_mode;
     QString station_name;
     double frequency;

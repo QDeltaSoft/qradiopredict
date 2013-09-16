@@ -17,11 +17,6 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <math.h>
 
 #include <stdlib.h>
@@ -163,16 +158,8 @@ void FGRadio::receive(double dt, GroundStation *st) {
     double last_beacon_update = station->last_update;
 
     if ((QTime::currentTime() - last_beacon_update) < beacon_delay) {
-        if(signal_type != 2) {
+            // only beacon we have, yes
             //continue;
-        }
-        else {
-            if(station->signal > 0)
-                process_terrain =false;
-            //else
-                //continue;
-        }
-
     }
     else {
         process_terrain = true;
@@ -191,10 +178,10 @@ void FGRadio::receive(double dt, GroundStation *st) {
     if( !(lat) || !(lon))
         //continue;
 
-    double freq = station->frequency;
 
 
-    if((freq < 40.0) || (freq > 20000.0)) {	// frequency out of recommended range
+
+    if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
         //continue;
     }
 
@@ -205,14 +192,14 @@ void FGRadio::receive(double dt, GroundStation *st) {
     Transmission * transmission = new Transmission();
     transmission->station = station;
     transmission->pos = tx_pos;
-    transmission->freq = freq;
+    transmission->freq = station->frequency;
 
     transmission->transmission_type = station->transmission_type;
 
 
 
 
-    transmission->name = station->name.toUtf8();
+    transmission->name = station->name.toUtf8().constData();
 
     transmission->receiver_sensitivity = station->rx_sensitivity;
 
@@ -229,8 +216,8 @@ void FGRadio::receive(double dt, GroundStation *st) {
     transmission->rx_line_losses = station->rx_line_losses;
     transmission->tx_line_losses = station->tx_line_losses;
 
-    transmission->rx_antenna_type = station->rx_antenna_type.toUtf8();
-    transmission->tx_antenna_type = station->tx_antenna_type.toUtf8();
+    transmission->rx_antenna_type = station->rx_antenna_type.toUtf8().constData();
+    transmission->tx_antenna_type = station->tx_antenna_type.toUtf8().constData();
 
     transmission->polarization = station->polarization;
     transmission->sender_heading = heading;
@@ -331,9 +318,7 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	transmission->receiver_height += transmission->rx_antenna_height;
 	
 	
-	transmission->station->setDoubleValue("rx-height", transmission->receiver_height);
-	transmission->station->setDoubleValue("tx-height", transmission->transmitter_height);
-	transmission->station->setDoubleValue("distance", transmission->distance_m / 1000);
+
 	
 
 	if ((transmission->distance_m > 300000) || (own_alt > 8000)) {
@@ -472,14 +457,17 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 	//SG_LOG(SG_GENERAL, SG_BULK,
 	//		"ITM:: Link budget: " << link_budget << ", Attenuation: " << dbloss << " dBm, " << strmode << ", Error: " << errnum);
 	//cerr << "ITM:: Link budget: " << link_budget << ", Attenuation: " << dbloss << " dBm, " << strmode << ", Error: " << errnum << endl;
-	
-	transmission->station->setDoubleValue("link-budget", link_budget);
-	transmission->station->setDoubleValue("terrain-attenuation", dbloss);
-	transmission->station->setStringValue("prop-mode", strmode);
-	transmission->station->setDoubleValue("clutter-attenuation", clutter_loss);
-	transmission->station->setDoubleValue("polarization-attenuation", pol_loss);
+    Signal *s = new Signal;
+    s->rx_height = transmission->receiver_height;
+    s->tx_height = transmission->transmitter_height;
+    s->distance = transmission->distance_m / 1000;
+    s->link_budget = link_budget;
+    s->terrain_attenuation = dbloss;
+    s->prop_mode =  strmode;
+    s->clutter_attenuation = clutter_loss;
+    s->polarization_attenuation = pol_loss;
 		
-	if( _root_node->getBoolValue( "use-antenna-pattern", false ) )
+    if( _settings->use_antenna_pattern ==true )
 		attenuationAntenna(transmission);
 	
 	signal = link_budget - dbloss - clutter_loss + pol_loss + transmission->rx_pattern_gain + transmission->tx_pattern_gain;
@@ -489,14 +477,14 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 	
 	double field_strength_uV_per_meter = dbm_to_microvolt_per_meter(signal_strength_dbm, transmission->freq, transmission->rx_antenna_gain);
 	
-	transmission->station->setDoubleValue("signal-dbm", signal_strength_dbm);
-	transmission->station->setDoubleValue("field-strength-uV", field_strength_uV);
-	transmission->station->setDoubleValue("field-strength-uV-meter", field_strength_uV_per_meter);
-	transmission->station->setDoubleValue("signal", signal);
-	transmission->station->setDoubleValue("tx-erp", tx_erp);
+    s->signal_dbm = signal_strength_dbm;
+    s->field_strength_uv = field_strength_uV;
+    s->field_strength_uv_meter = field_strength_uV_per_meter;
+    s->signal = signal;
+    s->tx_erp = tx_erp;
 
-	transmission->station->setDoubleValue("tx-pattern-gain", transmission->tx_pattern_gain);
-	transmission->station->setDoubleValue("rx-pattern-gain", transmission->rx_pattern_gain);
+    s->tx_pattern_gain = transmission->tx_pattern_gain;
+    s->rx_pattern_gain = transmission->rx_pattern_gain;
 
 	for (unsigned i =0; i < transmission->materials.size(); i++) {
 		delete transmission->materials[i];
@@ -1122,22 +1110,22 @@ void FGRadio::attenuationLOS(Transmission* transmission) {
 	//cerr << "LOS:: Link budget: " << link_budget << " Distance: " << distance << ", Attenuation: " << dbloss << " dBm " << endl;
 	
 	
-	
+    Signal *s = new Signal;
 	transmission->signal = signal;
 	
-	transmission->station->setDoubleValue("link-budget", link_budget);
-	transmission->station->setDoubleValue("terrain-attenuation", dbloss);
-	transmission->station->setStringValue("prop-mode", "LOS");
-	transmission->station->setDoubleValue("polarization-attenuation", pol_loss);
+    s->link_budget = link_budget;
+    s->terrain_attenuation = dbloss;
+    s->prop_mode = "LOS";
+    s->polarization_attenuation = pol_loss;
 	
-	transmission->station->setDoubleValue("signal-dbm", signal_strength_dbm);
-	transmission->station->setDoubleValue("field-strength-uV", field_strength_uV);
-	transmission->station->setDoubleValue("field-strength-uV-meter", field_strength_uV_per_meter);
-	transmission->station->setDoubleValue("signal", signal);
-	transmission->station->setDoubleValue("tx-erp", tx_erp);
+    s->signal_dbm = signal_strength_dbm;
+    s->field_strength_uv = field_strength_uV;
+    s->field_strength_uv_meter = field_strength_uV_per_meter;
+    s->signal = signal;
+    s->tx_erp = tx_erp;
 	
-	transmission->station->setDoubleValue("tx-pattern-gain", transmission->tx_pattern_gain);
-	transmission->station->setDoubleValue("rx-pattern-gain", transmission->rx_pattern_gain);
+    s->tx_pattern_gain = transmission->tx_pattern_gain;
+    s->rx_pattern_gain = transmission->rx_pattern_gain;
 	
 }
 

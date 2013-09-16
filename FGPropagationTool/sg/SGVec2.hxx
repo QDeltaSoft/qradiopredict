@@ -359,7 +359,7 @@ std::basic_ostream<char_type, traits_type>&
 operator<<(std::basic_ostream<char_type, traits_type>& s, const SGVec2<T>& v)
 { return s << "[ " << v(0) << ", " << v(1) << " ]"; }
 
-/*
+
 inline
 SGVec2f
 toVec2f(const SGVec2d& v)
@@ -369,6 +369,6 @@ inline
 SGVec2d
 toVec2d(const SGVec2f& v)
 { return SGVec2d(v(0), v(1)); }
-*/
+
 
 #endif

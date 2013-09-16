@@ -493,7 +493,7 @@ std::basic_ostream<char_type, traits_type>&
 operator<<(std::basic_ostream<char_type, traits_type>& s, const SGVec3<T>& v)
 { return s << "[ " << v(0) << ", " << v(1) << ", " << v(2) << " ]"; }
 
-/*
+
 inline
 SGVec3f
 toVec3f(const SGVec3d& v)
@@ -503,6 +503,6 @@ inline
 SGVec3d
 toVec3d(const SGVec3f& v)
 { return SGVec3d(v(0), v(1), v(2)); }
-*/
+
 
 #endif
