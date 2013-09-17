@@ -17,10 +17,6 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-#ifndef __cplusplus
-# error This library requires C++
-#endif
-
 #include "sg/compiler.h"
 
 #include <deque>
@@ -34,6 +30,7 @@
 #include "../signal.h"
 #include "../flightgearprefs.h"
 #include "../databaseapi.h"
+#include "scenerymanager.h"
 
 using std::string;
 
@@ -200,7 +197,7 @@ private:
 	
 	std::map<string, double[2]> _mat_database;
 
-	
+    SceneryManager *_scenery;
 	int _propagation_model; /// 0 none, 1 round Earth, 2 ITM
 	bool _suspended;
 	

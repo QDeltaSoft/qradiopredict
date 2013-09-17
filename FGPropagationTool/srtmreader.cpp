@@ -1,6 +1,7 @@
 #include "srtmreader.h"
 #include <cmath>
 #include <fstream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -42,17 +43,19 @@ double SRTMReader::readHeight()
     {
 
     }
-    QString height_buf; // no!!
-    ifstream file (filename.toStdString().c_str(), ifstream::binary);
+    char *height_buf = new char[2];
+    ifstream file (srtm_dir.toStdString().c_str(), ifstream::binary);
     if(file)
     {
         file.seekg(pos);
         char *buf = new char[2];
         file.read(buf,2);
-        height_buf.append(buf[1]).append(buf[0]);
+        height_buf[0]=buf[1];
+        height_buf[1]=buf[0];
         delete[] buf;
     }
-    double height = height_buf.toDouble(); // no!!!
+    double height = atof(height_buf);
+    delete[] height_buf;
     if (height != -32768.0)
         return height;
     else
