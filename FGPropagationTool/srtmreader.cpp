@@ -21,7 +21,7 @@ SRTMReader::SRTMReader(DatabaseApi *db)
     _longitude_secs = 0;
 }
 
-void SRTMReader::setCoordinates(double &lat, double &lon)
+void SRTMReader::setCoordinates(double lat, double lon)
 {
     _latitude = lat;
     _longitude = lon;
@@ -43,21 +43,25 @@ double SRTMReader::readHeight()
     {
 
     }
-    char *height_buf = new char[2];
+    // TODO: this is not portable across archs, due to the little/big endian issue
+    union {
+        char height_buf[2];
+        double height;
+    } conv;
     ifstream file (srtm_dir.toStdString().c_str(), ifstream::binary);
     if(file)
     {
         file.seekg(pos);
         char *buf = new char[2];
         file.read(buf,2);
-        height_buf[0]=buf[1];
-        height_buf[1]=buf[0];
+        conv.height_buf[0]=buf[1];
+        conv.height_buf[1]=buf[0];
         delete[] buf;
     }
-    double height = atof(height_buf);
-    delete[] height_buf;
-    if (height != -32768.0)
-        return height;
+
+
+    if (conv.height != -32768.0)
+        return conv.height;
     else
         return 0.0;
 

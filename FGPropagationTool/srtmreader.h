@@ -16,7 +16,7 @@ class SRTMReader
 
 public:
     explicit SRTMReader(DatabaseApi *db);
-    void setCoordinates(double &lat, double &lon);
+    void setCoordinates(double lat, double lon);
     double readHeight();
 
 

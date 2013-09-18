@@ -48,6 +48,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
         _settings = 0;
 	
 	_propagation_model = 2; 
+    _scenery = new SceneryManager(db);
 	
 
     _terrain_sampling_distance =  90.0; // regular SRTM is 90 meters
@@ -95,17 +96,15 @@ void FGRadio::update(double dt, GroundStation *st) {
 			}
 			transmission->probe_distance += transmission->point_distance;
 			SGGeod probe = SGGeod::fromGeoc(transmission->center.advanceRadM( transmission->course, transmission->probe_distance ));
-			const simgear::BVHMaterial *material = 0;
+            string material;
 			double elevation_m = 0.0;
 		
-			if (_scenery->get_elevation_m( probe, elevation_m, &material , NULL, true)) {
-				const SGMaterial *mat;
-                mat = dynamic_cast<const SGMaterial*>(material);
+            if (_scenery->get_elevation_m( probe, elevation_m, material )) {
+
 				if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
 					transmission->elevations.push_back(elevation_m);
-					if(mat) {
-						const std::vector<string> mat_names = mat->get_names();
-						string* name = new string(mat_names[0]);
+                    if(!material.empty()) {
+                        string* name = new string(material);
 						transmission->materials.push_back(name);
 					}
 					else {
@@ -115,9 +114,8 @@ void FGRadio::update(double dt, GroundStation *st) {
 				}
 				else {
 					 transmission->elevations.push_front(elevation_m);
-					 if(mat) {
-						 const std::vector<string> mat_names = mat->get_names();
-						 string* name = new string(mat_names[0]);
+                     if(!material.empty()) {
+                         string* name = new string(material);
 						 transmission->materials.push_front(name);
 					}
 					else {
@@ -148,7 +146,8 @@ void FGRadio::update(double dt, GroundStation *st) {
 
 void FGRadio::receive(double dt, GroundStation *st) {
 	
-
+    // may we have more groundstations, maybe we get a vector, yes?
+    // so why delete old code, huh? no make sense
     GroundStation *station = st;
     if(!station || !(station->enabled == 1)) {
         /// delete old nodes?
@@ -161,18 +160,19 @@ void FGRadio::receive(double dt, GroundStation *st) {
 
 
     double beacon_delay = station->beacon_delay;
-    double last_beacon_update = station->last_update;
-
+    //double last_beacon_update = station->last_update; ? unneeded?
+    /*
     if ((QTime::currentTime() - last_beacon_update) < beacon_delay) {
             // only beacon we have, yes
             //continue;
     }
+
     else {
         process_terrain = true;
         //_last_beacon_update = SGTimeStamp::now();
         station->last_update = QTime::currentTime();
     }
-
+    */
     //station->setDoubleValue("last-update", SGTimeStamp::now().toSecs());
     double lat, lon, elev, heading, pitch;
     lat = station->latitude;
@@ -181,7 +181,7 @@ void FGRadio::receive(double dt, GroundStation *st) {
     heading = station->heading_deg;
     pitch = station->pitch_deg;
 
-    if( !(lat) || !(lon))
+    if( !(lat) || !(lon)) return;
         //continue;
 
 
@@ -248,10 +248,10 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	}
 	
 	
-	double own_lat = _position_node->getDoubleValue("latitude-deg");
-	double own_lon = _position_node->getDoubleValue("longitude-deg");
-	double own_alt_ft = _position_node->getDoubleValue("altitude-ft");
-	double own_heading = _orientation_node->getDoubleValue("heading-deg",0);
+    double own_lat = _mobile->latitude;
+    double own_lon = _mobile->longitude;
+    double own_alt_ft = _mobile->elevation_feet;
+    double own_heading = _mobile->heading_deg;
 	double own_alt= own_alt_ft * SG_FEET_TO_METER;
 	
 	
@@ -292,24 +292,25 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 		}
 	}
 	
-		
+    string mat="#";
 			
 	int max_points = (int)floor(transmission->distance_m / transmission->point_distance);
 	//double delta_last = fmod(distance_m, point_distance);
 	
-	double elevation_under_pilot = _position_node->getDoubleValue("ground-elev-m");
-	/*
-	if (_scenery->get_elevation_m( max_own_pos, elevation_under_pilot, NULL, true )) {
+    double elevation_under_pilot;
+
+    if (_scenery->get_elevation_m( max_own_pos, elevation_under_pilot, mat)) {
 		transmission->receiver_height = own_alt - elevation_under_pilot; 
 	}
 	else {
 		transmission->receiver_height = own_alt;
 	}
-	*/
+
 	transmission->receiver_height = own_alt - elevation_under_pilot; 
 
 	double elevation_under_sender = 0.0;
-	if (_scenery->get_elevation_m( max_sender_pos, elevation_under_sender, NULL, NULL, true )) {
+    mat ="#";
+    if (_scenery->get_elevation_m( max_sender_pos, elevation_under_sender, mat )) {
 		transmission->transmitter_height = sender_alt - elevation_under_sender;
 	}
 	else {
@@ -336,31 +337,14 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	
 	transmission->e_size = (deque<unsigned>::size_type)max_points;
 	
-	
-	if(transmission->signal_type == 0) {
-		if(_atc_transmissions.size() > 20) {
-			cerr << "ITM:: number of ATC transmissions is too high: " << endl;
-			delete transmission;
-			return;
-		}
-		_atc_transmissions.push_back(transmission);
-	}
-	if((transmission->signal_type == 1) || (transmission->signal_type == 2)) {
-		if(_nav_transmissions.size() > 20) {
-			cerr << "ITM:: number of NAV transmissions is too high: " << endl;
-			delete transmission;
-			return;
-		}
-		_nav_transmissions.push_back(transmission);
-	}
-	if(transmission->signal_type == 3) {
-		if(_beacon_transmissions.size() > 20) {
-			cerr << "ITM:: number of beacon transmissions is too high: " << endl;
-			delete transmission;
-			return;
-		}
-		_beacon_transmissions.push_back(transmission);
-	}
+
+    if(_beacon_transmissions.size() > 20) {
+        cerr << "ITM:: number of beacon transmissions is too high: " << endl;
+        delete transmission;
+        return;
+    }
+    _beacon_transmissions.push_back(transmission);
+
 	
 }
 

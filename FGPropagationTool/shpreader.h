@@ -18,7 +18,7 @@ class ShpReader
 public:
     ShpReader();
     ~ShpReader();
-    void setCoordinates(double &lat, double &lon);
+    void setCoordinates(double lat, double lon);
     QString getTerrainType();
 signals:
     

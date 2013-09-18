@@ -30,6 +30,7 @@
 #include "../signal.h"
 #include "../flightgearprefs.h"
 #include "../databaseapi.h"
+#include "../mobilestation.h"
 #include "scenerymanager.h"
 
 using std::string;
@@ -198,6 +199,8 @@ private:
 	std::map<string, double[2]> _mat_database;
 
     SceneryManager *_scenery;
+    MobileStation *_mobile;
+
 	int _propagation_model; /// 0 none, 1 round Earth, 2 ITM
 	bool _suspended;
 	
