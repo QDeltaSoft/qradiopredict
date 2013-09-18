@@ -1,5 +1,5 @@
 #include "scenerymanager.h"
-using namespace std;
+
 SceneryManager::SceneryManager(DatabaseApi *db)
 {
     _srtmreader = new SRTMReader(db);

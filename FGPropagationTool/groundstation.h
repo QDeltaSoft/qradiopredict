@@ -30,6 +30,7 @@ public:
     double tx_line_losses;
     unsigned enabled;
     unsigned created_on;
+    unsigned last_update;
     GroundStation();
 };
 

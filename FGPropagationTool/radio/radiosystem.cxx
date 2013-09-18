@@ -49,8 +49,9 @@ FGRadio::FGRadio(DatabaseApi *db) {
 	
 	_propagation_model = 2; 
     _scenery = new SceneryManager(db);
+    _db=db;
 	
-
+    _mtex = 0;
     _terrain_sampling_distance =  90.0; // regular SRTM is 90 meters
 	
 	_max_computation_time_norm = 0.1;
@@ -76,167 +77,190 @@ FGRadio::~FGRadio()
 }
 
 
-void FGRadio::update(double dt, GroundStation *st) {
+void FGRadio::update()
+{
 
+    QVector<GroundStation *> gs = _db->select_ground_stations(0);
 
-    receive(dt, st);
-		
-	if (_beacon_transmissions.size() > 0 ) {
-		Transmission * transmission = _beacon_transmissions.front();
-        QTime start = QTime::currentTime();
-        while ((start.elapsed()) < dt * _max_computation_time_norm) {
-			
-			if (transmission->elevations.size() >= transmission->e_size) {
-				
-				Transmission * t = new Transmission(transmission);
-				delete transmission;
-				_beacon_transmissions.pop_front();
-				processTerrain(t);
-				return;
-			}
-			transmission->probe_distance += transmission->point_distance;
-			SGGeod probe = SGGeod::fromGeoc(transmission->center.advanceRadM( transmission->course, transmission->probe_distance ));
-            string material;
-			double elevation_m = 0.0;
-		
-            if (_scenery->get_elevation_m( probe, elevation_m, material )) {
+    while (true)
+    {
+        receive(gs);
 
-				if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
-					transmission->elevations.push_back(elevation_m);
-                    if(!material.empty()) {
-                        string* name = new string(material);
-						transmission->materials.push_back(name);
-					}
-					else {
-						string* no_material = new string("None"); 
-						transmission->materials.push_back(no_material);
-					}
-				}
-				else {
-					 transmission->elevations.push_front(elevation_m);
-                     if(!material.empty()) {
-                         string* name = new string(material);
-						 transmission->materials.push_front(name);
-					}
-					else {
-						string* no_material = new string("None"); 
-						transmission->materials.push_front(no_material);
-					}
-				}
-			}
-			else {
-				if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
-					transmission->elevations.push_back(0.0);
-					string* no_material = new string("None"); 
-					transmission->materials.push_back(no_material);
-				}
-				else {
-					string* no_material = new string("None"); 
-					transmission->elevations.push_front(0.0);
-					transmission->materials.push_front(no_material);
-				}
-			}
-		}
-		
-	}
+        if (_beacon_transmissions.size() > 0 ) {
+            Transmission * transmission = _beacon_transmissions.front();
+            QTime start = QTime::currentTime();
+            while ((start.elapsed()) < _max_computation_time_norm) {
+
+                if (transmission->elevations.size() >= transmission->e_size) {
+
+                    Transmission * t = new Transmission(transmission);
+                    delete transmission;
+                    _beacon_transmissions.pop_front();
+                    processTerrain(t);
+                    return;
+                }
+                transmission->probe_distance += transmission->point_distance;
+                SGGeod probe = SGGeod::fromGeoc(transmission->center.advanceRadM( transmission->course, transmission->probe_distance ));
+                string material;
+                double elevation_m = 0.0;
+
+                if (_scenery->get_elevation_m( probe, elevation_m, material )) {
+
+                    if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+                        transmission->elevations.push_back(elevation_m);
+                        if(!material.empty()) {
+                            string* name = new string(material);
+                            transmission->materials.push_back(name);
+                        }
+                        else {
+                            string* no_material = new string("None");
+                            transmission->materials.push_back(no_material);
+                        }
+                    }
+                    else {
+                         transmission->elevations.push_front(elevation_m);
+                         if(!material.empty()) {
+                             string* name = new string(material);
+                             transmission->materials.push_front(name);
+                        }
+                        else {
+                            string* no_material = new string("None");
+                            transmission->materials.push_front(no_material);
+                        }
+                    }
+                }
+                else {
+                    if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+                        transmission->elevations.push_back(0.0);
+                        string* no_material = new string("None");
+                        transmission->materials.push_back(no_material);
+                    }
+                    else {
+                        string* no_material = new string("None");
+                        transmission->elevations.push_front(0.0);
+                        transmission->materials.push_front(no_material);
+                    }
+                }
+            }
+
+        }
+    }
+    for(int i=0;i<gs.size();++i)
+    {
+        delete gs[i];
+    }
+    gs.clear();
+    emit finished();
 	
 }
 
 
 
-void FGRadio::receive(double dt, GroundStation *st) {
+void FGRadio::receive(QVector<GroundStation *> gs) {
 	
-    // may we have more groundstations, maybe we get a vector, yes?
-    // so why delete old code, huh? no make sense
-    GroundStation *station = st;
-    if(!station || !(station->enabled == 1)) {
-        /// delete old nodes?
-        //double last_update = station->getDoubleValue("last-update", 0);
-        //if((SGTimeStamp::now().toSecs() - last_update) > 180.0) {
-        //}
+    for(int i=0;i<gs.size();++i)
+    {
+        // may we have more groundstations, maybe we get a vector, yes?
+        // so why delete old code, huh? no make sense
+        GroundStation *station = gs[i];
+        if(!station || !(station->enabled == 1)) {
+
+            continue;
+
+        }
+        bool process_terrain = true;
+
+        /** disabled for now, until I figure out what to do
+        double beacon_delay = station->beacon_delay;
+        double last_beacon_update = station->last_update; ? unneeded?
+
+        if ((QTime::currentTime() - last_beacon_update) < beacon_delay) {
+                // only beacon we have, yes
+                //continue;
+        }
+
+        else {
+            process_terrain = true;
+            //_last_beacon_update = SGTimeStamp::now();
+            station->last_update = QTime::currentTime();
+        }
+        */
+
+        //station->last_update =  QTime::currentTime();
+        double lat, lon, elev, heading, pitch;
+        lat = station->latitude;
+        lon = station->longitude;
+        elev = station->elevation_feet;
+        heading = station->heading_deg;
+        pitch = station->pitch_deg;
+
+        if( !(lat) || !(lon) || (lat > 90.0) || (lat < -90.0) || (lon > 180.0) || (lon <-180.0))
+            continue;
+
+
+
+
+        if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
+            continue;
+        }
+
+
+
+        SGGeod tx_pos = SGGeod::fromDegM(lon, lat, elev * SG_FEET_TO_METER);
+
+        Transmission * transmission = new Transmission();
+        transmission->station = station;
+        transmission->pos = tx_pos;
+        transmission->freq = station->frequency;
+
+        transmission->transmission_type = station->transmission_type;
+
+
+
+
+        transmission->name = station->name.toUtf8().constData();
+
+        transmission->receiver_sensitivity = station->rx_sensitivity;
+
+        transmission->transmitter_power =  watt_to_dbm(station->tx_power_watt);
+
+        transmission->tx_antenna_height = 2.0 + station->tx_antenna_height;
+
+        transmission->rx_antenna_height = 2.0 + station->rx_antenna_height;
+
+
+        transmission->rx_antenna_gain = station->rx_antenna_gain;
+        transmission->tx_antenna_gain = station->tx_antenna_gain;
+
+        transmission->rx_line_losses = station->rx_line_losses;
+        transmission->tx_line_losses = station->tx_line_losses;
+
+        transmission->rx_antenna_type = station->rx_antenna_type.toUtf8().constData();
+        transmission->tx_antenna_type = station->tx_antenna_type.toUtf8().constData();
+
+        transmission->polarization = station->polarization;
+        transmission->sender_heading = heading;
+        transmission->tx_antenna_pitch = pitch;
+
+
+        transmission->process_terrain = process_terrain;
+
+        setupTransmission(transmission);
 
     }
-    bool process_terrain = true;
-
-
-    double beacon_delay = station->beacon_delay;
-    //double last_beacon_update = station->last_update; ? unneeded?
-    /*
-    if ((QTime::currentTime() - last_beacon_update) < beacon_delay) {
-            // only beacon we have, yes
-            //continue;
-    }
-
-    else {
-        process_terrain = true;
-        //_last_beacon_update = SGTimeStamp::now();
-        station->last_update = QTime::currentTime();
-    }
-    */
-    //station->setDoubleValue("last-update", SGTimeStamp::now().toSecs());
-    double lat, lon, elev, heading, pitch;
-    lat = station->latitude;
-    lon = station->longitude;
-    elev = station->elevation_feet;
-    heading = station->heading_deg;
-    pitch = station->pitch_deg;
-
-    if( !(lat) || !(lon)) return;
-        //continue;
-
-
-
-
-    if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
-        //continue;
-    }
-
-
-
-    SGGeod tx_pos = SGGeod::fromDegM(lon, lat, elev * SG_FEET_TO_METER);
-
-    Transmission * transmission = new Transmission();
-    transmission->station = station;
-    transmission->pos = tx_pos;
-    transmission->freq = station->frequency;
-
-    transmission->transmission_type = station->transmission_type;
-
-
-
-
-    transmission->name = station->name.toUtf8().constData();
-
-    transmission->receiver_sensitivity = station->rx_sensitivity;
-
-    transmission->transmitter_power =  watt_to_dbm(station->tx_power_watt);
-
-    transmission->tx_antenna_height = 2.0 + station->tx_antenna_height;
-
-    transmission->rx_antenna_height = 2.0 + station->rx_antenna_height;
-
-
-    transmission->rx_antenna_gain = station->rx_antenna_gain;
-    transmission->tx_antenna_gain = station->tx_antenna_gain;
-
-    transmission->rx_line_losses = station->rx_line_losses;
-    transmission->tx_line_losses = station->tx_line_losses;
-
-    transmission->rx_antenna_type = station->rx_antenna_type.toUtf8().constData();
-    transmission->tx_antenna_type = station->tx_antenna_type.toUtf8().constData();
-
-    transmission->polarization = station->polarization;
-    transmission->sender_heading = heading;
-    transmission->tx_antenna_pitch = pitch;
-
-
-    transmission->process_terrain = process_terrain;
-
-    setupTransmission(transmission);
 		
 
 }
 
+void FGRadio::setMobile(MobileStation *m)
+{
+    _mtex = 0;
+    _mobile->latitude = m->latitude;
+    _mobile->longitude = m->longitude;
+    _mobile->elevation_feet = m->elevation_feet;
+    _mobile->heading_deg = m->heading_deg;
+    _mtex = 1;
+}
 
 void FGRadio::setupTransmission(Transmission* transmission) {
 	
@@ -247,12 +271,16 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 		return;
 	}
 	
+    while(_mtex==0)
+    {
+    }
 	
     double own_lat = _mobile->latitude;
     double own_lon = _mobile->longitude;
     double own_alt_ft = _mobile->elevation_feet;
     double own_heading = _mobile->heading_deg;
 	double own_alt= own_alt_ft * SG_FEET_TO_METER;
+
 	
 	
 	transmission->own_heading = own_heading;
@@ -377,7 +405,10 @@ void FGRadio::processTerrain(Transmission* transmission) {
 
 void FGRadio::processSignal(Transmission* transmission) {
 	
-	
+    // this used to do various stuff; now it's just cleanup, sorry
+    emit haveSignalReading(_mobile->longitude,_mobile->latitude,transmission->station->id, transmission->station->name,transmission->freq,transmission->radiosignal);
+    //emit radiosystemSignal(transmission->radiosignal);
+    delete transmission->radiosignal;
 	delete transmission;
 	
 }
@@ -482,6 +513,7 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 	
 	
 	transmission->signal = signal;
+    transmission->radiosignal = s;
 
 }
 
@@ -874,7 +906,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 
 void FGRadio::load_material_radio_properties() {
 	
-    QString materials_radio_props("/home/adrian/");
+    QString materials_radio_props("./");
 	materials_radio_props.append("material_radio_properties.txt");
     if (!QFile(materials_radio_props).exists()) {
 		return;
@@ -1116,6 +1148,8 @@ void FGRadio::attenuationLOS(Transmission* transmission) {
 	
     s->tx_pattern_gain = transmission->tx_pattern_gain;
     s->rx_pattern_gain = transmission->rx_pattern_gain;
+
+    transmission->radiosignal = s;
 	
 }
 

@@ -25,6 +25,7 @@
 #include "../groundstation.h"
 #include "antenna.hxx"
 #include <QDebug>
+#include <QObject>
 #include <QTime>
 #include <QString>
 #include "../signal.h"
@@ -36,14 +37,37 @@
 using std::string;
 
 
-class FGRadio
+class FGRadio : public QObject
 {
+    Q_OBJECT
+
+public:
+
+    FGRadio(DatabaseApi *db);
+    ~FGRadio();
+
+    void update();
+    void setMobile(MobileStation *m);
+
+    double polarization_loss(int polarization);
+
+    /// static convenience functions for unit conversions
+    static double watt_to_dbm(double power_watt);
+    static double dbm_to_watt(double dbm);
+    static double dbm_to_microvolt(double dbm);
+    static double dbm_to_microvolt_per_meter(double dbm, double freqMHz, double antenna_gain);
+
+signals:
+    void finished();
+    void haveSignalReading(double longitude,double latitude,unsigned id, QString name, double freq, Signal *s);
+
 private:
 	
 	
 	double _max_computation_time_norm;
 	class Transmission {
 	public:
+        Signal *radiosignal;
         GroundStation *station;
 		SGGeod pos;						// position of the other station
 		SGGeod player_pos;				// player aircraft position
@@ -91,6 +115,7 @@ private:
 		double elevation_under_sender;
 		double signal;					// computed signal, use only for validation
 		Transmission() :
+            radiosignal(0),
 			freq(0),
 			text(""),
 			transmission_type(1),
@@ -133,6 +158,7 @@ private:
 			signal(0){};
 		
 		Transmission(Transmission * t) :
+            radiosignal(t->radiosignal),
 			station(t->station),
 			pos(t->pos),
 			player_pos(t->player_pos),
@@ -200,9 +226,11 @@ private:
 
     SceneryManager *_scenery;
     MobileStation *_mobile;
+    DatabaseApi *_db;
 
 	int _propagation_model; /// 0 none, 1 round Earth, 2 ITM
 	bool _suspended;
+    unsigned _mtex;
 	
 	void setupTransmission(Transmission* transmission);
 	
@@ -249,24 +277,9 @@ private:
 	void load_material_radio_properties();
 	
 	
-    void receive(double dt, GroundStation *st);
+    void receive(QVector<GroundStation *> gs);
 	
-public:
 
-    FGRadio(DatabaseApi *db);
-    ~FGRadio();
-    
-    void init();
-    void update(double dt, GroundStation *st);
-
-
-    double polarization_loss(int polarization);
-
-    /// static convenience functions for unit conversions
-    static double watt_to_dbm(double power_watt);
-    static double dbm_to_watt(double dbm);
-    static double dbm_to_microvolt(double dbm);
-    static double dbm_to_microvolt_per_meter(double dbm, double freqMHz, double antenna_gain);
        
 };
 
