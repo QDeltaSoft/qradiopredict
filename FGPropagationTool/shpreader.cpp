@@ -1,8 +1,16 @@
 #include "shpreader.h"
 
 
-ShpReader::ShpReader()
+ShpReader::ShpReader(DatabaseApi *db)
 {
+    QVector<FlightgearPrefs *> prefs = db->select_prefs();
+    if(prefs.size()>0)
+    {
+        _settings = prefs[0];
+    }
+    else
+        _settings = 0;
+
     _terrain_types.insert(new QString("EvergreenBroadCover"), new QString("c312"));
     _terrain_types.insert(new QString("EvergreenForest"), new QString("c312"));
     _terrain_types.insert(new QString("DeciduousBroadCover"), new QString("c141"));
@@ -50,10 +58,13 @@ QString ShpReader::getTerrainType()
 {
     QString type;
     QMapIterator<QString*,QString*> it(_terrain_types);
+
     while(it.hasNext())
     {
         it.next();
-        type = this->openShapefile(*(it.value()),*(it.key()));
+        QString shp_dir = _settings->_shapefile_path;
+        shp_dir.append(QDir::separator()).append(*(it.value()));
+        type = this->openShapefile(shp_dir,*(it.key()));
         if(type == "none")
             continue;
         else

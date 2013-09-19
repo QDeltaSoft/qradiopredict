@@ -3,7 +3,7 @@
 SceneryManager::SceneryManager(DatabaseApi *db)
 {
     _srtmreader = new SRTMReader(db);
-    _shpreader = new ShpReader;
+    _shpreader = new ShpReader(db);
 }
 
 bool SceneryManager::get_elevation_m(const SGGeod &probe, double &elevation_m, string &material)

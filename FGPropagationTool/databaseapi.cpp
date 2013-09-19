@@ -152,6 +152,8 @@ DatabaseApi::select_prefs()
     int aircraft_idx = query.record().indexOf("aircraft");
     int airport_idx = query.record().indexOf("airport");
     int scenery_path_idx = query.record().indexOf("scenery_path");
+    int srtm_path_idx = query.record().indexOf("srtm_path");
+    int shapefile_path_idx = query.record().indexOf("shapefile_path");
     int use_clutter_idx = query.record().indexOf("use_clutter");
     int itm_perfomance_idx = query.record().indexOf("itm_perfomance_mode");
     int use_antenna_pattern_idx = query.record().indexOf("use_antenna_pattern");
@@ -167,6 +169,8 @@ DatabaseApi::select_prefs()
         p->_scenery_path = query.value(scenery_path_idx).toString();
         p->_aircraft = query.value(aircraft_idx).toString();
         p->_airport = query.value(airport_idx).toString();
+        p->_srtm_path = query.value(srtm_path_idx).toString();
+        p->_shapefile_path = query.value(shapefile_path_idx).toString();
         p->_use_clutter = query.value(use_clutter_idx).toInt();
         p->_itm_radio_performance = query.value(itm_perfomance_idx).toInt();
         p->_use_antenna_pattern = query.value(use_antenna_pattern_idx).toInt();
@@ -185,7 +189,8 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     QSqlQuery query(_db);
     query.prepare("UPDATE fgfs_settings SET "
                   "fgfs_binary =:fgfs_binary, fgdata_path=:fgdata_path, "
-                  "scenery_path = :scenery_path, aircraft=:aircraft,"
+                  "scenery_path = :scenery_path, srtm_path=:srtm_path, shapefile_path=:shapefile_path, "
+                  "aircraft=:aircraft, "
                   "airport = :airport, use_clutter= :use_clutter, itm_performance_mode=:itm_performance, "
                   "use_antenna_pattern = :use_antenna_pattern, windowX= :windowX, windowY= :windowY, "
                   "aprs_server= :aprs_server"
@@ -195,6 +200,8 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     query.bindValue(":scenery_path", p->_scenery_path);
     query.bindValue(":aircraft", p->_aircraft);
     query.bindValue(":airport", p->_airport);
+    query.bindValue(":srtm_path", p->_srtm_path);
+    query.bindValue(":shapefile_path", p->_shapefile_path);
     query.bindValue(":use_clutter", p->_use_clutter);
     query.bindValue(":itm_performance", p->_itm_radio_performance);
     query.bindValue(":use_antenna_pattern", p->_use_antenna_pattern);

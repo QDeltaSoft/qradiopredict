@@ -28,6 +28,8 @@ void SettingsDialog::fillEmptyFields()
         this->ui->sceneryEdit->setText(p->_scenery_path);
         this->ui->aircraftEdit->setText(p->_aircraft);
         this->ui->airportEdit->setText(p->_airport);
+        this->ui->srtmPathLineEdit->setText(p->_srtm_path);
+        this->ui->shapePathLineEdit->setText(p->_shapefile_path);
         if(p->_use_antenna_pattern == 1)
         {
             this->ui->antennaCheckBox->setChecked(true);
@@ -56,6 +58,8 @@ void SettingsDialog::saveData()
     p->_scenery_path= this->ui->sceneryEdit->text();
     p->_aircraft = this->ui->aircraftEdit->text();
     p->_airport = this->ui->airportEdit->text();
+    p->_srtm_path = this->ui->srtmPathLineEdit->text();
+    p->_shapefile_path = this->ui->shapePathLineEdit->text();
     if(this->ui->antennaCheckBox->isChecked())
     {
         p->_use_antenna_pattern =1;

@@ -6,6 +6,8 @@
 #include <QString>
 #include <QDebug>
 #include "ogrsf_frmts.h"
+#include "databaseapi.h"
+#include "flightgearprefs.h"
 
 /**
  * @brief A simple shapefile reader class
@@ -16,7 +18,7 @@ class ShpReader
 {
 
 public:
-    ShpReader();
+    ShpReader(DatabaseApi *db);
     ~ShpReader();
     void setCoordinates(double lat, double lon);
     QString getTerrainType();
@@ -28,6 +30,7 @@ private:
     QMap<QString*, QString*> _terrain_types;
     OGRPoint *_point;
     QString openShapefile(QString &name, QString &terrain_type);
+    FlightgearPrefs *_settings;
     
 };
 

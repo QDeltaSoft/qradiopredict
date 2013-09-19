@@ -53,6 +53,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
     _run=1;
 	
     _mtex = 0;
+    _mobile = new MobileStation;
     _terrain_sampling_distance =  90.0; // regular SRTM is 90 meters
 	
 	_max_computation_time_norm = 0.1;
@@ -60,6 +61,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
 
     _fp_points = _db->select_flightplan_positions(0);
     _current_waypoint =0;
+    _start_move = QTime::currentTime();
 
 }
 
@@ -81,6 +83,8 @@ FGRadio::~FGRadio()
         delete _fp_points[i];
     }
     _fp_points.clear();
+    delete _scenery;
+    delete _mobile;
 }
 
 void FGRadio::moveMobile()
@@ -92,9 +96,12 @@ void FGRadio::moveMobile()
         _current_waypoint = 0;
     }
     FlightPlanPoints *fp = _fp_points[_current_waypoint];
-    _mobile->latitude = fp->latitude;
-    _mobile->longitude = fp->longitude;
-    _mobile->elevation_feet = fp->altitude;
+    MobileStation m;
+    m.latitude = fp->latitude;
+    m.longitude = fp->longitude;
+    m.elevation_feet = fp->altitude;
+    m.heading_deg = 0;
+    setMobile(&m);
     _start_move.restart();
 }
 
@@ -108,8 +115,9 @@ void FGRadio::update()
 {
 
     QVector<GroundStation *> gs = _db->select_ground_stations(0);
-    QTime _start_move = QTime::currentTime();
+
     _start_move.start();
+    while(_start_move.elapsed() < 10*1000){}
     while (true)
     {
         moveMobile();
@@ -126,7 +134,7 @@ void FGRadio::update()
                 if (transmission->elevations.size() >= transmission->e_size) {
 
                     Transmission * t = new Transmission(transmission);
-                    delete transmission->station;
+                    //delete transmission->station;
                     delete transmission->radiosignal;
                     delete transmission;
                     _beacon_transmissions.pop_front();
@@ -398,7 +406,7 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 
     if(_beacon_transmissions.size() > 20) {
         cerr << "ITM:: number of beacon transmissions is too high: " << endl;
-        delete transmission->station;
+        //delete transmission->station;
         delete transmission->radiosignal;
         delete transmission;
         return;
@@ -439,8 +447,8 @@ void FGRadio::processSignal(Transmission* transmission) {
 	
     // this used to do various stuff; now it's just cleanup, sorry
     emit haveSignalReading(_mobile->longitude,_mobile->latitude,transmission->station->id, transmission->station->name,transmission->freq,transmission->radiosignal);
-    delete transmission->station;
-    delete transmission->radiosignal;
+    //delete transmission->station;
+    //delete transmission->radiosignal;
 	delete transmission;
 	
 }
