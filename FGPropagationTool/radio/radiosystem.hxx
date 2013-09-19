@@ -20,12 +20,13 @@
 #include "sg/compiler.h"
 
 #include <deque>
-
+#include <string>
 #include "sg/sg_geodesy.hxx"
 #include "../groundstation.h"
 #include "antenna.hxx"
 #include <QDebug>
 #include <QObject>
+#include <QDateTime>
 #include <QTime>
 #include <QString>
 #include "../signal.h"
@@ -46,8 +47,9 @@ public:
     FGRadio(DatabaseApi *db);
     ~FGRadio();
 
-    void update();
     void setMobile(MobileStation *m);
+    void moveMobile();
+    void stop();
 
     double polarization_loss(int polarization);
 
@@ -57,9 +59,13 @@ public:
     static double dbm_to_microvolt(double dbm);
     static double dbm_to_microvolt_per_meter(double dbm, double freqMHz, double antenna_gain);
 
+public slots:
+    void update();
+
 signals:
     void finished();
     void haveSignalReading(double longitude,double latitude,unsigned id, QString name, double freq, Signal *s);
+    void haveMobilePosition(double lon, double lat);
 
 private:
 	
@@ -116,6 +122,7 @@ private:
 		double signal;					// computed signal, use only for validation
 		Transmission() :
             radiosignal(0),
+            station(0),
 			freq(0),
 			text(""),
 			transmission_type(1),
@@ -210,15 +217,16 @@ private:
 	};
 	
 	typedef std::deque<Transmission*> RadioTransmissions;
-	RadioTransmissions _atc_transmissions;
-	RadioTransmissions _beacon_transmissions;
-	RadioTransmissions _nav_transmissions;
+
+    RadioTransmissions _beacon_transmissions;
 	
 	typedef std::map<std::string, FGRadioAntenna*> AntennaList;
 	AntennaList _antennas;
 	
-    QTime _last_beacon_update;
-	
+    unsigned _last_beacon_update;
+    QTime _start_move;
+    QVector<FlightPlanPoints*> _fp_points;
+    unsigned _current_waypoint;
     FlightgearPrefs *_settings;
 	double _terrain_sampling_distance;
 	
@@ -231,6 +239,7 @@ private:
 	int _propagation_model; /// 0 none, 1 round Earth, 2 ITM
 	bool _suspended;
     unsigned _mtex;
+    unsigned _run;
 	
 	void setupTransmission(Transmission* transmission);
 	

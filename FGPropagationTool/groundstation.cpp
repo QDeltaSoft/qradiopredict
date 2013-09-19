@@ -2,4 +2,5 @@
 
 GroundStation::GroundStation()
 {
+    beacon_delay = 2;
 }

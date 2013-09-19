@@ -32,6 +32,8 @@
 #include <math.h>
 #include "MapGraphicsView.h"
 
+#include "radio/radiosystem.hxx"
+
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QMap>
@@ -92,6 +94,8 @@ public slots:
     void enableStartButton();
     void startSignalUpdate();
     void stopSignalUpdate();
+    void startStandalone();
+    void stopStandalone();
     void moveMobile(double lon, double lat);
     void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
     void newAPRSquery(quint8 zoom);
@@ -120,6 +124,7 @@ private:
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
     Updater * _updater;
+    FGRadio *_radio_subsystem;
 
 };
 

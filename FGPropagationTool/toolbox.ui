@@ -156,7 +156,7 @@
   <widget class="QPushButton" name="sendToFlightgearButton">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>650</x>
      <y>10</y>
      <width>131</width>
      <height>22</height>
@@ -172,7 +172,7 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>650</x>
      <y>40</y>
      <width>51</width>
      <height>22</height>
@@ -185,7 +185,7 @@
   <widget class="QPushButton" name="stopUpdateButton">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>720</x>
      <y>40</y>
      <width>61</width>
      <height>22</height>
@@ -198,7 +198,7 @@
   <widget class="QPushButton" name="startFlightgearButton">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>520</x>
      <y>10</y>
      <width>121</width>
      <height>22</height>
@@ -211,7 +211,7 @@
   <widget class="QPushButton" name="connectTelnetButton">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>520</x>
      <y>40</y>
      <width>121</width>
      <height>22</height>
@@ -219,6 +219,32 @@
    </property>
    <property name="text">
     <string>Connect</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="startStandaloneButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>10</y>
+     <width>81</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="stopStandaloneButton">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>10</y>
+     <width>81</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Stop</string>
    </property>
   </widget>
  </widget>

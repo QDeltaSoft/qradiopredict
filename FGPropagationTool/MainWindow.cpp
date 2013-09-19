@@ -105,6 +105,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->startUpdateButton,SIGNAL(clicked()),this,SLOT(startSignalUpdate()));
     QObject::connect(_tb->ui->stopUpdateButton,SIGNAL(clicked()),this,SLOT(stopSignalUpdate()));
 
+    QObject::connect(_tb->ui->startStandaloneButton,SIGNAL(clicked()),this,SLOT(startStandalone()));
+    QObject::connect(_tb->ui->stopStandaloneButton,SIGNAL(clicked()),this,SLOT(stopStandalone()));
+
+    _tb->ui->startFlightgearButton->setVisible(false);
+    _tb->ui->sendToFlightgearButton->setVisible(false);
+    _tb->ui->startUpdateButton->setVisible(false);
+    _tb->ui->stopUpdateButton->setVisible(false);
+    _tb->ui->connectTelnetButton->setVisible(false);
+
 
     /*\ This needs to go
     QPolygonF polygon;
@@ -818,6 +827,42 @@ void MainWindow::deleteFlightplan(unsigned id)
 
     _db->delete_flightplan_position(0,id);
 }
+
+
+void MainWindow::startStandalone()
+{
+    _tb->ui->startStandaloneButton->setEnabled(false);
+    _tb->ui->startStandaloneButton->setStyleSheet("background:rgb(220,220,220);");
+    _tb->ui->stopStandaloneButton->setEnabled(true);
+    _tb->ui->stopStandaloneButton->setStyleSheet("background:yellow;");
+
+    _start_time= QDateTime::currentDateTime().toString("d/MMM/yyyy hh:mm:ss");
+    QThread *t= new QThread;
+    FGRadio *radiosystem = new FGRadio(_db);
+    radiosystem->moveToThread(t);
+    connect(radiosystem, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
+    connect(radiosystem, SIGNAL(haveSignalReading(double, double, uint,QString,double,Signal*)), this, SLOT(showSignalReading(double, double, uint,QString,double,Signal*)));
+    //connect(up, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+    connect(t, SIGNAL(started()), radiosystem, SLOT(update()));
+    connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
+    connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
+    connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
+    _radio_subsystem = radiosystem;
+    t->start();
+
+
+}
+
+
+void MainWindow::stopStandalone()
+{
+    _radio_subsystem->stop();
+    _tb->ui->startStandaloneButton->setEnabled(true);
+    _tb->ui->startStandaloneButton->setStyleSheet("background:yellow;");
+    _tb->ui->stopStandaloneButton->setEnabled(false);
+    _tb->ui->stopStandaloneButton->setStyleSheet("background:rgb(220,220,220);");
+}
+
 
 void MainWindow::sendFlightgearData()
 {

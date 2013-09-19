@@ -50,12 +50,16 @@ FGRadio::FGRadio(DatabaseApi *db) {
 	_propagation_model = 2; 
     _scenery = new SceneryManager(db);
     _db=db;
+    _run=1;
 	
     _mtex = 0;
     _terrain_sampling_distance =  90.0; // regular SRTM is 90 meters
 	
 	_max_computation_time_norm = 0.1;
-    _last_beacon_update = QTime::currentTime();
+    _last_beacon_update = QDateTime::currentDateTime().toTime_t();
+
+    _fp_points = _db->select_flightplan_positions(0);
+    _current_waypoint =0;
 
 }
 
@@ -71,9 +75,32 @@ FGRadio::~FGRadio()
 	delete _antennas["yagi4"];
 	_radio_props.clear();
 	_antennas.clear();
-	_atc_transmissions.clear();
-	_nav_transmissions.clear();
 	_beacon_transmissions.clear();
+    for(int i=0;i<_fp_points.size();++i)
+    {
+        delete _fp_points[i];
+    }
+    _fp_points.clear();
+}
+
+void FGRadio::moveMobile()
+{
+
+    if(_start_move.elapsed() < 10*1000) return;
+    if(_current_waypoint >= _fp_points.size())
+    {
+        _current_waypoint = 0;
+    }
+    FlightPlanPoints *fp = _fp_points[_current_waypoint];
+    _mobile->latitude = fp->latitude;
+    _mobile->longitude = fp->longitude;
+    _mobile->elevation_feet = fp->altitude;
+    _start_move.restart();
+}
+
+void FGRadio::stop()
+{
+    _run=0;
 }
 
 
@@ -81,23 +108,30 @@ void FGRadio::update()
 {
 
     QVector<GroundStation *> gs = _db->select_ground_stations(0);
-
+    QTime _start_move = QTime::currentTime();
+    _start_move.start();
     while (true)
     {
+        moveMobile();
+        if(_run==0)
+            break;
         receive(gs);
 
         if (_beacon_transmissions.size() > 0 ) {
             Transmission * transmission = _beacon_transmissions.front();
             QTime start = QTime::currentTime();
-            while ((start.elapsed()) < _max_computation_time_norm) {
+            start.start();
+            while ((start.elapsed()) < _max_computation_time_norm*1000) {
 
                 if (transmission->elevations.size() >= transmission->e_size) {
 
                     Transmission * t = new Transmission(transmission);
+                    delete transmission->station;
+                    delete transmission->radiosignal;
                     delete transmission;
                     _beacon_transmissions.pop_front();
                     processTerrain(t);
-                    return;
+                    break;
                 }
                 transmission->probe_distance += transmission->point_distance;
                 SGGeod probe = SGGeod::fromGeoc(transmission->center.advanceRadM( transmission->course, transmission->probe_distance ));
@@ -163,28 +197,23 @@ void FGRadio::receive(QVector<GroundStation *> gs) {
         // may we have more groundstations, maybe we get a vector, yes?
         // so why delete old code, huh? no make sense
         GroundStation *station = gs[i];
-        if(!station || !(station->enabled == 1)) {
-
+        if(!station || !(station->enabled == 1))
+        {
             continue;
-
-        }
-        bool process_terrain = true;
-
-        /** disabled for now, until I figure out what to do
-        double beacon_delay = station->beacon_delay;
-        double last_beacon_update = station->last_update; ? unneeded?
-
-        if ((QTime::currentTime() - last_beacon_update) < beacon_delay) {
-                // only beacon we have, yes
-                //continue;
         }
 
-        else {
-            process_terrain = true;
-            //_last_beacon_update = SGTimeStamp::now();
-            station->last_update = QTime::currentTime();
+
+        if ((QDateTime::currentDateTime().toTime_t() - station->last_update) < station->beacon_delay)
+        {
+            // only beacon we have, yes
+            continue;
         }
-        */
+
+        else
+        {
+            station->last_update = QDateTime::currentDateTime().toTime_t();
+        }
+
 
         //station->last_update =  QTime::currentTime();
         double lat, lon, elev, heading, pitch;
@@ -243,7 +272,7 @@ void FGRadio::receive(QVector<GroundStation *> gs) {
         transmission->tx_antenna_pitch = pitch;
 
 
-        transmission->process_terrain = process_terrain;
+        transmission->process_terrain = true;
 
         setupTransmission(transmission);
 
@@ -259,6 +288,7 @@ void FGRadio::setMobile(MobileStation *m)
     _mobile->longitude = m->longitude;
     _mobile->elevation_feet = m->elevation_feet;
     _mobile->heading_deg = m->heading_deg;
+    emit haveMobilePosition(_mobile->longitude,_mobile->latitude);
     _mtex = 1;
 }
 
@@ -266,14 +296,11 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	
 
 	if((transmission->freq < 40.0) || (transmission->freq > 20000.0)) {	// frequency out of recommended range 
-		cerr << "FGRadio:: received transmission with frequency outside of normal range" << endl;
+        qDebug() << "FGRadio:: received transmission with frequency outside of normal range";
 		delete transmission;
 		return;
 	}
 	
-    while(_mtex==0)
-    {
-    }
 	
     double own_lat = _mobile->latitude;
     double own_lon = _mobile->longitude;
@@ -282,7 +309,10 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	double own_alt= own_alt_ft * SG_FEET_TO_METER;
 
 	
-	
+    if(own_alt_ft == 0.0) //then our station is on ground
+    {
+        // here will be some code
+    }
 	transmission->own_heading = own_heading;
 	
 	SGGeod own_pos = SGGeod::fromDegM( own_lon, own_lat, own_alt );
@@ -368,6 +398,8 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 
     if(_beacon_transmissions.size() > 20) {
         cerr << "ITM:: number of beacon transmissions is too high: " << endl;
+        delete transmission->station;
+        delete transmission->radiosignal;
         delete transmission;
         return;
     }
@@ -407,7 +439,7 @@ void FGRadio::processSignal(Transmission* transmission) {
 	
     // this used to do various stuff; now it's just cleanup, sorry
     emit haveSignalReading(_mobile->longitude,_mobile->latitude,transmission->station->id, transmission->station->name,transmission->freq,transmission->radiosignal);
-    //emit radiosystemSignal(transmission->radiosignal);
+    delete transmission->station;
     delete transmission->radiosignal;
 	delete transmission;
 	

@@ -6,7 +6,7 @@
 
 QT       += core gui network sql widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-TARGET = qFGRadio
+TARGET = qRadioPredict
 TEMPLATE = app
 
 

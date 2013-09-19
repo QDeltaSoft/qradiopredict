@@ -12,7 +12,7 @@ FGTelnet::FGTelnet()
     QObject::connect(_socket,SIGNAL(readyRead()),this,SLOT(processData()));
     _connection_tries=0;
     _status=0;
-    this->connectToFGFS();
+    //this->connectToFGFS();
 }
 
 FGTelnet::~FGTelnet()
