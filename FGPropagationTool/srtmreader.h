@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QFile>
 #include <QDir>
+#include <QDebug>
 #include "flightgearprefs.h"
 #include "databaseapi.h"
 

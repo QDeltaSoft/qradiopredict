@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>610</width>
-    <height>469</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>420</y>
+     <y>530</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -38,7 +38,7 @@
      <x>20</x>
      <y>50</y>
      <width>551</width>
-     <height>359</height>
+     <height>471</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -312,7 +312,7 @@
     <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="text">
-    <string>Flightgear runtime settings</string>
+    <string>Program settings</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>

@@ -58,6 +58,10 @@ double SRTMReader::readHeight()
         conv.height_buf[1]=buf[0];
         delete[] buf;
     }
+    else
+    {
+        qDebug() << "SRTM path: " << srtm_dir << " unable to open";
+    }
 
 
     if (conv.height != -32768.0)

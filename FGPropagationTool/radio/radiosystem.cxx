@@ -91,18 +91,20 @@ void FGRadio::moveMobile()
 {
 
     if(_start_move.elapsed() < 10*1000) return;
+    _start_move.restart();
     if(_current_waypoint >= _fp_points.size())
     {
         _current_waypoint = 0;
     }
     FlightPlanPoints *fp = _fp_points[_current_waypoint];
+    _current_waypoint++;
     MobileStation m;
     m.latitude = fp->latitude;
     m.longitude = fp->longitude;
     m.elevation_feet = fp->altitude;
     m.heading_deg = 0;
     setMobile(&m);
-    _start_move.restart();
+
 }
 
 void FGRadio::stop()
