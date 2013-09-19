@@ -240,6 +240,8 @@ private:
 	bool _suspended;
     unsigned _mtex;
     unsigned _run;
+
+    bool _timer_started;
 	
 	void setupTransmission(Transmission* transmission);
 	

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <stdlib.h>
 
+
 using namespace std;
 
 SRTMReader::SRTMReader(DatabaseApi *db)
@@ -30,14 +31,16 @@ void SRTMReader::setCoordinates(double lat, double lon)
 
 double SRTMReader::readHeight()
 {
+    QString filename = this->getFilename();
     QString srtm_dir = _settings->_srtm_path;
     srtm_dir.append(QDir::separator());
-    unsigned temp_row  = (unsigned) round(_latitude_secs /3);
-    unsigned temp_column = (unsigned) round(_longitude_secs/3);
+    unsigned temp_row  = (unsigned) round(_latitude_secs *3600/3);
+    unsigned temp_column = (unsigned) round(_longitude_secs *3600/3);
     unsigned row = 1201 - temp_row - 1;
     // SRTM 3 is 1201x1201, 2 bytes per sample, we have to read from lower left
     unsigned pos = (row * 1201 + (temp_column - 1)) * 2;
-    QString filename = this->getFilename();
+    qDebug() << pos;
+
     srtm_dir.append(filename);
     if(filename != _last_filename)
     {
@@ -45,8 +48,8 @@ double SRTMReader::readHeight()
     }
     // TODO: this is not portable across archs, due to the little/big endian issue
     union {
-        char height_buf[2];
-        double height;
+        unsigned char height_buf[2];
+        short height;
     } conv;
     ifstream file (srtm_dir.toStdString().c_str(), ifstream::binary);
     if(file)
@@ -63,9 +66,9 @@ double SRTMReader::readHeight()
         qDebug() << "SRTM path: " << srtm_dir << " unable to open";
     }
 
-
-    if (conv.height != -32768.0)
-        return conv.height;
+    qDebug() << "height: " << conv.height;
+    if (conv.height != -32768)
+        return (double) conv.height;
     else
         return 0.0;
 
@@ -89,3 +92,4 @@ QString SRTMReader::getFilename()
     filename.append(".hgt");
     return filename;
 }
+

@@ -1,4 +1,5 @@
 #include "scenerymanager.h"
+#include <QDebug>
 
 SceneryManager::SceneryManager(DatabaseApi *db)
 {
@@ -8,10 +9,13 @@ SceneryManager::SceneryManager(DatabaseApi *db)
 
 bool SceneryManager::get_elevation_m(const SGGeod &probe, double &elevation_m, string &material)
 {
+
     _srtmreader->setCoordinates(probe.getLatitudeDeg(),probe.getLongitudeDeg());
     elevation_m = _srtmreader->readHeight();
     if(!material.find("#"))
     {
+        material = "none";
+        return true;
         _shpreader->setCoordinates(probe.getLatitudeDeg(),probe.getLongitudeDeg());
         QString mat = _shpreader->getTerrainType();
         material = mat.toStdString();

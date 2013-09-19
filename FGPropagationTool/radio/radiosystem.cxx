@@ -56,12 +56,13 @@ FGRadio::FGRadio(DatabaseApi *db) {
     _mobile = new MobileStation;
     _terrain_sampling_distance =  90.0; // regular SRTM is 90 meters
 	
-	_max_computation_time_norm = 0.1;
+    _max_computation_time_norm = 10.9;
     _last_beacon_update = QDateTime::currentDateTime().toTime_t();
 
     _fp_points = _db->select_flightplan_positions(0);
     _current_waypoint =0;
     _start_move = QTime::currentTime();
+    _timer_started = false;
 
 }
 
@@ -90,7 +91,8 @@ FGRadio::~FGRadio()
 void FGRadio::moveMobile()
 {
 
-    if(_start_move.elapsed() < 10*1000) return;
+    if((_start_move.elapsed() < 10*1000) && !_timer_started) return;
+    if(_timer_started) _timer_started = false;
     _start_move.restart();
     if(_current_waypoint >= _fp_points.size())
     {
@@ -119,21 +121,25 @@ void FGRadio::update()
     QVector<GroundStation *> gs = _db->select_ground_stations(0);
 
     _start_move.start();
-    while(_start_move.elapsed() < 10*1000){}
+    _timer_started =true;
+    moveMobile();
     while (true)
     {
-        moveMobile();
+        //moveMobile();
         if(_run==0)
             break;
         receive(gs);
 
-        if (_beacon_transmissions.size() > 0 ) {
+        if (_beacon_transmissions.size() > 0 )
+        {
             Transmission * transmission = _beacon_transmissions.front();
             QTime start = QTime::currentTime();
             start.start();
-            while ((start.elapsed()) < _max_computation_time_norm*1000) {
+            while ((start.elapsed()) < _max_computation_time_norm*1000)
+            {
 
-                if (transmission->elevations.size() >= transmission->e_size) {
+                if (transmission->elevations.size() >= transmission->e_size)
+                {
 
                     Transmission * t = new Transmission(transmission);
                     //delete transmission->station;
@@ -148,7 +154,8 @@ void FGRadio::update()
                 string material;
                 double elevation_m = 0.0;
 
-                if (_scenery->get_elevation_m( probe, elevation_m, material )) {
+                if (_scenery->get_elevation_m( probe, elevation_m, material ))
+                {
 
                     if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
                         transmission->elevations.push_back(elevation_m);
