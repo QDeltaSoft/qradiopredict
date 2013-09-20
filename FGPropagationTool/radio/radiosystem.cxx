@@ -56,13 +56,14 @@ FGRadio::FGRadio(DatabaseApi *db) {
     _mobile = new MobileStation;
     _terrain_sampling_distance =  90.0; // regular SRTM is 90 meters
 	
-    _max_computation_time_norm = 10.9;
+    _max_computation_time_norm = 60.9;
     _last_beacon_update = QDateTime::currentDateTime().toTime_t();
 
     _fp_points = _db->select_flightplan_positions(0);
     _current_waypoint =0;
     _start_move = QTime::currentTime();
     _timer_started = false;
+    _move_flag=true;
 
 }
 
@@ -90,7 +91,7 @@ FGRadio::~FGRadio()
 
 void FGRadio::moveMobile()
 {
-
+    //if(!_move_flag) return;
     if((_start_move.elapsed() < 10*1000) && !_timer_started) return;
     if(_timer_started) _timer_started = false;
     _start_move.restart();
@@ -106,6 +107,7 @@ void FGRadio::moveMobile()
     m.elevation_feet = fp->altitude;
     m.heading_deg = 0;
     setMobile(&m);
+    //_move_flag = false;
 
 }
 
@@ -147,6 +149,7 @@ void FGRadio::update()
                     delete transmission;
                     _beacon_transmissions.pop_front();
                     processTerrain(t);
+                    //_move_flag = true;
                     break;
                 }
                 transmission->probe_distance += transmission->point_distance;
@@ -414,7 +417,7 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	
 
     if(_beacon_transmissions.size() > 20) {
-        cerr << "ITM:: number of beacon transmissions is too high: " << endl;
+        qDebug() << "ITM:: number of beacon transmissions is too high: ";
         //delete transmission->station;
         delete transmission->radiosignal;
         delete transmission;

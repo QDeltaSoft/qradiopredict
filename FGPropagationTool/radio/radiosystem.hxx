@@ -229,6 +229,7 @@ private:
 	
     unsigned _last_beacon_update;
     QTime _start_move;
+    bool _move_flag;
     QVector<FlightPlanPoints*> _fp_points;
     unsigned _current_waypoint;
     FlightgearPrefs *_settings;

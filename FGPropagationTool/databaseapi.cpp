@@ -155,7 +155,7 @@ DatabaseApi::select_prefs()
     int srtm_path_idx = query.record().indexOf("srtm_path");
     int shapefile_path_idx = query.record().indexOf("shapefile_path");
     int use_clutter_idx = query.record().indexOf("use_clutter");
-    int itm_perfomance_idx = query.record().indexOf("itm_perfomance_mode");
+    int itm_perfomance_idx = query.record().indexOf("itm_performance_mode");
     int use_antenna_pattern_idx = query.record().indexOf("use_antenna_pattern");
     int windowX_idx = query.record().indexOf("windowX");
     int windowY_idx = query.record().indexOf("windowY");
