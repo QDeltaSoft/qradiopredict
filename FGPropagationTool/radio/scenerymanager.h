@@ -9,6 +9,9 @@
 #include "../databaseapi.h"
 
 using std::string;
+/**
+ * @brief Proxy class for the real readers
+ */
 class SceneryManager
 {
 public:

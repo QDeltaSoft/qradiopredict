@@ -1,6 +1,9 @@
 #ifndef FLIGHTPLANPOINTS_H
 #define FLIGHTPLANPOINTS_H
 
+/**
+ * @brief Struct holding the properties of a Waypoint
+ */
 class FlightPlanPoints
 {
 public:

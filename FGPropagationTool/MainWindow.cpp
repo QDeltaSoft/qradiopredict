@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //!!!!!!!! connections must always come after setupUi!!!
     QObject::connect(ui->actionConnect_to_Flightgear,SIGNAL(triggered()),this->_telnet,SLOT(connectToFGFS()));
     QObject::connect(ui->actionStart_Flightgear,SIGNAL(triggered()),this,SLOT(startFGFS()));
+    QObject::connect(ui->actionSend_to_Flightgear,SIGNAL(triggered()),this,SLOT(sendFlightgearData()));
     QObject::connect(ui->action_Settings,SIGNAL(triggered()),this,SLOT(showSettingsDialog()));
     QObject::connect(ui->actionConnect_APRS,SIGNAL(triggered()),this,SLOT(connectToAPRS()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
@@ -109,10 +110,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->stopStandaloneButton,SIGNAL(clicked()),this,SLOT(stopStandalone()));
 
     _tb->ui->startFlightgearButton->setVisible(false);
+    _tb->ui->connectTelnetButton->setVisible(false);
     _tb->ui->sendToFlightgearButton->setVisible(false);
     _tb->ui->startUpdateButton->setVisible(false);
     _tb->ui->stopUpdateButton->setVisible(false);
-    _tb->ui->connectTelnetButton->setVisible(false);
+
 
 
     /*\ This needs to go
@@ -1030,9 +1032,13 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 signal_form->ui->stationName->setText(station_name);
                 signal_form->ui->frequency->setText(QString::number(freq));
                 signal_form->ui->distance->setText(QString::number(s->distance));
+                signal_form->ui->rxHeight->setText(QString::number(s->rx_height));
+                signal_form->ui->txHeight->setText(QString::number(s->tx_height));
                 signal_form->ui->signal->setText(QString::number(s->signal));
                 signal_form->ui->signalDbm->setText(QString::number(s->signal_dbm));
                 signal_form->ui->fieldStrength->setText(QString::number(s->field_strength_uv));
+                signal_form->ui->terrainAttenuation->setText(QString::number((s->terrain_attenuation)));
+                signal_form->ui->clutterAttenuation->setText(QString::number(s->clutter_attenuation));
                 signal_form->ui->linkBudget->setText(QString::number(s->link_budget));
                 signal_form->ui->propMode->setText(s->prop_mode);
 
@@ -1070,9 +1076,13 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         QLabel * stationName = w->findChild<QLabel *>("stationName");
                         QLabel * frequency = w->findChild<QLabel *>("frequency");
                         QLabel * distance = w->findChild<QLabel *>("distance");
+                        QLabel * rxHeight = w->findChild<QLabel *>("rxHeight");
+                        QLabel * txHeight = w->findChild<QLabel *>("txHeight");
                         QLabel * signal = w->findChild<QLabel *>("signal");
                         QLabel * signalDbm = w->findChild<QLabel *>("signalDbm");
                         QLabel * fieldStrength = w->findChild<QLabel *>("fieldStrength");
+                        QLabel * terrainAttenuation = w->findChild<QLabel *>("terrainAttenuation");
+                        QLabel * clutterAttenuation = w->findChild<QLabel *>("clutterAttenuation");
                         QLabel * linkBudget = w->findChild<QLabel *>("linkBudget");
                         QLabel * propMode = w->findChild<QLabel *>("propMode");
                         QLabel * labelSmeter = w->findChild<QLabel *>("labelSmeter");
@@ -1080,6 +1090,8 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         stationName->setText(station_name);
                         frequency->setText(QString::number(freq));
                         distance->setText(QString::number(s->distance));
+                        rxHeight->setText(QString::number(s->rx_height));
+                        txHeight->setText(QString::number(s->tx_height));
                         if(s->signal <= 2)
                         {
                             signal->setText("<font color=\"red\">"+QString::number(s->signal)+"</font>");
@@ -1094,6 +1106,8 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         }
                         signalDbm->setText(QString::number(s->signal_dbm));
                         fieldStrength->setText(QString::number(s->field_strength_uv));
+                        terrainAttenuation->setText(QString::number(s->terrain_attenuation));
+                        clutterAttenuation->setText(QString::number(s->clutter_attenuation));
                         linkBudget->setText(QString::number(s->link_budget));
                         propMode->setText(s->prop_mode);
                         double img_width=s->signal / 3 *12;

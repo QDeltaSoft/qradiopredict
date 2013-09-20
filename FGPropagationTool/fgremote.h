@@ -11,6 +11,10 @@
 #include "flightplanpoints.h"
 #include "mobilestation.h"
 
+
+/**
+ * @brief Accessory functions which set up the Flightgear environment
+ */
 class FGRemote : public QObject
 {
     Q_OBJECT

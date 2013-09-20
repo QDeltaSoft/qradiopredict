@@ -52,6 +52,8 @@ void ShpReader::setCoordinates(double lat, double lon)
 {
     _point->setX(lat);
     _point->setY(lon);
+    _latitude = lat;
+    _longitude = lon;
 }
 
 QString ShpReader::getTerrainType()
@@ -63,7 +65,9 @@ QString ShpReader::getTerrainType()
     {
         it.next();
         QString shp_dir = _settings->_shapefile_path;
-        shp_dir.append(QDir::separator()).append(*(it.value()));
+        QString filename= this->getFilename();
+        shp_dir.append(QDir::separator()).append(filename).append("_");
+        shp_dir.append(*(it.value()));
         type = this->openShapefile(shp_dir,*(it.key()));
         if(type == "none")
             continue;
@@ -121,4 +125,21 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
 
     OGRDataSource::DestroyDataSource( poDS );
     return QString("none");
+}
+
+
+QString ShpReader::getFilename()
+{
+    QString filename;
+    if(_latitude >=0) filename.append("N");
+    else filename.append("S");
+    unsigned lat_deg = (unsigned) floor(fabs(_latitude));
+    unsigned lon_deg = (unsigned) floor(fabs(_longitude));
+    filename.append(QString::number(lat_deg));
+    if(_longitude >=0) filename.append("E");
+    else filename.append("W");
+    QString lon = QString::number(lon_deg);
+    if (lon.length() < 3) filename.append("0");
+    filename.append(lon);
+    return filename;
 }

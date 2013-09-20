@@ -39,7 +39,6 @@ double SRTMReader::readHeight()
     unsigned row = 1201 - temp_row - 1;
     // SRTM 3 is 1201x1201, 2 bytes per sample, we have to read from lower left
     unsigned pos = (row * 1201 + (temp_column - 1)) * 2;
-    qDebug() << pos;
 
     srtm_dir.append(filename);
     if(filename != _last_filename)
@@ -66,7 +65,7 @@ double SRTMReader::readHeight()
         qDebug() << "SRTM path: " << srtm_dir << " unable to open";
     }
 
-    qDebug() << "height: " << conv.height;
+    //qDebug() << "height: " << conv.height;
     if (conv.height != -32768)
         return (double) conv.height;
     else

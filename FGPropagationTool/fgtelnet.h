@@ -8,6 +8,9 @@
 #include <QCoreApplication>
 #include <QLatin1String>
 
+/**
+ * @brief Interface class to network Flightgear props server
+ */
 class FGTelnet : public QObject
 {
     Q_OBJECT

@@ -10,6 +10,9 @@
 #include <QDateTime>
 #include <QVector>
 
+/**
+ * @brief Object which updates the radio result in a separate thread
+ */
 class Updater : public QObject
 {
     Q_OBJECT

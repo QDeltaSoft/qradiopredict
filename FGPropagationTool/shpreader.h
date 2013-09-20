@@ -22,15 +22,15 @@ public:
     ~ShpReader();
     void setCoordinates(double lat, double lon);
     QString getTerrainType();
-signals:
-    
-public slots:
 
 private:
     QMap<QString*, QString*> _terrain_types;
     OGRPoint *_point;
     QString openShapefile(QString &name, QString &terrain_type);
+    QString getFilename();
     FlightgearPrefs *_settings;
+    double _latitude;
+    double _longitude;
     
 };
 

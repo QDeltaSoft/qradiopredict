@@ -50,6 +50,7 @@
     </property>
     <addaction name="actionStart_Flightgear"/>
     <addaction name="actionConnect_to_Flightgear"/>
+    <addaction name="actionSend_to_Flightgear"/>
     <addaction name="actionConnect_APRS"/>
     <addaction name="actionExit"/>
    </widget>
@@ -115,6 +116,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionSend_to_Flightgear">
+   <property name="text">
+    <string>Send to Flightgear</string>
    </property>
   </action>
  </widget>

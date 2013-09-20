@@ -11,6 +11,9 @@
 #include "signal.h"
 #include "flightgearprefs.h"
 
+/**
+ * @brief Sqlite database access class
+ */
 class DatabaseApi
 {
 public:

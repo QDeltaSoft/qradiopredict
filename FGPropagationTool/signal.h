@@ -3,6 +3,9 @@
 
 #include <QString>
 
+/**
+ * @brief Struct holding the properties of a radio signal
+ */
 class Signal
 {
 public:

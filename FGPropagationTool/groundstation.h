@@ -3,6 +3,10 @@
 
 #include <QString>
 
+/**
+ * @brief Struct holding the properties of a ground station
+ */
+
 class GroundStation
 {
 public:
