@@ -115,8 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _tb->ui->startUpdateButton->setVisible(false);
     _tb->ui->stopUpdateButton->setVisible(false);
 
-    this->createActions();
-    this->createTrayIcon();
+    //this->createActions();
+    //this->createTrayIcon();
 
 
     /*\ This needs to go
@@ -187,18 +187,22 @@ void MainWindow::createTrayIcon()
     _trayIcon->show();
 }
 
+/** not used right now
 void MainWindow::closeEvent(QCloseEvent *event)
- {
-     if (_trayIcon->isVisible()) {
-         QMessageBox::information(this, tr("Systray"),
-                                  tr("The program will keep running in the "
-                                     "system tray. To terminate the program, "
-                                     "choose <b>Quit</b> in the context menu "
-                                     "of the system tray entry."));
-         hide();
-         event->ignore();
-     }
- }
+{
+
+    if (_trayIcon->isVisible())
+    {
+        QMessageBox::information(this, tr("Systray"),
+                          tr("The program will keep running in the "
+                             "system tray. To terminate the program, "
+                             "choose <b>Quit</b> in the context menu "
+                             "of the system tray entry."));
+        hide();
+        event->ignore();
+    }
+}
+*/
 
 void MainWindow::connectToAPRS()
 {
@@ -978,10 +982,12 @@ void MainWindow::moveMobile(double lon, double lat)
     {
         QMap<QGraphicsPixmapItem *, QPointF>::const_iterator it = _map_mobiles.begin();
         QPointF pos = it.value();
+        /** now why did I do this for?? I can't remember
         if( (fabs(pos.rx()-lon)> 0.1) || ( fabs(pos.ry()-lat)>0.1) )
         {
             return;
         }
+        */
         QGraphicsPixmapItem * oldicon = it.key();
         _view->_childView->scene()->removeItem(oldicon);
         _map_mobiles.remove(oldicon);
@@ -1002,6 +1008,7 @@ void MainWindow::moveMobile(double lon, double lat)
 
 void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString station_name,double freq,Signal*s)
 {
+
     for (int j=0;j<_signal_lines.size();++j)
     {
         _view->_childView->scene()->removeItem(_signal_lines.at(j));
@@ -1039,10 +1046,12 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 {
                     QMap<QGraphicsPixmapItem *, QPointF>::const_iterator it = _map_mobiles.begin();
                     QPointF pos = it.value();
+                    /** now why did I do this for??
                     if( (fabs(pos.rx()-lon)> 0.1) || ( fabs(pos.ry()-lat)>0.1) )
                     {
                         continue;
                     }
+                    */
                 }
                 QPointF gs_pos(gs->longitude,gs->latitude);
                 QPointF mobile_pos(lon,lat);
@@ -1084,6 +1093,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 signal_form->ui->distance->setText(QString::number(s->distance));
                 signal_form->ui->rxHeight->setText(QString::number(s->rx_height));
                 signal_form->ui->txHeight->setText(QString::number(s->tx_height));
+                signal_form->ui->txERP->setText(QString::number(s->tx_erp));
                 signal_form->ui->signal->setText(QString::number(s->signal));
                 signal_form->ui->signalDbm->setText(QString::number(s->signal_dbm));
                 signal_form->ui->fieldStrength->setText(QString::number(s->field_strength_uv));
@@ -1128,6 +1138,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         QLabel * distance = w->findChild<QLabel *>("distance");
                         QLabel * rxHeight = w->findChild<QLabel *>("rxHeight");
                         QLabel * txHeight = w->findChild<QLabel *>("txHeight");
+                        QLabel * txERP = w->findChild<QLabel *>("txERP");
                         QLabel * signal = w->findChild<QLabel *>("signal");
                         QLabel * signalDbm = w->findChild<QLabel *>("signalDbm");
                         QLabel * fieldStrength = w->findChild<QLabel *>("fieldStrength");
@@ -1142,6 +1153,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         distance->setText(QString::number(s->distance));
                         rxHeight->setText(QString::number(s->rx_height));
                         txHeight->setText(QString::number(s->tx_height));
+                        txERP->setText(QString::number(s->tx_erp));
                         if(s->signal <= 2)
                         {
                             signal->setText("<font color=\"red\">"+QString::number(s->signal)+"</font>");

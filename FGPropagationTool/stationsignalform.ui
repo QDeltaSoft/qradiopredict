@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>260</width>
-    <height>435</height>
+    <height>480</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -25,7 +25,7 @@
      <x>9</x>
      <y>10</y>
      <width>252</width>
-     <height>361</height>
+     <height>411</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -42,7 +42,7 @@
       </property>
      </widget>
     </item>
-    <item row="10" column="0">
+    <item row="11" column="0">
      <widget class="QLabel" name="label_10">
       <property name="maximumSize">
        <size>
@@ -58,7 +58,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
+    <item row="6" column="2">
      <widget class="QLabel" name="signalDbm">
       <property name="font">
        <font>
@@ -71,14 +71,14 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="0">
+    <item row="9" column="0">
      <widget class="QLabel" name="label_5">
       <property name="text">
        <string>Link budget (db)</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="2">
+    <item row="7" column="2">
      <widget class="QLabel" name="signal">
       <property name="font">
        <font>
@@ -107,7 +107,7 @@
       </property>
      </spacer>
     </item>
-    <item row="7" column="2">
+    <item row="8" column="2">
      <widget class="QLabel" name="fieldStrength">
       <property name="font">
        <font>
@@ -120,14 +120,14 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
        <string>Signal (dBm)</string>
       </property>
      </widget>
     </item>
-    <item row="8" column="2">
+    <item row="9" column="2">
      <widget class="QLabel" name="linkBudget">
       <property name="font">
        <font>
@@ -140,7 +140,7 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
+    <item row="7" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>Signal</string>
@@ -160,7 +160,7 @@
       </property>
      </widget>
     </item>
-    <item row="11" column="2">
+    <item row="12" column="2">
      <widget class="QLabel" name="propMode">
       <property name="minimumSize">
        <size>
@@ -182,7 +182,14 @@
       </property>
      </widget>
     </item>
-    <item row="9" column="0">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Station name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
      <widget class="QLabel" name="label_9">
       <property name="maximumSize">
        <size>
@@ -198,7 +205,7 @@
       </property>
      </widget>
     </item>
-    <item row="11" column="0">
+    <item row="12" column="0">
      <widget class="QLabel" name="label_6">
       <property name="maximumSize">
        <size>
@@ -214,14 +221,7 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Station name</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="2">
+    <item row="11" column="2">
      <widget class="QLabel" name="clutterAttenuation">
       <property name="font">
        <font>
@@ -234,7 +234,14 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="0">
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>Distance(km)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
      <widget class="QLabel" name="label_4">
       <property name="maximumSize">
        <size>
@@ -250,13 +257,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_8">
-      <property name="text">
-       <string>Distance(km)</string>
-      </property>
-     </widget>
-    </item>
     <item row="4" column="0">
      <widget class="QLabel" name="label_11">
       <property name="text">
@@ -264,21 +264,8 @@
       </property>
      </widget>
     </item>
-    <item row="9" column="2">
+    <item row="10" column="2">
      <widget class="QLabel" name="terrainAttenuation">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLabel" name="distance">
       <property name="font">
        <font>
         <weight>75</weight>
@@ -294,6 +281,19 @@
      <widget class="QLabel" name="label_7">
       <property name="text">
        <string>Frequency (MHz)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="distance">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </item>
@@ -330,13 +330,33 @@
       </property>
      </widget>
     </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_13">
+      <property name="text">
+       <string>TX ERP (Watt)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLabel" name="txERP">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QLabel" name="labelSmeter">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>390</y>
+     <y>440</y>
      <width>191</width>
      <height>31</height>
     </rect>

@@ -65,7 +65,7 @@ public:
     DatabaseApi *_db;
     FGRemote *_remote;
     Aprs *_aprs;
-    QSystemTrayIcon *_trayIcon;
+
 
 signals:
     void newMessage(QString data);
@@ -114,7 +114,7 @@ private:
     void createActions();
     void createTrayIcon();
 
-    void closeEvent(QCloseEvent *event);
+    //void closeEvent(QCloseEvent *event);
 
     Ui::MainWindow *ui;
     MapGraphicsView *_view;
@@ -138,6 +138,7 @@ private:
     QMenu *_trayIconMenu;
     QAction *_restoreAction;
     QAction *_quitAction;
+    QSystemTrayIcon *_trayIcon;
 
 
 };

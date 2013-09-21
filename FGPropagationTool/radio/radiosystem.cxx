@@ -56,7 +56,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
     _mobile = new MobileStation;
     _terrain_sampling_distance =  90.0; // regular SRTM is 90 meters
 	
-    _max_computation_time_norm = 60.9;
+    _max_computation_time_norm = 5.9;
     _last_beacon_update = QDateTime::currentDateTime().toTime_t();
 
     _fp_points = _db->select_flightplan_positions(0);
