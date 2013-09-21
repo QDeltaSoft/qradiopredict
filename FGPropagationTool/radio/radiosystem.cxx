@@ -87,6 +87,7 @@ FGRadio::~FGRadio()
     _fp_points.clear();
     delete _scenery;
     delete _mobile;
+    delete _settings;
 }
 
 void FGRadio::moveMobile()
@@ -459,6 +460,7 @@ void FGRadio::processSignal(Transmission* transmission) {
 	
     // this used to do various stuff; now it's just cleanup, sorry
     emit haveSignalReading(_mobile->longitude,_mobile->latitude,transmission->station->id, transmission->station->name,transmission->freq,transmission->radiosignal);
+
     //delete transmission->station;
     //delete transmission->radiosignal;
 	delete transmission;
@@ -528,8 +530,7 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 	
 	pol_loss = polarization_loss(transmission->polarization);
 	
-	//SG_LOG(SG_GENERAL, SG_BULK,
-	//		"ITM:: Link budget: " << link_budget << ", Attenuation: " << dbloss << " dBm, " << strmode << ", Error: " << errnum);
+
 	//cerr << "ITM:: Link budget: " << link_budget << ", Attenuation: " << dbloss << " dBm, " << strmode << ", Error: " << errnum << endl;
     Signal *s = new Signal;
     s->rx_height = transmission->receiver_height;

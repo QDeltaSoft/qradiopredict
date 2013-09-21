@@ -115,6 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _tb->ui->startUpdateButton->setVisible(false);
     _tb->ui->stopUpdateButton->setVisible(false);
 
+    this->createActions();
+    this->createTrayIcon();
 
 
     /*\ This needs to go
@@ -149,6 +151,54 @@ void MainWindow::on_actionExit_triggered()
 {
     this->close();
 }
+
+void MainWindow::createActions()
+ {
+     _restoreAction = new QAction(tr("&Restore"), this);
+     connect(_restoreAction, SIGNAL(triggered()), this, SLOT(showNormal()));
+
+     _quitAction = new QAction(tr("&Quit"), this);
+     connect(_quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+ }
+
+void MainWindow::createTrayIcon()
+ {
+    _trayIconMenu = new QMenu(this);
+    _trayIconMenu->addAction(_restoreAction);
+    _trayIconMenu->addSeparator();
+    _trayIconMenu->addAction(_quitAction);
+
+    _trayIcon = new QSystemTrayIcon(this);
+    _trayIcon->setContextMenu(_trayIconMenu);
+    QIcon icon;
+    QPixmap px;
+    px.load(":icons/images/flag.png");
+    icon.addPixmap(px, QIcon::Normal, QIcon::Off);
+    _trayIcon->setIcon(icon);
+    //setWindowIcon(icon);
+    connect(_trayIcon,SIGNAL(messageClicked()),this,SLOT(raise()));
+
+    _trayIcon->setToolTip("Click me");
+    _trayIcon->setVisible(true);
+    _trayIcon->show();
+
+    _trayIcon->hide();
+    qApp->processEvents();
+    _trayIcon->show();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+ {
+     if (_trayIcon->isVisible()) {
+         QMessageBox::information(this, tr("Systray"),
+                                  tr("The program will keep running in the "
+                                     "system tray. To terminate the program, "
+                                     "choose <b>Quit</b> in the context menu "
+                                     "of the system tray entry."));
+         hide();
+         event->ignore();
+     }
+ }
 
 void MainWindow::connectToAPRS()
 {
@@ -844,7 +894,7 @@ void MainWindow::startStandalone()
     radiosystem->moveToThread(t);
     connect(radiosystem, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
     connect(radiosystem, SIGNAL(haveSignalReading(double, double, uint,QString,double,Signal*)), this, SLOT(showSignalReading(double, double, uint,QString,double,Signal*)));
-    //connect(up, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+
     connect(t, SIGNAL(started()), radiosystem, SLOT(update()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
     connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
@@ -885,7 +935,7 @@ void MainWindow::startSignalUpdate()
     up->moveToThread(t);
     connect(up, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
     connect(up, SIGNAL(haveSignalReading(double, double, uint,QString,double,Signal*)), this, SLOT(showSignalReading(double, double, uint,QString,double,Signal*)));
-    //connect(up, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+
     connect(t, SIGNAL(started()), up, SLOT(startUpdate()));
     connect(up, SIGNAL(finished()), t, SLOT(quit()));
     connect(up, SIGNAL(finished()), up, SLOT(deleteLater()));

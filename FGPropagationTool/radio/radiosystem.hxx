@@ -40,7 +40,7 @@ using std::string;
 /**
  * @brief The Main radio processing subsytem class
  *          For standalone operation, this should run in a separate thread,
- *          and update the signal properties in the main thread by a signal
+ *          and update the signal properties in the main thread
  */
 class FGRadio : public QObject
 {

@@ -44,6 +44,10 @@
 #include <QPen>
 #include <QBrush>
 #include <QGraphicsTextItem>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -61,6 +65,7 @@ public:
     DatabaseApi *_db;
     FGRemote *_remote;
     Aprs *_aprs;
+    QSystemTrayIcon *_trayIcon;
 
 signals:
     void newMessage(QString data);
@@ -106,6 +111,10 @@ public slots:
 
 private:
     void restoreMapState();
+    void createActions();
+    void createTrayIcon();
+
+    void closeEvent(QCloseEvent *event);
 
     Ui::MainWindow *ui;
     MapGraphicsView *_view;
@@ -125,6 +134,11 @@ private:
     QVector<QGraphicsLineItem*> _signal_lines;
     Updater * _updater;
     FGRadio *_radio_subsystem;
+
+    QMenu *_trayIconMenu;
+    QAction *_restoreAction;
+    QAction *_quitAction;
+
 
 };
 
