@@ -82,6 +82,8 @@ QString SRTMReader::getFilename()
     unsigned lon_deg = (unsigned) floor(fabs(_longitude));
     _latitude_secs = _latitude - lat_deg;
     _longitude_secs = _longitude - lon_deg;
+    QString lat = QString::number(lat_deg);
+    if (lat.length() < 2) filename.append("0");
     filename.append(QString::number(lat_deg));
     if(_longitude >=0) filename.append("E");
     else filename.append("W");

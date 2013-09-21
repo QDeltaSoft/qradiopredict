@@ -137,6 +137,8 @@ QString ShpReader::getFilename()
     else filename.append("S");
     unsigned lat_deg = (unsigned) floor(fabs(_latitude));
     unsigned lon_deg = (unsigned) floor(fabs(_longitude));
+    QString lat = QString::number(lat_deg);
+    if (lat.length() < 2) filename.append("0");
     filename.append(QString::number(lat_deg));
     if(_longitude >=0) filename.append("E");
     else filename.append("W");
