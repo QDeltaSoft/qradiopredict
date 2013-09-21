@@ -1109,11 +1109,11 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 signal_form->ui->linkBudget->setText(QString::number(s->link_budget));
                 signal_form->ui->propMode->setText(s->prop_mode);
 
-                double img_width=s->signal / 3 *12;
-                if(img_width <= 0) img_width=0;
-                if(img_width > 191) img_width=191;
-                signal_form->ui->labelSmeter->setMaximumWidth(img_width);
-                signal_form->ui->labelSmeter->setMinimumWidth(img_width);
+                double img_width=s->signal / (3 *12);
+                if(img_width < 0) img_width=0;
+                if(img_width > 1) img_width=1;
+                signal_form->ui->labelSmeter->setFixedWidth(img_width*191);
+
 
 
 
@@ -1179,11 +1179,11 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                         clutterAttenuation->setText(QString::number(s->clutter_attenuation));
                         linkBudget->setText(QString::number(s->link_budget));
                         propMode->setText(s->prop_mode);
-                        double img_width=s->signal / 3 *12;
-                        if(img_width <= 0) img_width=0;
-                        if(img_width > 191) img_width=191;
-                        labelSmeter->setMaximumWidth(img_width);
-                        labelSmeter->setMinimumWidth(img_width);
+                        double img_width=s->signal / (3 *12);
+                        if(img_width < 0) img_width=0;
+                        if(img_width > 1) img_width=1;
+                        labelSmeter->setFixedWidth(img_width*191);
+
                     }
                 }
 
