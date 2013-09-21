@@ -377,8 +377,11 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	//double delta_last = fmod(distance_m, point_distance);
 	
     double elevation_under_pilot;
-
-    if (_scenery->get_elevation_m( max_own_pos, elevation_under_pilot, mat)) {
+    if(own_alt == 0.0)
+    {
+        transmission->receiver_height = 1;
+    }
+    else if (_scenery->get_elevation_m( max_own_pos, elevation_under_pilot, mat)) {
         transmission->receiver_height = own_alt + elevation_under_pilot;
 	}
 	else {
@@ -389,13 +392,18 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 
 	double elevation_under_sender = 0.0;
     mat ="#";
-    if (_scenery->get_elevation_m( max_sender_pos, elevation_under_sender, mat )) {
+    if(sender_alt == 0.0)
+    {
+        transmission->transmitter_height = 1;
+    }
+    else if (_scenery->get_elevation_m( max_sender_pos, elevation_under_sender, mat )) {
         transmission->transmitter_height = sender_alt + elevation_under_sender;
 	}
 	else {
 		transmission->transmitter_height = sender_alt;
 	}
-	
+    _scenery->get_elevation_m( max_own_pos, elevation_under_pilot, mat);
+    _scenery->get_elevation_m( max_sender_pos, elevation_under_sender, mat );
 	transmission->elevation_under_pilot = elevation_under_pilot;
 	transmission->elevation_under_sender = elevation_under_sender;
 	
@@ -501,12 +509,12 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 
 	int size = transmission->elevations.size();
 	boost::scoped_array<double> itm_elev( new double[size] );
-    qDebug() << "##### START HEIGHT POINTS ######";
+    //qDebug() << "##### START HEIGHT POINTS ######";
 	for(int i=0;i<size;i++) {
 		itm_elev[i]=transmission->elevations[i];
-        qDebug() << transmission->elevations[i];
+        //qDebug() << transmission->elevations[i];
 	}
-    qDebug() << "##### STOP HEIGHT POINTS ######";
+    //qDebug() << "##### STOP HEIGHT POINTS ######";
 	
 	if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
 		// the sender and receiver roles are switched

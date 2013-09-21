@@ -144,6 +144,13 @@ MainWindow::~MainWindow()
     delete _db;
     delete _remote;
     _raw_aprs_messages.clear();
+
+    /**
+    delete _trayIcon;
+    delete _trayIconMenu;
+    delete _restoreAction;
+    delete _quitAction;
+    */
 }
 
 //private slot
