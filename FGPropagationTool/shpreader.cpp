@@ -70,7 +70,9 @@ QString ShpReader::getTerrainType()
         shp_dir.append(*(it.value()));
         type = this->openShapefile(shp_dir,*(it.key()));
         if(type == "none")
+        {
             continue;
+        }
         else
             return type;
     }
@@ -140,6 +142,7 @@ QString ShpReader::getFilename()
     else filename.append("W");
     QString lon = QString::number(lon_deg);
     if (lon.length() < 3) filename.append("0");
+    if (lon.length() < 2) filename.append("0");
     filename.append(lon);
     return filename;
 }

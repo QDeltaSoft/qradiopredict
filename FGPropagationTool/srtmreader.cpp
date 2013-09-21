@@ -65,7 +65,7 @@ double SRTMReader::readHeight()
         qDebug() << "SRTM path: " << srtm_dir << " unable to open";
     }
 
-    //qDebug() << "height: " << conv.height;
+
     if (conv.height != -32768)
         return (double) conv.height;
     else
@@ -87,6 +87,7 @@ QString SRTMReader::getFilename()
     else filename.append("W");
     QString lon = QString::number(lon_deg);
     if (lon.length() < 3) filename.append("0");
+    if (lon.length() < 2) filename.append("0");
     filename.append(lon);
     filename.append(".hgt");
     return filename;

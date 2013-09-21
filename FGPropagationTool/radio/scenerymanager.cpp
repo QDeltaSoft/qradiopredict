@@ -14,7 +14,7 @@ bool SceneryManager::get_elevation_m(const SGGeod &probe, double &elevation_m, s
     elevation_m = _srtmreader->readHeight();
     if(!material.find("#"))
     {
-        return true;
+
         _shpreader->setCoordinates(probe.getLatitudeDeg(),probe.getLongitudeDeg());
         QString mat = _shpreader->getTerrainType();
         material = mat.toStdString();
