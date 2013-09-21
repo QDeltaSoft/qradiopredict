@@ -25,7 +25,7 @@ public:
 
 private:
     QMap<QString*, QString*> _terrain_types;
-    OGRPoint *_point;
+
     QString openShapefile(QString &name, QString &terrain_type);
     QString getFilename();
     FlightgearPrefs *_settings;

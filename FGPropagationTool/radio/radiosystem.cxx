@@ -125,10 +125,10 @@ void FGRadio::update()
 
     _start_move.start();
     _timer_started =true;
-    //moveMobile();
+    moveMobile();
     while (true)
     {
-        moveMobile();
+        //moveMobile();
         if(_run==0)
             break;
         receive(gs);

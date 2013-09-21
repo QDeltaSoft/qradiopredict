@@ -32,12 +32,12 @@ ShpReader::ShpReader(DatabaseApi *db)
     _terrain_types.insert(new QString("CropWoodCover"), new QString("c243"));
     _terrain_types.insert(new QString("CropWood"), new QString("c243"));
     _terrain_types.insert(new QString("AgroForest"), new QString("c243"));
-    _point = new OGRPoint;
+
 }
 
 ShpReader::~ShpReader()
 {
-    delete _point;
+
     QMapIterator<QString*,QString*> it(_terrain_types);
     while(it.hasNext())
     {
@@ -50,8 +50,6 @@ ShpReader::~ShpReader()
 
 void ShpReader::setCoordinates(double lat, double lon)
 {
-    _point->setX(lat);
-    _point->setY(lon);
     _latitude = lat;
     _longitude = lon;
 }
@@ -116,8 +114,24 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
         poGeometry = poFeature->GetGeometryRef();
         if( poGeometry != NULL)
         {
-            if(_point->Within(poGeometry))
+            /*
+            OGRPoint *p = new OGRPoint;
+            poGeometry->Centroid(p);
+            if((fabs(p->getX() - _point->getX()) < 0.001) && (fabs(p->getY() - _point->getY()) < 0.001))
+            {
+                qDebug() << p->getX() << " " << p->getY() << terrain_type;
                 return terrain_type;
+            }
+            */
+            OGRPoint point;
+            point.setX(_longitude);
+            point.setY(_latitude);
+            //qDebug() << "testing for containment " << _longitude << " " << _latitude;
+            if(point.Within(poGeometry))
+            {
+                qDebug() << terrain_type;
+                return terrain_type;
+            }
         }
         else
             qDebug() << "Geometry is fubar";
