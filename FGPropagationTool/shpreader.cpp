@@ -66,13 +66,15 @@ QString ShpReader::getTerrainType()
         QString filename= this->getFilename();
         shp_dir.append(QDir::separator()).append(filename).append("_");
         shp_dir.append(*(it.value()));
-        type = this->openShapefile(shp_dir,*(it.key()));
-        if(type == "none")
+        type = this->openShapefile(shp_dir,*(it.key())); 
+        if(type == QString("None"))
         {
             continue;
         }
         else
+        {
             return type;
+        }
     }
     return QString("none");
 }
@@ -90,7 +92,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
     if( poDS == NULL )
     {
         qDebug() << "Shapefile opening failed: " << name;
-        return QString("none");
+        return QString("None");
     }
 
     OGRLayer  *poLayer;
@@ -100,10 +102,13 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
     {
         qDebug() << "Shapefile layer is fubar: " << poLayer->GetName();
         OGRDataSource::DestroyDataSource( poDS );
-        return QString("none");
+        return QString("None");
     }
 
-
+    OGRPoint pp;
+    pp.setX(_longitude);
+    pp.setY(_latitude);
+    poLayer->SetSpatialFilter(&pp);
     OGRFeature *poFeature;
 
     poLayer->ResetReading();
@@ -117,6 +122,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
         {
 
             // this code relies on binary export; multipolygons are skipped
+
             int buf_size = poGeometry->WkbSize();
             unsigned char *buffer = new unsigned char[buf_size];
             OGRwkbByteOrder b (wkbXDR);
@@ -124,11 +130,16 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
             poGeometry->exportToWkb(b,buffer);
             OGRLinearRing *ring;
             OGRPolygon *poly = 0;
+            bool clockwise = false;
             if(type==wkbPolygon)
             {
                 poly = new OGRPolygon;
                 poly->importFromWkb(buffer,buf_size);
                 ring = poly->getExteriorRing();
+                if(ring->isClockwise())
+                {
+                    clockwise=true;
+                }
             }
             else if(type==wkbMultiPolygon)
             {
@@ -139,7 +150,8 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
 
                 if(point.Within(poGeometry))
                 {
-                    //qDebug() << terrain_type;
+                    qDebug() << "Within: " << terrain_type;
+                    delete [] buffer;
                     OGRFeature::DestroyFeature( poFeature );
                     OGRDataSource::DestroyDataSource( poDS );
                     return terrain_type;
@@ -148,14 +160,55 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
                 OGRFeature::DestroyFeature( poFeature );
                 continue;
             }
+            else
+            {
+                delete[] buffer;
+                OGRFeature::DestroyFeature( poFeature );
+                continue;
+            }
             int line_size = ring->getNumPoints();
+
             double *xCoord = new double[line_size];
             double *yCoord = new double[line_size];
-            ring->getPoints(xCoord,1,yCoord,1);
-            qDebug() << "num points: " << line_size;
+            for(int k=0;k<line_size;++k)
+            {
+                OGRPoint *p = new OGRPoint;
+                ring->getPoint(k,p);
+                if(clockwise)
+                {
+                    xCoord[line_size - k -1] = p->getX();
+                    yCoord[line_size - k -1] = p->getY();
+                }
+                else
+                {
+                    xCoord[k] = p->getX();
+                    yCoord[k] = p->getY();
+                }
+                delete p;
+            }
+            //ring->getPoints(xCoord,0,yCoord,0);
+            /* reversing the array happens there ^^
+            if(clockwise)
+            {
+                double temp;
+                for (int i=0;i<line_size/2;i++)
+                {
+                        temp=xCoord[i];
+                        xCoord[i]=xCoord[line_size-i-1];
+                        xCoord[line_size-i-1]=temp;
+                }
+                for (int i=0;i<line_size/2;i++)
+                {
+                        temp=yCoord[i];
+                        yCoord[i]=yCoord[line_size-i-1];
+                        yCoord[line_size-i-1]=temp;
+                }
+            }
+            */
+
             if(pointInPoly(line_size,xCoord,yCoord,_longitude,_latitude))
             {
-                qDebug() << "pIp: " << terrain_type;
+                //qDebug() << "pIp: " << terrain_type << " lat: " << _latitude << " lon: " << _longitude;
                 delete[] xCoord;
                 delete[] yCoord;
                 delete[] buffer;
@@ -165,6 +218,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
                 OGRDataSource::DestroyDataSource( poDS );
                 return terrain_type;
             }
+
             delete[] xCoord;
             delete[] yCoord;
             delete[] buffer;
@@ -187,6 +241,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
                 return terrain_type;
             }
             */
+
         }
         else
             qDebug() << "Geometry is fubar";
@@ -195,6 +250,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
     }
 
     OGRDataSource::DestroyDataSource( poDS );
+
     return QString("None");
 }
 
