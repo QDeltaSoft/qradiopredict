@@ -109,6 +109,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->startStandaloneButton,SIGNAL(clicked()),this,SLOT(startStandalone()));
     QObject::connect(_tb->ui->stopStandaloneButton,SIGNAL(clicked()),this,SLOT(stopStandalone()));
 
+    QObject::connect(_tb->ui->nextWaypointButton,SIGNAL(clicked()),this,SLOT(sequenceWaypoint()));
+
     _tb->ui->startFlightgearButton->setVisible(false);
     _tb->ui->connectTelnetButton->setVisible(false);
     _tb->ui->sendToFlightgearButton->setVisible(false);
@@ -924,6 +926,14 @@ void MainWindow::stopStandalone()
     _tb->ui->startStandaloneButton->setStyleSheet("background:yellow;");
     _tb->ui->stopStandaloneButton->setEnabled(false);
     _tb->ui->stopStandaloneButton->setStyleSheet("background:rgb(220,220,220);");
+}
+
+void MainWindow::sequenceWaypoint()
+{
+    if(_radio_subsystem)
+    {
+        _radio_subsystem->moveMobile();
+    }
 }
 
 

@@ -99,6 +99,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
     if(poLayer == NULL)
     {
         qDebug() << "Shapefile layer is fubar: " << poLayer->GetName();
+        OGRDataSource::DestroyDataSource( poDS );
         return QString("none");
     }
 
@@ -114,24 +115,78 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
         poGeometry = poFeature->GetGeometryRef();
         if( poGeometry != NULL)
         {
-            /*
-            OGRPoint *p = new OGRPoint;
-            poGeometry->Centroid(p);
-            if((fabs(p->getX() - _point->getX()) < 0.001) && (fabs(p->getY() - _point->getY()) < 0.001))
+
+            // this code relies on binary export; multipolygons are skipped
+            int buf_size = poGeometry->WkbSize();
+            unsigned char *buffer = new unsigned char[buf_size];
+            OGRwkbByteOrder b (wkbXDR);
+            OGRwkbGeometryType type = poGeometry->getGeometryType();
+            poGeometry->exportToWkb(b,buffer);
+            OGRLinearRing *ring;
+            OGRPolygon *poly = 0;
+            if(type==wkbPolygon)
             {
-                qDebug() << p->getX() << " " << p->getY() << terrain_type;
+                poly = new OGRPolygon;
+                poly->importFromWkb(buffer,buf_size);
+                ring = poly->getExteriorRing();
+            }
+            else if(type==wkbMultiPolygon)
+            {
+                OGRPoint point;
+                point.setX(_longitude);
+                point.setY(_latitude);
+
+
+                if(point.Within(poGeometry))
+                {
+                    //qDebug() << terrain_type;
+                    OGRFeature::DestroyFeature( poFeature );
+                    OGRDataSource::DestroyDataSource( poDS );
+                    return terrain_type;
+                }
+                delete[] buffer;
+                OGRFeature::DestroyFeature( poFeature );
+                continue;
+            }
+            int line_size = ring->getNumPoints();
+            double *xCoord = new double[line_size];
+            double *yCoord = new double[line_size];
+            ring->getPoints(xCoord,1,yCoord,1);
+            qDebug() << "num points: " << line_size;
+            if(pointInPoly(line_size,xCoord,yCoord,_longitude,_latitude))
+            {
+                qDebug() << "pIp: " << terrain_type;
+                delete[] xCoord;
+                delete[] yCoord;
+                delete[] buffer;
+                if(poly)
+                    delete poly;
+                OGRFeature::DestroyFeature( poFeature );
+                OGRDataSource::DestroyDataSource( poDS );
                 return terrain_type;
             }
-            */
+            delete[] xCoord;
+            delete[] yCoord;
+            delete[] buffer;
+            if(poly)
+                delete poly;
+            OGRFeature::DestroyFeature( poFeature );
+            continue;
+
+            /*
             OGRPoint point;
             point.setX(_longitude);
             point.setY(_latitude);
-            //qDebug() << "testing for containment " << _longitude << " " << _latitude;
+
+
             if(point.Within(poGeometry))
             {
-                qDebug() << terrain_type;
+                //qDebug() << terrain_type;
+                OGRFeature::DestroyFeature( poFeature );
+                OGRDataSource::DestroyDataSource( poDS );
                 return terrain_type;
             }
+            */
         }
         else
             qDebug() << "Geometry is fubar";
@@ -140,7 +195,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
     }
 
     OGRDataSource::DestroyDataSource( poDS );
-    return QString("none");
+    return QString("None");
 }
 
 
@@ -162,3 +217,27 @@ QString ShpReader::getFilename()
     filename.append(lon);
     return filename;
 }
+
+
+
+bool ShpReader::pointInPoly(int polySize, double XPoints[], double YPoints[], double x, double y)
+{
+
+    int j = polySize - 1;
+    bool isInside = false;
+
+    for (int i = 0; i < polySize; j = i++)
+    {
+        if ( ( ( (YPoints[i] <= y) && (y < YPoints[j])) ||
+              ( (YPoints[j] <= y) && (y < YPoints[i]))) &&
+            (x < (XPoints[j] - XPoints[i]) *
+             (y - YPoints[i]) / (YPoints[j] - YPoints[i]) + XPoints[i]))
+        {
+            isInside = !isInside;
+        }
+    }
+
+    return isInside;
+
+}
+

@@ -53,6 +53,7 @@ public:
 
     void setMobile(MobileStation *m);
     void moveMobile();
+    void nextWaypoint();
     void stop();
 
     double polarization_loss(int polarization);

@@ -25,7 +25,7 @@ public:
 
 private:
     QMap<QString*, QString*> _terrain_types;
-
+    bool pointInPoly(int polySize, double XPoints[], double YPoints[], double x, double y);
     QString openShapefile(QString &name, QString &terrain_type);
     QString getFilename();
     FlightgearPrefs *_settings;

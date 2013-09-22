@@ -107,6 +107,7 @@ public slots:
     void setReceived(QString data);
     void processAPRSData(AprsStation *st);
     void processRawAPRSData(QString data);
+    void sequenceWaypoint();
 
 
 private:
