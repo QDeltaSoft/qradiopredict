@@ -10,6 +10,7 @@
 #include "databaseapi.h"
 #include "flightgearprefs.h"
 #include "mobilestation.h"
+#include "sg/sg_geodesy.hxx"
 
 class Util
 {
@@ -20,6 +21,7 @@ public:
     static QPointF convertToLL(QPointF pos, double zoom);
     static QPointF convertToXY(QPointF ll, double zoom);
     static void startFlightgear(DatabaseApi *db);
+    static QVector<SGGeod*> drawDisk(const SGGeod &center, const double &radius, const int &step_deg, const double &step_point);
 };
 
 #endif // UTIL_H

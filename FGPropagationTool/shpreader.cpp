@@ -275,7 +275,7 @@ QString ShpReader::getFilename()
 }
 
 
-
+// based on the pointInPoly algorithm
 bool ShpReader::pointInPoly(int polySize, double XPoints[], double YPoints[], double x, double y)
 {
 

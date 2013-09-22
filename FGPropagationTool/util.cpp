@@ -133,4 +133,36 @@ void Util::startFlightgear(DatabaseApi *db)
 }
 
 
+QVector<SGGeod*> Util::drawDisk(const SGGeod &center, const double &radius, const int &step_deg, const double &step_point)
+{
+    QVector<SGGeod*> disk;
+    SGGeod *g = new SGGeod(center);
+    disk.append(g);
+    SGGeoc center_c = SGGeoc::fromGeod(center);
+    for(int i=0;i<360;i+=step_deg)
+    {
+        double probe_distance = 0;
+        for(short j=0;;++j)
+        {
+            probe_distance += step_point;
+
+
+            SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
+
+            double dist_to_center = SGGeodesy::distanceM(center, probe);
+            if(dist_to_center >= radius)
+            {
+                break;
+            }
+            else
+            {
+                SGGeod *geod = new SGGeod(probe);
+                disk.append(geod);
+            }
+        }
+    }
+    return disk;
+}
+
+
 

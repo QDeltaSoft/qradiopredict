@@ -7,6 +7,7 @@
 #include "../srtmreader.h"
 #include "../shpreader.h"
 #include "../databaseapi.h"
+#include "../flightgearprefs.h"
 
 using std::string;
 /**
@@ -15,12 +16,13 @@ using std::string;
 class SceneryManager
 {
 public:
-    SceneryManager(DatabaseApi *db);
+    SceneryManager(DatabaseApi *db, FlightgearPrefs *settings);
     bool get_elevation_m(const SGGeod &probe, double &elevation_m, string &material);
 
 private:
     SRTMReader *_srtmreader;
     ShpReader *_shpreader;
+    FlightgearPrefs *_settings;
 
 };
 

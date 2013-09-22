@@ -48,7 +48,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
         _settings = 0;
 	
 	_propagation_model = 2; 
-    _scenery = new SceneryManager(db);
+    _scenery = new SceneryManager(db,_settings);
     _db=db;
     _run=1;
 	

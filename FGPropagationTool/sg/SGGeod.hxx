@@ -28,6 +28,7 @@ class SGGeod {
 public:
   /// Default constructor, initializes the instance to lat = lon = elev = 0
   SGGeod(void);
+  SGGeod(const SGGeod &g);
 
   /// Factory from angular values in radians and elevation is 0
   static SGGeod fromRad(double lon, double lat);
@@ -111,6 +112,12 @@ private:
 inline
 SGGeod::SGGeod(void) :
   _lon(0), _lat(0), _elevation(0)
+{
+}
+
+inline
+SGGeod::SGGeod(const SGGeod &g) :
+  _lon(g.getLongitudeDeg()), _lat(g.getLatitudeDeg()), _elevation(g.getElevationM())
 {
 }
 
