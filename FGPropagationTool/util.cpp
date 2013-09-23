@@ -136,7 +136,10 @@ void Util::startFlightgear(DatabaseApi *db)
 QVector<SGGeod*> Util::drawDisk(const SGGeod &center, const double &radius, const int &step_deg, const double &step_point)
 {
     QVector<SGGeod*> disk;
-    SGGeod *g = new SGGeod(center);
+    SGGeod *g = new SGGeod();
+    g->setLatitudeDeg(center.getLatitudeDeg());
+    g->setLongitudeDeg(center.getLongitudeDeg());
+    g->setElevationM(g->getElevationM());
     disk.append(g);
     SGGeoc center_c = SGGeoc::fromGeod(center);
     for(int i=0;i<360;i+=step_deg)
@@ -156,7 +159,10 @@ QVector<SGGeod*> Util::drawDisk(const SGGeod &center, const double &radius, cons
             }
             else
             {
-                SGGeod *geod = new SGGeod(probe);
+                SGGeod *geod = new SGGeod();
+                geod->setLatitudeDeg(probe.getLatitudeDeg());
+                geod->setLongitudeDeg(probe.getLongitudeDeg());
+                geod->setElevationM(probe.getElevationM());
                 disk.append(geod);
             }
         }

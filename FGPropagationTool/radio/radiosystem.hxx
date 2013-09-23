@@ -56,6 +56,7 @@ public:
     void moveMobile();
     void nextWaypoint();
     void stop();
+    void setPlotStation(GroundStation *g);
 
     double polarization_loss(int polarization);
 
@@ -67,7 +68,7 @@ public:
 
 public slots:
     void update();
-    void drawPlot(GroundStation *station);
+    void drawPlot();
 
 signals:
     void finished();
@@ -253,6 +254,7 @@ private:
 	bool _suspended;
     unsigned _mtex;
     unsigned _run;
+    GroundStation *_plot_station;
 
     bool _timer_started;
 	

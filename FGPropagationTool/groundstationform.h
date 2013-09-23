@@ -21,9 +21,11 @@ public:
 signals:
     void haveData(GroundStation * g);
     void delStation(unsigned id);
+    void plotStation(GroundStation *g);
 private slots:
     void saveGround();
     void deleteGround();
+    void plot();
 };
 
 #endif // GROUNDSTATIONFORM_H

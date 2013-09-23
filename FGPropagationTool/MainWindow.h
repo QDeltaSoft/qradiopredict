@@ -108,6 +108,8 @@ public slots:
     void processAPRSData(AprsStation *st);
     void processRawAPRSData(QString data);
     void sequenceWaypoint();
+    void plotCoverage(GroundStation * g);
+    void drawPlot(double lon, double lat, double signal);
 
 
 private:

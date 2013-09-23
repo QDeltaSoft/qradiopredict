@@ -64,6 +64,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
     _start_move = QTime::currentTime();
     _timer_started = false;
     _move_flag=true;
+    _plot_station = NULL;
 
 }
 
@@ -134,37 +135,39 @@ void FGRadio::stop()
     _run=0;
 }
 
-
-void FGRadio::drawPlot(GroundStation *station)
+void FGRadio::setPlotStation(GroundStation *g)
 {
+    _plot_station = g;
+}
+
+
+void FGRadio::drawPlot()
+{
+    while (_plot_station ==NULL) {}
+    GroundStation *station = _plot_station;
+    if(!station || !(station->enabled == 1))
+    {
+        return;
+    }
+    double lat, lon, elev, heading, pitch;
+    lat = station->latitude;
+    lon = station->longitude;
+    elev = station->elevation_feet;
+    heading = station->heading_deg;
+    pitch = station->pitch_deg;
+
+    if( !(lat) || !(lon) || (lat > 90.0) || (lat < -90.0) || (lon > 180.0) || (lon <-180.0))
+        return;
+
+    if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
+        return;
+    }
+
     SGGeod center = SGGeod::fromDegM(station->longitude, station->latitude, station->elevation_feet * SG_FEET_TO_METER);
     QVector<SGGeod*> positions = Util::drawDisk(center,10*1000,2,_terrain_sampling_distance);
     for(int i=0;i<positions.size();++i)
     {
-        SGGeod *pos = positions[i];
-        _mobile->latitude = pos->getLatitudeDeg();
-        _mobile->longitude = pos->getLongitudeDeg();
-        _mobile->elevation_feet = 0;
-        _mobile->heading_deg = 0;
-
-        if(!station || !(station->enabled == 1))
-        {
-            return;
-        }
-
-        double lat, lon, elev, heading, pitch;
-        lat = station->latitude;
-        lon = station->longitude;
-        elev = station->elevation_feet;
-        heading = station->heading_deg;
-        pitch = station->pitch_deg;
-
-        if( !(lat) || !(lon) || (lat > 90.0) || (lat < -90.0) || (lon > 180.0) || (lon <-180.0))
-            return;
-
-        if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
-            return;
-        }
+        SGGeod *plot_pos = positions[i];
 
         SGGeod tx_pos = SGGeod::fromDegM(lon, lat, elev * SG_FEET_TO_METER);
 
@@ -201,10 +204,10 @@ void FGRadio::drawPlot(GroundStation *station)
         transmission->plot = true;
         transmission->process_terrain = true;
 
-        double own_lat = _mobile->latitude;
-        double own_lon = _mobile->longitude;
-        double own_alt_ft = _mobile->elevation_feet;
-        double own_heading = _mobile->heading_deg;
+        double own_lat = plot_pos->getLatitudeDeg();
+        double own_lon = plot_pos->getLongitudeDeg();
+        double own_alt_ft = 0;
+        double own_heading = 0;
         double own_alt= own_alt_ft * SG_FEET_TO_METER;
 
 
@@ -384,7 +387,7 @@ void FGRadio::update()
 
                     Transmission * t = new Transmission(transmission);
                     //delete transmission->station;
-                    delete transmission->radiosignal;
+                    //delete transmission->radiosignal;
                     delete transmission;
                     _beacon_transmissions.pop_front();
                     processTerrain(t);
@@ -710,6 +713,7 @@ void FGRadio::processSignal(Transmission* transmission) {
         SGGeod pos = transmission->player_pos;
         double signal = transmission->radiosignal->signal;
         emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),signal);
+
     }
     else
     {

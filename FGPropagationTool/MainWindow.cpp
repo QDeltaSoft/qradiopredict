@@ -714,6 +714,7 @@ void MainWindow::showEditBoxes()
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(gs_form,SIGNAL(haveData(GroundStation*)),this,SLOT(saveGroundStation(GroundStation *)));
             QObject::connect(gs_form,SIGNAL(delStation(unsigned)),this,SLOT(deleteGroundStation(unsigned)));
+            QObject::connect(gs_form,SIGNAL(plotStation(GroundStation*)),this,SLOT(plotCoverage(GroundStation*)));
             //gs_form->show();
             delete gs;
         }
@@ -1209,4 +1210,29 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
     ground_stations.clear();
 
     delete s;
+}
+
+void MainWindow::plotCoverage(GroundStation *g)
+{
+
+    _start_time= QDateTime::currentDateTime().toString("d/MMM/yyyy hh:mm:ss");
+    QThread *t= new QThread;
+    FGRadio *radiosystem = new FGRadio(_db);
+    radiosystem->moveToThread(t);
+    connect(radiosystem, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
+
+
+    connect(t, SIGNAL(started()), radiosystem, SLOT(drawPlot()));
+    connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
+    connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
+    connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
+    _radio_subsystem = radiosystem;
+    t->start();
+    radiosystem->setPlotStation(g);
+
+}
+
+void MainWindow::drawPlot(double lon, double lat, double signal)
+{
+
 }
