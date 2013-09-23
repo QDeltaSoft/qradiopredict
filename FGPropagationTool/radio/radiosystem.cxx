@@ -149,6 +149,7 @@ void FGRadio::drawPlot()
     {
         return;
     }
+
     double lat, lon, elev, heading, pitch;
     lat = station->latitude;
     lon = station->longitude;
@@ -168,6 +169,7 @@ void FGRadio::drawPlot()
     for(int i=0;i<positions.size();++i)
     {
         SGGeod *plot_pos = positions[i];
+
 
         SGGeod tx_pos = SGGeod::fromDegM(lon, lat, elev * SG_FEET_TO_METER);
 
@@ -206,6 +208,7 @@ void FGRadio::drawPlot()
 
         double own_lat = plot_pos->getLatitudeDeg();
         double own_lon = plot_pos->getLongitudeDeg();
+
         double own_alt_ft = 0;
         double own_heading = 0;
         double own_alt= own_alt_ft * SG_FEET_TO_METER;

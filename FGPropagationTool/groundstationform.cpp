@@ -62,6 +62,8 @@ void GroundStationForm::plot()
     g->name = ui->nameEdit->text();
     g->heading_deg = ui->headingDegLineEdit->text().toDouble();
     g->elevation_feet = ui->elevationFeetLineEdit->text().toDouble();
+    g->longitude = ui->longitudeEdit->text().toDouble();
+    g->latitude = ui->latitudeEdit->text().toDouble();
 
     g->frequency = ui->frequencyEdit->text().toDouble();
     g->pitch_deg = ui->pitchDegLineEdit->text().toDouble();

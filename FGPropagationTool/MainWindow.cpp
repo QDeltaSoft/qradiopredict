@@ -704,6 +704,9 @@ void MainWindow::showEditBoxes()
             gs_form->ui->txAntennaGainLineEdit->setText(QString::number(gs->tx_antenna_gain));
             gs_form->ui->txAntennaTypeLineEdit->setText(gs->tx_antenna_type);
             gs_form->ui->txLineLossesLineEdit->setText(QString::number(gs->tx_line_losses));
+            gs_form->ui->longitudeEdit->setText(QString::number(gs->longitude));
+            gs_form->ui->latitudeEdit->setText(QString::number(gs->latitude));
+
 
             QDockWidget *dw = new QDockWidget;
             dw->setWindowTitle(QString::number( gs->id));
@@ -1214,8 +1217,6 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
 
 void MainWindow::plotCoverage(GroundStation *g)
 {
-
-    _start_time= QDateTime::currentDateTime().toString("d/MMM/yyyy hh:mm:ss");
     QThread *t= new QThread;
     FGRadio *radiosystem = new FGRadio(_db);
     radiosystem->moveToThread(t);
@@ -1234,5 +1235,29 @@ void MainWindow::plotCoverage(GroundStation *g)
 
 void MainWindow::drawPlot(double lon, double lat, double signal)
 {
+    if(signal >0)
+    {
+        qDebug() << signal;
+        QPointF plot_pos(lon,lat);
+        QPointF xy_plot_pos = Util::convertToXY(plot_pos,_view->zoomLevel());
+        QBrush brush;
+        if(signal >0 && signal <=10)
+        {
+            brush= Qt::yellow;
+        }
+        else if(signal > 10 && signal <=30)
+        {
+            brush = Qt::green;
+        }
+        else if(signal > 30)
+        {
+            brush = Qt::red;
+        }
+        QPen pen(brush, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+        QPolygonF poly;
+        poly << xy_plot_pos;
+        QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen);
+        //_signal_lines.push_back(polygon);
+    }
 
 }
