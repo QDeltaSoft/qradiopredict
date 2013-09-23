@@ -34,6 +34,7 @@
 #include "../databaseapi.h"
 #include "../mobilestation.h"
 #include "scenerymanager.h"
+#include "../util.h"
 
 using std::string;
 
@@ -66,11 +67,13 @@ public:
 
 public slots:
     void update();
+    void drawPlot(GroundStation *station);
 
 signals:
     void finished();
     void haveSignalReading(double longitude,double latitude,unsigned id, QString name, double freq, Signal *s);
     void haveMobilePosition(double lon, double lat);
+    void havePlotPoint(double lon, double lat, double signal);
 
 private:
 	
@@ -103,6 +106,7 @@ private:
 		double tx_line_losses;
 		int polarization;
 		bool process_terrain;
+        bool plot;
 		std::deque<double> elevations;
 		std::deque<string*> materials;
 		double own_heading;				// player heading
@@ -149,6 +153,7 @@ private:
 			tx_line_losses(0),
 			polarization(1),
 			process_terrain(true),
+            plot(false),
 			own_heading(0),
 			rx_antenna_pitch(0),
 			sender_heading(0),
@@ -195,6 +200,7 @@ private:
 			tx_line_losses(t->tx_line_losses),
 			polarization(t->polarization),
 			process_terrain(t->process_terrain),
+            plot(t->plot),
 			elevations(t->elevations),
 			materials(t->materials),
 			own_heading(t->own_heading),
@@ -224,6 +230,7 @@ private:
 	typedef std::deque<Transmission*> RadioTransmissions;
 
     RadioTransmissions _beacon_transmissions;
+    RadioTransmissions _plot_transmissions;
 	
 	typedef std::map<std::string, FGRadioAntenna*> AntennaList;
 	AntennaList _antennas;

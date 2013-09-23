@@ -142,7 +142,7 @@ QVector<SGGeod*> Util::drawDisk(const SGGeod &center, const double &radius, cons
     for(int i=0;i<360;i+=step_deg)
     {
         double probe_distance = 0;
-        for(short j=0;;++j)
+        for(int j=0;j<5000;++j) // supposed to limit distance
         {
             probe_distance += step_point;
 

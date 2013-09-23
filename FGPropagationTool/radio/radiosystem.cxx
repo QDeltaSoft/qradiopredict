@@ -135,6 +135,227 @@ void FGRadio::stop()
 }
 
 
+void FGRadio::drawPlot(GroundStation *station)
+{
+    SGGeod center = SGGeod::fromDegM(station->longitude, station->latitude, station->elevation_feet * SG_FEET_TO_METER);
+    QVector<SGGeod*> positions = Util::drawDisk(center,10*1000,2,_terrain_sampling_distance);
+    for(int i=0;i<positions.size();++i)
+    {
+        SGGeod *pos = positions[i];
+        _mobile->latitude = pos->getLatitudeDeg();
+        _mobile->longitude = pos->getLongitudeDeg();
+        _mobile->elevation_feet = 0;
+        _mobile->heading_deg = 0;
+
+        if(!station || !(station->enabled == 1))
+        {
+            return;
+        }
+
+        double lat, lon, elev, heading, pitch;
+        lat = station->latitude;
+        lon = station->longitude;
+        elev = station->elevation_feet;
+        heading = station->heading_deg;
+        pitch = station->pitch_deg;
+
+        if( !(lat) || !(lon) || (lat > 90.0) || (lat < -90.0) || (lon > 180.0) || (lon <-180.0))
+            return;
+
+        if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
+            return;
+        }
+
+        SGGeod tx_pos = SGGeod::fromDegM(lon, lat, elev * SG_FEET_TO_METER);
+
+        Transmission * transmission = new Transmission();
+        transmission->station = station;
+        transmission->pos = tx_pos;
+        transmission->freq = station->frequency;
+
+        transmission->transmission_type = station->transmission_type;
+
+        transmission->name = station->name.toUtf8().constData();
+
+        transmission->receiver_sensitivity = station->rx_sensitivity;
+
+        transmission->transmitter_power =  watt_to_dbm(station->tx_power_watt);
+
+        transmission->tx_antenna_height = 2.0 + station->tx_antenna_height;
+
+        transmission->rx_antenna_height = 2.0 + station->rx_antenna_height;
+
+        transmission->rx_antenna_gain = station->rx_antenna_gain;
+        transmission->tx_antenna_gain = station->tx_antenna_gain;
+
+        transmission->rx_line_losses = station->rx_line_losses;
+        transmission->tx_line_losses = station->tx_line_losses;
+
+        transmission->rx_antenna_type = station->rx_antenna_type.toUtf8().constData();
+        transmission->tx_antenna_type = station->tx_antenna_type.toUtf8().constData();
+
+        transmission->polarization = station->polarization;
+        transmission->sender_heading = heading;
+        transmission->tx_antenna_pitch = pitch;
+
+        transmission->plot = true;
+        transmission->process_terrain = true;
+
+        double own_lat = _mobile->latitude;
+        double own_lon = _mobile->longitude;
+        double own_alt_ft = _mobile->elevation_feet;
+        double own_heading = _mobile->heading_deg;
+        double own_alt= own_alt_ft * SG_FEET_TO_METER;
+
+
+        transmission->own_heading = own_heading;
+
+        SGGeod own_pos = SGGeod::fromDegM( own_lon, own_lat, own_alt );
+        SGGeod max_own_pos = SGGeod::fromDegM( own_lon, own_lat, SG_MAX_ELEVATION_M );
+        SGGeoc center = SGGeoc::fromGeod( max_own_pos );
+        SGGeoc own_pos_c = SGGeoc::fromGeod( own_pos );
+
+
+        double sender_alt_ft,sender_alt;
+        transmission->transmitter_height=0.0;
+        transmission->receiver_height=0.0;
+        SGGeod sender_pos = transmission->pos;
+
+        sender_alt_ft = sender_pos.getElevationFt();
+        sender_alt = sender_alt_ft * SG_FEET_TO_METER;
+        SGGeod max_sender_pos = SGGeod::fromGeodM( transmission->pos, SG_MAX_ELEVATION_M );
+        SGGeoc sender_pos_c = SGGeoc::fromGeod( sender_pos );
+        transmission->player_pos = own_pos;
+
+        transmission->point_distance= _terrain_sampling_distance;
+        transmission->course = SGGeodesy::courseRad(own_pos_c, sender_pos_c);
+        transmission->reverse_course = SGGeodesy::courseRad(sender_pos_c, own_pos_c);
+        transmission->distance_m = SGGeodesy::distanceM(own_pos, sender_pos);
+        transmission->probe_distance = 0.0;
+        transmission->center = center;
+
+        /**	Make sampling distance proportional with distance between terminals
+        *	this decreases precision for large distances, but improves performance
+        */
+
+        if( _settings->_itm_radio_performance == 1 )  {
+            if (transmission->distance_m > 50000) {
+
+                transmission->point_distance= transmission->distance_m * 2 /1000;
+            }
+        }
+
+        string mat="#";
+
+        int max_points = (int)floor(transmission->distance_m / transmission->point_distance);
+
+        double elevation_under_pilot;
+        if(own_alt == 0.0)
+        {
+            transmission->receiver_height = 1;
+        }
+        else if (_scenery->get_elevation_m( max_own_pos, elevation_under_pilot, mat)) {
+            transmission->receiver_height = own_alt - elevation_under_pilot;
+        }
+        else {
+            transmission->receiver_height = own_alt;
+        }
+
+
+
+        double elevation_under_sender = 0.0;
+        mat ="#";
+        if(sender_alt == 0.0)
+        {
+            transmission->transmitter_height = 1;
+        }
+        else if (_scenery->get_elevation_m( max_sender_pos, elevation_under_sender, mat )) {
+            transmission->transmitter_height = sender_alt - elevation_under_sender;
+        }
+        else {
+            transmission->transmitter_height = sender_alt;
+        }
+        _scenery->get_elevation_m( max_own_pos, elevation_under_pilot, mat);
+        _scenery->get_elevation_m( max_sender_pos, elevation_under_sender, mat );
+        transmission->elevation_under_pilot = elevation_under_pilot;
+        transmission->elevation_under_sender = elevation_under_sender;
+
+
+        transmission->transmitter_height += transmission->tx_antenna_height;
+        transmission->receiver_height += transmission->rx_antenna_height;
+
+
+
+        transmission->e_size = (deque<unsigned>::size_type)max_points;
+        _plot_transmissions.push_back(transmission);
+    }
+    //phase #2
+    while(_plot_transmissions.size() > 0)
+    {
+        Transmission * transmission = _beacon_transmissions.front();
+        if (transmission->elevations.size() >= transmission->e_size)
+        {
+
+            Transmission * t = new Transmission(transmission);
+
+            delete transmission->radiosignal;
+            delete transmission;
+            _plot_transmissions.pop_front();
+            processTerrain(t);
+        }
+        transmission->probe_distance += transmission->point_distance;
+        SGGeod probe = SGGeod::fromGeoc(transmission->center.advanceRadM( transmission->course, transmission->probe_distance ));
+        string material;
+        double elevation_m = 0.0;
+
+        if (_scenery->get_elevation_m( probe, elevation_m, material ))
+        {
+
+            if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+                transmission->elevations.push_back(elevation_m);
+                if(!material.empty()) {
+                    string* name = new string(material);
+                    transmission->materials.push_back(name);
+                }
+                else {
+                    string* no_material = new string("None");
+                    transmission->materials.push_back(no_material);
+                }
+            }
+            else {
+                 transmission->elevations.push_front(elevation_m);
+                 if(!material.empty()) {
+                     string* name = new string(material);
+                     transmission->materials.push_front(name);
+                }
+                else {
+                    string* no_material = new string("None");
+                    transmission->materials.push_front(no_material);
+                }
+            }
+        }
+        else {
+            if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+                transmission->elevations.push_back(0.0);
+                string* no_material = new string("None");
+                transmission->materials.push_back(no_material);
+            }
+            else {
+                string* no_material = new string("None");
+                transmission->elevations.push_front(0.0);
+                transmission->materials.push_front(no_material);
+            }
+        }
+    }
+    //cleanup
+    for(int i=0;i<positions.size();++i)
+    {
+        delete positions[i];
+        positions.clear();
+    }
+
+}
+
 void FGRadio::update()
 {
 
@@ -484,7 +705,18 @@ void FGRadio::processTerrain(Transmission* transmission) {
 void FGRadio::processSignal(Transmission* transmission) {
 	
     // this used to do various stuff; now it's just cleanup, sorry
-    emit haveSignalReading(_mobile->longitude,_mobile->latitude,transmission->station->id, transmission->station->name,transmission->freq,transmission->radiosignal);
+    if(transmission->plot)
+    {
+        SGGeod pos = transmission->player_pos;
+        double signal = transmission->radiosignal->signal;
+        emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),signal);
+    }
+    else
+    {
+        emit haveSignalReading(_mobile->longitude,_mobile->latitude,
+                               transmission->station->id, transmission->station->name,
+                               transmission->freq,transmission->radiosignal);
+    }
 
     //delete transmission->station;
     //delete transmission->radiosignal;
