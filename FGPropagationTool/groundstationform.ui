@@ -235,6 +235,9 @@
       </item>
       <item row="19" column="0">
        <widget class="QPushButton" name="deleteButton">
+        <property name="toolTip">
+         <string>Delete</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -257,6 +260,9 @@
           <width>28</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Save</string>
         </property>
         <property name="text">
          <string/>
@@ -304,20 +310,22 @@
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>10</y>
-     <width>51</width>
-     <height>22</height>
+     <y>0</y>
+     <width>41</width>
+     <height>31</height>
     </rect>
    </property>
-   <property name="text">
+   <property name="toolTip">
     <string>Plot</string>
    </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/images/office-chart-pie.png</normaloff>:/icons/images/office-chart-pie.png</iconset>
+   </property>
   </widget>
-  <zorder>scrollArea</zorder>
-  <zorder>label_3</zorder>
-  <zorder>idEdit</zorder>
-  <zorder>plotButton</zorder>
-  <zorder>plotButton</zorder>
  </widget>
  <resources>
   <include location="resources.qrc"/>

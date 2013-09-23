@@ -110,6 +110,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -124,6 +127,9 @@
       </item>
       <item row="4" column="0">
        <widget class="QPushButton" name="deleteButton">
+        <property name="toolTip">
+         <string>Delete</string>
+        </property>
         <property name="text">
          <string/>
         </property>

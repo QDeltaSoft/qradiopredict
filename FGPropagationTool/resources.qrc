@@ -25,6 +25,8 @@
         <file>main.png</file>
         <file>preferences-system.png</file>
         <file>document-edit.png</file>
+        <file>view-statistics.png</file>
+        <file>office-chart-pie.png</file>
     </qresource>
     <qresource prefix="/aprs">
         <file>aprs_icons/slice_0_0.png</file>
