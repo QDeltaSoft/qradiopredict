@@ -28,6 +28,7 @@
 #include <QObject>
 #include <QDateTime>
 #include <QTime>
+#include <QObject>
 #include <QString>
 #include "../signal.h"
 #include "../flightgearprefs.h"

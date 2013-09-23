@@ -298,13 +298,13 @@ void FGRadio::drawPlot()
     //phase #2
     while(_plot_transmissions.size() > 0)
     {
-        Transmission * transmission = _beacon_transmissions.front();
+        Transmission * transmission = _plot_transmissions.front();
         if (transmission->elevations.size() >= transmission->e_size)
         {
 
             Transmission * t = new Transmission(transmission);
 
-            delete transmission->radiosignal;
+            //delete transmission->radiosignal;
             delete transmission;
             _plot_transmissions.pop_front();
             processTerrain(t);
@@ -316,6 +316,7 @@ void FGRadio::drawPlot()
 
         if (_scenery->get_elevation_m( probe, elevation_m, material ))
         {
+            qDebug() << elevation_m;
 
             if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
                 transmission->elevations.push_back(elevation_m);
@@ -359,6 +360,10 @@ void FGRadio::drawPlot()
         delete positions[i];
         positions.clear();
     }
+    for (unsigned i =0; i < _plot_transmissions.size(); i++) {
+        delete _plot_transmissions[i];
+    }
+    _plot_transmissions.clear();
 
 }
 

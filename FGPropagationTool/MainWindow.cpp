@@ -1219,9 +1219,9 @@ void MainWindow::plotCoverage(GroundStation *g)
 {
     QThread *t= new QThread;
     FGRadio *radiosystem = new FGRadio(_db);
+    radiosystem->setPlotStation(g);
     radiosystem->moveToThread(t);
-    connect(radiosystem, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
-
+    connect(radiosystem, SIGNAL(havePlotPoint(double,double,double)), this, SLOT(drawPlot(double,double,double)));
 
     connect(t, SIGNAL(started()), radiosystem, SLOT(drawPlot()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
@@ -1229,7 +1229,6 @@ void MainWindow::plotCoverage(GroundStation *g)
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
     _radio_subsystem = radiosystem;
     t->start();
-    radiosystem->setPlotStation(g);
 
 }
 
