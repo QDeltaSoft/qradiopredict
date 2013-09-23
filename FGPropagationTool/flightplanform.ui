@@ -104,8 +104,18 @@
       </item>
       <item row="4" column="1">
        <widget class="QPushButton" name="saveButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
-         <string>Save</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/icons/images/filesave.png</normaloff>:/icons/images/filesave.png</iconset>
         </property>
         <property name="default">
          <bool>true</bool>
@@ -115,7 +125,11 @@
       <item row="4" column="0">
        <widget class="QPushButton" name="deleteButton">
         <property name="text">
-         <string>Delete</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/icons/images/button_cancel.png</normaloff>:/icons/images/button_cancel.png</iconset>
         </property>
        </widget>
       </item>
@@ -124,6 +138,8 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

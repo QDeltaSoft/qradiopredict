@@ -73,7 +73,7 @@
   </widget>
   <widget class="QDockWidget" name="dockWidget3">
    <property name="windowTitle">
-    <string>Tools</string>
+    <string>Toolbox</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>4</number>

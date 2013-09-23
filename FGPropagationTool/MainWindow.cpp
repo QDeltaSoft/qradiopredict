@@ -111,11 +111,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(_tb->ui->nextWaypointButton,SIGNAL(clicked()),this,SLOT(sequenceWaypoint()));
 
-    _tb->ui->startFlightgearButton->setVisible(false);
-    _tb->ui->connectTelnetButton->setVisible(false);
-    _tb->ui->sendToFlightgearButton->setVisible(false);
-    _tb->ui->startUpdateButton->setVisible(false);
-    _tb->ui->stopUpdateButton->setVisible(false);
+    _tb->ui->startFlightgearButton->setVisible(true);
+    _tb->ui->connectTelnetButton->setVisible(true);
+    _tb->ui->sendToFlightgearButton->setVisible(true);
+    _tb->ui->startUpdateButton->setVisible(true);
+    _tb->ui->stopUpdateButton->setVisible(true);
 
     //this->createActions();
     //this->createTrayIcon();

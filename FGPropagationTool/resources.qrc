@@ -7,6 +7,24 @@
         <file>s-meter-scale2.png</file>
         <file>edit_add.png</file>
         <file>editdelete.png</file>
+        <file>filesave.png</file>
+        <file>remove.png</file>
+        <file>player_pause.png</file>
+        <file>player_stop.png</file>
+        <file>player_play.png</file>
+        <file>messagebox_warning.png</file>
+        <file>messagebox_info.png</file>
+        <file>messagebox_critical.png</file>
+        <file>button_cancel.png</file>
+        <file>add.png</file>
+        <file>player_fwd.png</file>
+        <file>forward.png</file>
+        <file>connect_established.png</file>
+        <file>connect_no.png</file>
+        <file>dialog-ok-apply.png</file>
+        <file>main.png</file>
+        <file>preferences-system.png</file>
+        <file>document-edit.png</file>
     </qresource>
     <qresource prefix="/aprs">
         <file>aprs_icons/slice_0_0.png</file>
