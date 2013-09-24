@@ -18,6 +18,44 @@ DatabaseApi::~DatabaseApi()
 
 
 QVector<AprsStation *>
+DatabaseApi::filter_aprs_stations(int time)
+{
+    QVector<AprsStation *> stations;
+    QSqlQuery query(_db);
+    query.prepare("SELECT * FROM aprs_stations WHERE time_seen >=:time ORDER BY time_seen,id DESC");
+    query.bindValue(":time", time);
+    query.exec();
+
+    int callsign_idx = query.record().indexOf("callsign");
+    int adressee_idx = query.record().indexOf("adressee");
+    int via_idx = query.record().indexOf("via");
+    int symbol_idx = query.record().indexOf("symbol");
+    int payload_idx = query.record().indexOf("payload");
+    int message_idx = query.record().indexOf("message");
+    int latitude_idx = query.record().indexOf("latitude");
+    int longitude_idx = query.record().indexOf("longitude");
+    int time_seen_idx = query.record().indexOf("time_seen");
+
+
+    while(query.next())
+    {
+        AprsStation *s = new AprsStation;
+        s->callsign = query.value(callsign_idx).toString();
+        s->adressee = query.value(adressee_idx).toString();
+        s->via = query.value(via_idx).toString();
+        s->symbol = query.value(symbol_idx).toString();
+        s->payload = query.value(payload_idx).toString();
+        s->message = query.value(message_idx).toString();
+        s->latitude = query.value(latitude_idx).toDouble();
+        s->longitude = query.value(longitude_idx).toDouble();
+        s->time_seen = query.value(time_seen_idx).toInt();
+
+        stations.push_back(s);
+    }
+    return stations;
+}
+
+QVector<AprsStation *>
 DatabaseApi::select_aprs_stations()
 {
     QVector<AprsStation *> stations;

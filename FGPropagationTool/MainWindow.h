@@ -83,6 +83,7 @@ private slots:
     void clearLeftDocks();
     void connectToAPRS();
     void showRawAPRSMessages();
+    void changeAPRSTimeFilter(int hours);
 
 
 

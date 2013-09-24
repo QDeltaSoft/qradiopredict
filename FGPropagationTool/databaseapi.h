@@ -20,6 +20,8 @@ public:
     DatabaseApi();
     ~DatabaseApi();
 
+    QVector<AprsStation *>
+    filter_aprs_stations(int time);
 
     QVector<AprsStation *>
     select_aprs_stations();

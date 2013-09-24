@@ -295,6 +295,7 @@ void FGRadio::drawPlot()
         transmission->e_size = (deque<unsigned>::size_type)max_points;
         _plot_transmissions.push_back(transmission);
     }
+
     //phase #2
     while(_plot_transmissions.size() > 0)
     {
@@ -394,8 +395,6 @@ void FGRadio::update()
                 {
 
                     Transmission * t = new Transmission(transmission);
-                    //delete transmission->station;
-                    //delete transmission->radiosignal;
                     delete transmission;
                     _beacon_transmissions.pop_front();
                     processTerrain(t);
@@ -676,8 +675,6 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 
     if(_beacon_transmissions.size() > 20) {
         qDebug() << "ITM:: number of beacon transmissions is too high: ";
-        //delete transmission->station;
-        delete transmission->radiosignal;
         delete transmission;
         return;
     }

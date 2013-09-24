@@ -111,6 +111,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(_tb->ui->nextWaypointButton,SIGNAL(clicked()),this,SLOT(sequenceWaypoint()));
 
+    QObject::connect(_tb->ui->aprsTimeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeAPRSTimeFilter(int)));
+
     _tb->ui->startFlightgearButton->setVisible(true);
     _tb->ui->connectTelnetButton->setVisible(true);
     _tb->ui->sendToFlightgearButton->setVisible(true);
@@ -244,6 +246,71 @@ void MainWindow::showRawAPRSMessages()
     }
     QObject::connect(this,SIGNAL(newMessage(QString)),f,SLOT(addMessage(QString)));
     f->show();
+}
+
+void MainWindow::changeAPRSTimeFilter(int hours)
+{
+    QMapIterator<AprsPixmapItem *, AprsIcon> i(_map_aprs);
+    while(i.hasNext())
+    {
+        i.next();
+        delete i.key();
+    }
+    _map_aprs.clear();
+    QMapIterator<QGraphicsTextItem *, QPointF> j(_map_aprs_text);
+    while(j.hasNext())
+    {
+        j.next();
+        delete j.key();
+    }
+    _map_aprs_text.clear();
+
+    int time_now = QDateTime::currentDateTime().toTime_t();
+
+    QVector<AprsStation *> filtered_stations = _db->filter_aprs_stations(time_now - (hours*3600));
+    for(int k=0;k<filtered_stations.size();++k)
+    {
+        AprsStation *st = filtered_stations[k];
+        QPointF pos(st->longitude,st->latitude);
+        double zoom = _view->zoomLevel();
+        QString filename = ":aprs/aprs_icons/slice_";
+        AprsIcon ic;
+        QString icon = st->getImage();
+        ic.icon = icon;
+        ic.position = pos;
+        filename.append(icon).append(".png");
+        QPixmap pixmap(filename);
+        pixmap = pixmap.scaled(16,16);
+        AprsPixmapItem *img = new AprsPixmapItem(pixmap);
+        img->setAcceptHoverEvents(true);
+
+        _view->_childView->scene()->addItem(img);
+        QPointF xypos = Util::convertToXY(pos, zoom);
+        img->setMessage(st->callsign,st->via,st->message);
+        img->setPosition(xypos);
+        img->setOffset(xypos - QPoint(8,8));
+        _map_aprs.insert(img, ic);
+
+        QString callsign_text;
+        QRegularExpression re(";(.+?)\\*");
+        QRegularExpressionMatch match = re.match(st->payload);
+        if(match.hasMatch())
+        {
+            callsign_text = match.captured(1);
+        }
+        else
+        {
+            callsign_text = st->callsign;
+        }
+        QGraphicsTextItem * callsign = new QGraphicsTextItem;
+        callsign->setPos(xypos - QPoint(0,16));
+        callsign->setPlainText(callsign_text);
+
+        _view->_childView->scene()->addItem(callsign);
+        _map_aprs_text.insert(callsign,pos);
+        delete st;
+    }
+
 }
 
 void MainWindow::newAPRSquery(quint8 zoom)
