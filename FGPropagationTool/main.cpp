@@ -1,7 +1,4 @@
 #include <QApplication>
-#include <QtDebug>
-#include <QMainWindow>
-#include <QPushButton>
 
 #include "MainWindow.h"
 
