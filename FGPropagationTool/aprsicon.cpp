@@ -2,7 +2,7 @@
 
 AprsIcon::AprsIcon()
 {
-    icon = NULL;
+    icon = "";
     position.setX(0);
     position.setY(0);
 }

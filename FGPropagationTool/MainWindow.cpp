@@ -112,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->startStandaloneButton,SIGNAL(clicked()),this,SLOT(startStandalone()));
     QObject::connect(_tb->ui->stopStandaloneButton,SIGNAL(clicked()),this,SLOT(stopStandalone()));
 
-    QObject::connect(_tb->ui->nextWaypointButton,SIGNAL(clicked()),this,SLOT(sequenceWaypoint()));
+
 
     QObject::connect(_tb->ui->aprsTimeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeAPRSTimeFilter(int)));
 
@@ -985,7 +985,7 @@ void MainWindow::startStandalone()
     radiosystem->moveToThread(t);
     connect(radiosystem, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
     connect(radiosystem, SIGNAL(haveSignalReading(double, double, uint,QString,double,Signal*)), this, SLOT(showSignalReading(double, double, uint,QString,double,Signal*)));
-
+    QObject::connect(_tb->ui->nextWaypointButton,SIGNAL(clicked()),this,SLOT(sequenceWaypoint()));
     connect(t, SIGNAL(started()), radiosystem, SLOT(update()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
     connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
@@ -999,6 +999,7 @@ void MainWindow::startStandalone()
 
 void MainWindow::stopStandalone()
 {
+    QObject::disconnect(_tb->ui->nextWaypointButton,SIGNAL(clicked()),this,SLOT(sequenceWaypoint()));
     _radio_subsystem->stop();
     _tb->ui->startStandaloneButton->setEnabled(true);
     _tb->ui->startStandaloneButton->setStyleSheet("background:yellow;");
@@ -1008,9 +1009,9 @@ void MainWindow::stopStandalone()
 
 void MainWindow::sequenceWaypoint()
 {
-    if(_radio_subsystem)
+    if(_radio_subsystem!=NULL)
     {
-        _radio_subsystem->moveMobile();
+        _radio_subsystem->nextWaypoint();
     }
 }
 
