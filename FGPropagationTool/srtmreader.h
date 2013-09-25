@@ -8,10 +8,14 @@
 #include <QDebug>
 #include "flightgearprefs.h"
 #include "databaseapi.h"
+#include <cmath>
+#include <fstream>
+#include <stdlib.h>
 
 /**
  * @brief A simple SRTM hgt file reader
  */
+using namespace std;
 class SRTMReader
 {
 
@@ -29,6 +33,7 @@ private:
     QString getFilename();
     FlightgearPrefs *_settings;
     QString _last_filename;
+    ifstream _file;
     
 };
 

@@ -1,10 +1,5 @@
 #include "srtmreader.h"
-#include <cmath>
-#include <fstream>
-#include <stdlib.h>
 
-
-using namespace std;
 
 SRTMReader::SRTMReader(DatabaseApi *db)
 {
@@ -20,6 +15,7 @@ SRTMReader::SRTMReader(DatabaseApi *db)
     _longitude = 0;
     _latitude_secs = 0;
     _longitude_secs = 0;
+    _last_filename = "";
 }
 
 void SRTMReader::setCoordinates(double lat, double lon)
@@ -43,19 +39,25 @@ double SRTMReader::readHeight()
     srtm_dir.append(filename);
     if(filename != _last_filename)
     {
-
+        if(_last_filename!="")
+        {
+            _file.close();
+        }
+        _file.open (srtm_dir.toStdString().c_str(), ifstream::binary);
     }
+    _last_filename = filename;
     // TODO: this is not portable across archs, due to the little/big endian issue
     union {
         unsigned char height_buf[2];
         short height;
     } conv;
-    ifstream file (srtm_dir.toStdString().c_str(), ifstream::binary);
-    if(file)
+
+
+    if(_file.is_open())
     {
-        file.seekg(pos);
+        _file.seekg(pos);
         char *buf = new char[2];
-        file.read(buf,2);
+        _file.read(buf,2);
         conv.height_buf[0]=buf[1];
         conv.height_buf[1]=buf[0];
         delete[] buf;
@@ -63,6 +65,7 @@ double SRTMReader::readHeight()
     else
     {
         qDebug() << "SRTM path: " << srtm_dir << " unable to open";
+        return 0.0;
     }
 
 

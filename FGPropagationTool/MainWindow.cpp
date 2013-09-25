@@ -344,10 +344,7 @@ void MainWindow::processAPRSData(AprsStation *st)
         {
             return;
         }
-        if((ic.icon == st->getImage()) && 1)
-        {
 
-        }
     }
     QPointF pos(st->longitude,st->latitude);
     double zoom = _view->zoomLevel();
