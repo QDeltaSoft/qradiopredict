@@ -5,6 +5,12 @@ AprsPixmapItem::AprsPixmapItem(QPixmap &pixmap) :
     QGraphicsPixmapItem(pixmap)
 {
     this->setAcceptHoverEvents(true);
+    _callsign = "";
+    _via = "";
+    _pos.setX(0);
+    _pos.setY(0);
+    _item_text = NULL;
+
 }
 
 void AprsPixmapItem::hoverEnterEvent(QGraphicsSceneHoverEvent * event)

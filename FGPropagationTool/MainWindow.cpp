@@ -31,13 +31,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    ui->setupUi(this);
+
+
     _telnet = new FGTelnet;
     _db = new DatabaseApi;
     _remote = new FGRemote(_telnet, _db);
     _show_signals = false;
     _last_station_id = -1;
 
-    ui->setupUi(this);
+
     //!!!!!!!! connections must always come after setupUi!!!
     QObject::connect(ui->actionConnect_to_Flightgear,SIGNAL(triggered()),this->_telnet,SLOT(connectToFGFS()));
     QObject::connect(ui->actionStart_Flightgear,SIGNAL(triggered()),this,SLOT(startFGFS()));
@@ -340,6 +343,10 @@ void MainWindow::processAPRSData(AprsStation *st)
                 && (ic.icon==st->getImage()) )
         {
             return;
+        }
+        if((ic.icon == st->getImage()) && 1)
+        {
+
         }
     }
     QPointF pos(st->longitude,st->latitude);
@@ -1290,7 +1297,7 @@ void MainWindow::plotCoverage(GroundStation *g)
     radiosystem->moveToThread(t);
     connect(radiosystem, SIGNAL(havePlotPoint(double,double,double)), this, SLOT(drawPlot(double,double,double)));
 
-    connect(t, SIGNAL(started()), radiosystem, SLOT(drawPlot()));
+    connect(t, SIGNAL(started()), radiosystem, SLOT(plot()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
     connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));

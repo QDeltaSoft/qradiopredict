@@ -69,7 +69,7 @@ public:
 
 public slots:
     void update();
-    void drawPlot();
+    void plot();
 
 signals:
     void finished();
@@ -232,7 +232,7 @@ private:
 	typedef std::deque<Transmission*> RadioTransmissions;
 
     RadioTransmissions _beacon_transmissions;
-    RadioTransmissions _plot_transmissions;
+    RadioTransmissions *_plot_transmissions;
 	
 	typedef std::map<std::string, FGRadioAntenna*> AntennaList;
 	AntennaList _antennas;

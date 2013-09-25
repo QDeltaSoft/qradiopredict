@@ -2,6 +2,15 @@
 
 AprsStation::AprsStation()
 {
+    callsign = "";
+    adressee = "";
+    via = "";
+    message = "";
+    symbol = "";
+    payload = "";
+    time_seen = 0;
+    latitude = 0.0;
+    longitude = 0.0;
 }
 
 QString AprsStation::getImage()

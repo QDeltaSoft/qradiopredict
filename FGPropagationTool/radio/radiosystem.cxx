@@ -65,6 +65,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
     _timer_started = false;
     _move_flag=true;
     _plot_station = NULL;
+    _plot_transmissions = new RadioTransmissions;
 
 }
 
@@ -141,7 +142,7 @@ void FGRadio::setPlotStation(GroundStation *g)
 }
 
 
-void FGRadio::drawPlot()
+void FGRadio::plot()
 {
     while (_plot_station ==NULL) {}
     GroundStation *station = _plot_station;
@@ -174,7 +175,7 @@ void FGRadio::drawPlot()
         SGGeod tx_pos = SGGeod::fromDegM(lon, lat, elev * SG_FEET_TO_METER);
 
         Transmission * transmission = new Transmission();
-        transmission->station = station;
+        transmission->station = NULL;
         transmission->pos = tx_pos;
         transmission->freq = station->frequency;
 
@@ -293,13 +294,19 @@ void FGRadio::drawPlot()
 
 
         transmission->e_size = (deque<unsigned>::size_type)max_points;
-        _plot_transmissions.push_back(transmission);
+        _plot_transmissions->push_back(transmission);
     }
-
-    //phase #2
-    while(_plot_transmissions.size() > 0)
+    for(int i=0;i<positions.size();++i)
     {
-        Transmission * transmission = _plot_transmissions.front();
+        delete positions[i];
+        positions.clear();
+    }
+    qDebug() << _plot_transmissions->size();
+    //return;
+    //phase #2
+    while(_plot_transmissions->size() > 0)
+    {
+        Transmission * transmission = _plot_transmissions->front();
         if (transmission->elevations.size() >= transmission->e_size)
         {
 
@@ -307,7 +314,7 @@ void FGRadio::drawPlot()
 
             //delete transmission->radiosignal;
             delete transmission;
-            _plot_transmissions.pop_front();
+            _plot_transmissions->pop_front();
             processTerrain(t);
         }
         transmission->probe_distance += transmission->point_distance;
@@ -356,15 +363,11 @@ void FGRadio::drawPlot()
         }
     }
     //cleanup
-    for(int i=0;i<positions.size();++i)
-    {
-        delete positions[i];
-        positions.clear();
+
+    for (unsigned i =0; i < _plot_transmissions->size(); i++) {
+        delete _plot_transmissions->at(i);
     }
-    for (unsigned i =0; i < _plot_transmissions.size(); i++) {
-        delete _plot_transmissions[i];
-    }
-    _plot_transmissions.clear();
+    _plot_transmissions->clear();
 
 }
 
