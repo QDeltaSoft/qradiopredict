@@ -10,6 +10,8 @@ public:
     AprsIcon();
     QString icon;
     QPointF position;
+    QString callsign;
+    unsigned time_seen;
 };
 
 #endif // APRSICON_H
