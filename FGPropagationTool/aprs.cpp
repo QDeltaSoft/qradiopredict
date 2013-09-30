@@ -160,12 +160,12 @@ void Aprs::processData()
 
 }
 
-void Aprs::setFilter(QPointF &pos)
+void Aprs::setFilter(QPointF &pos, int &range)
 {
     if ((_status!=1)) return;
     if( QTime::currentTime() < _delaytime ) return;
-    //QString query = "?APRS?";
-    QString query = "#filter r/"+QString::number(pos.ry())+"/"+QString::number(pos.rx())+"/0200\r\n";
+
+    QString query = "#filter r/"+QString::number(pos.ry())+"/"+QString::number(pos.rx())+"/0"+QString::number(range)+"\r\n";
 
     _socket->write(query.toLatin1());
     _socket->flush();

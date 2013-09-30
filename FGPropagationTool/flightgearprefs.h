@@ -18,6 +18,7 @@ public:
     unsigned _windowX;
     unsigned _windowY;
     QString _aprs_server;
+    int _aprs_filter_range;
     QString _srtm_path;
     QString _shapefile_path;
 };

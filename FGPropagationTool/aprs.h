@@ -20,7 +20,7 @@ public:
     ~Aprs();
     void connectToAPRS();
     void disconnectAPRS();
-    void setFilter(QPointF &pos);
+    void setFilter(QPointF &pos, int &range);
     
 signals:
     void connectedToAPRS();

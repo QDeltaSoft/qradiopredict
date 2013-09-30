@@ -11,6 +11,7 @@
 #include "mobilestation.h"
 #include "groundstation.h"
 #include "flightplanpoints.h"
+#include "flightgearprefs.h"
 #include "util.h"
 #include "fgremote.h"
 #include "updater.h"

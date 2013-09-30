@@ -13,6 +13,7 @@ FlightgearPrefs::FlightgearPrefs()
     _windowX = 1024;
     _windowY = 768;
     _aprs_server = "euro.aprs2.net";
+    _aprs_filter_range = 200;
     _srtm_path = "";
     _shapefile_path = "";
 }

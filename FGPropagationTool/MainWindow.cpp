@@ -323,7 +323,16 @@ void MainWindow::newAPRSquery(quint8 zoom)
     QPointF cursor_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()));
 
     QPointF pos = Util::convertToLL(cursor_pos, zoom);
-    _aprs->setFilter(pos);
+    QVector<FlightgearPrefs *> prefs = _db->select_prefs();
+    FlightgearPrefs *settings;
+    if(prefs.size()>0)
+    {
+        settings = prefs[0];
+    }
+    else
+        settings = 0;
+    int range = settings->_aprs_filter_range;
+    _aprs->setFilter(pos, range);
 }
 
 void MainWindow::processRawAPRSData(QString data)
@@ -1338,7 +1347,7 @@ void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, doub
         int alpha = 150;
         QColor colour = Util::getScaleColor(signal, alpha);
         QBrush brush(colour);
-        QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(brush, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QPolygonF poly;
         poly << xy_plot_pos  << xy_plot_pos1 << xy_plot_pos2 << xy_plot_pos3;
         QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen);
