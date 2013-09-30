@@ -21,6 +21,7 @@ public:
     int _aprs_filter_range;
     QString _srtm_path;
     QString _shapefile_path;
+    int _plot_range; // km
 };
 
 #endif // FLIGHTGEARPREFS_H

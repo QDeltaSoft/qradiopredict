@@ -46,6 +46,7 @@ void SettingsDialog::fillEmptyFields()
         this->ui->windowYEdit->setText(QString::number(p->_windowY));
         this->ui->aprsServerEdit->setText(p->_aprs_server);
         this->ui->aprsRangeEdit->setText(QString::number(p->_aprs_filter_range));
+        this->ui->plotRangeEdit->setText(QString::number(p->_plot_range));
         delete p;
     }
     prefs.clear();
@@ -77,6 +78,7 @@ void SettingsDialog::saveData()
     p->_windowY = this->ui->windowYEdit->text().toInt();
     p->_aprs_server = this->ui->aprsServerEdit->text();
     p->_aprs_filter_range = this->ui->aprsRangeEdit->text().toInt();
+    p->_plot_range = this->ui->plotRangeEdit->text().toInt();
     _db->savePrefs(p);
     delete p;
 }

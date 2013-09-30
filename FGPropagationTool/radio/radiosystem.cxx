@@ -166,7 +166,7 @@ void FGRadio::plot()
     }
 
     SGGeod center = SGGeod::fromDegM(station->longitude, station->latitude, station->elevation_feet * SG_FEET_TO_METER);
-    QVector<SGGeod*> *positions = Util::drawDisk(center,30*1000,1,_terrain_sampling_distance);
+    QVector<SGGeod*> *positions = Util::drawDisk(center,_settings->_plot_range*1000,1,_terrain_sampling_distance);
     for(int i=0;i<positions->size();++i)
     {
         SGGeod *plot_pos = positions->at(i);

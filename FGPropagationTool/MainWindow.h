@@ -138,6 +138,7 @@ private:
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
     QPointF _last_plot_point;
+    QVector<QGraphicsPolygonItem*> _plot_points;
     Updater * _updater;
     FGRadio *_radio_subsystem;
 

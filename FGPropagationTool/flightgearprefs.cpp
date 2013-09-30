@@ -16,4 +16,5 @@ FlightgearPrefs::FlightgearPrefs()
     _aprs_filter_range = 200;
     _srtm_path = "";
     _shapefile_path = "";
+    _plot_range = 30;
 }

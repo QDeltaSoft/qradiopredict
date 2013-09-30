@@ -1333,8 +1333,8 @@ void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, doub
 
         QPointF plot_pos(lon,lat);
         QPointF plot_pos1(lon+0.001,lat+0.001);
-        QPointF plot_pos2(lon-0.001,lat-0.001);
-        QPointF plot_pos3(lon+0.001,lat-0.001);
+        QPointF plot_pos2(lon+0.001,lat);
+        QPointF plot_pos3(lon,lat+0.001);
         QPointF xy_plot_pos = Util::convertToXY(plot_pos,_view->zoomLevel());
         QPointF xy_plot_pos1 = Util::convertToXY(plot_pos1,_view->zoomLevel());
         QPointF xy_plot_pos2 = Util::convertToXY(plot_pos2,_view->zoomLevel());
@@ -1351,7 +1351,7 @@ void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, doub
         QPolygonF poly;
         poly << xy_plot_pos  << xy_plot_pos1 << xy_plot_pos2 << xy_plot_pos3;
         QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen);
-        //_signal_lines.push_back(polygon);
+        //_plot_points.push_back(polygon);
         _last_plot_point = xy_plot_pos;
     }
 

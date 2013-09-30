@@ -199,6 +199,7 @@ DatabaseApi::select_prefs()
     int windowY_idx = query.record().indexOf("windowY");
     int aprs_server_idx = query.record().indexOf("aprs_server");
     int aprs_filter_range_idx = query.record().indexOf("aprs_filter_range");
+    int plot_range_idx = query.record().indexOf("plot_range");
     while(query.next())
     {
         FlightgearPrefs *p = new FlightgearPrefs;
@@ -216,6 +217,7 @@ DatabaseApi::select_prefs()
         p->_windowY = query.value(windowY_idx).toInt();
         p->_aprs_server = query.value(aprs_server_idx).toString();
         p->_aprs_filter_range = query.value(aprs_filter_range_idx).toInt();
+        p->_plot_range = query.value(plot_range_idx).toInt();
         prefs.push_back(p);
     }
     return prefs;
@@ -231,7 +233,7 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
                   "aircraft=:aircraft, "
                   "airport = :airport, use_clutter= :use_clutter, itm_performance_mode=:itm_performance, "
                   "use_antenna_pattern = :use_antenna_pattern, windowX= :windowX, windowY= :windowY, "
-                  "aprs_server= :aprs_server, aprs_filter_range=:aprs_filter_range "
+                  "aprs_server= :aprs_server, aprs_filter_range=:aprs_filter_range, plot_range=:plot_range "
                   " WHERE id=1");
     query.bindValue(":fgfs_binary", p->_fgfs_bin);
     query.bindValue(":fgdata_path", p->_fgdata_path);
@@ -247,6 +249,7 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     query.bindValue(":windowY", p->_windowY);
     query.bindValue(":aprs_server", p->_aprs_server);
     query.bindValue(":aprs_filter_range", p->_aprs_filter_range);
+    query.bindValue(":plot_range", p->_plot_range);
     query.exec();
 }
 
