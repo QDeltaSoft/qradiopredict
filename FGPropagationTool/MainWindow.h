@@ -110,7 +110,7 @@ public slots:
     void processRawAPRSData(QString data);
     void sequenceWaypoint();
     void plotCoverage(GroundStation * g);
-    void drawPlot(double lon, double lat, double signal);
+    void drawPlot(double lon, double lat, double lon1, double lat1, double signal);
 
 
 private:
@@ -136,6 +136,7 @@ private:
     int _last_station_id;
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
+    QPointF _last_plot_point;
     Updater * _updater;
     FGRadio *_radio_subsystem;
 

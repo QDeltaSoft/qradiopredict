@@ -75,7 +75,7 @@ signals:
     void finished();
     void haveSignalReading(double longitude,double latitude,unsigned id, QString name, double freq, Signal *s);
     void haveMobilePosition(double lon, double lat);
-    void havePlotPoint(double lon, double lat, double signal);
+    void havePlotPoint(double lon, double lat, double lon1, double lat1, double signal);
 
 private:
 	
@@ -109,6 +109,8 @@ private:
 		int polarization;
 		bool process_terrain;
         bool plot;
+        QVector<double> *plot_elevations;
+        QVector<string*> *plot_materials;
 		std::deque<double> elevations;
 		std::deque<string*> materials;
 		double own_heading;				// player heading
@@ -156,6 +158,8 @@ private:
 			polarization(1),
 			process_terrain(true),
             plot(false),
+            plot_elevations(new QVector<double>),
+            plot_materials(new QVector<string*>),
 			own_heading(0),
 			rx_antenna_pitch(0),
 			sender_heading(0),
@@ -203,6 +207,8 @@ private:
 			polarization(t->polarization),
 			process_terrain(t->process_terrain),
             plot(t->plot),
+            plot_elevations(new QVector<double>(*t->plot_elevations)),
+            plot_materials(new QVector<string*>(*t->plot_materials)),
 			elevations(t->elevations),
 			materials(t->materials),
 			own_heading(t->own_heading),

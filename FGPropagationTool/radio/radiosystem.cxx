@@ -166,10 +166,10 @@ void FGRadio::plot()
     }
 
     SGGeod center = SGGeod::fromDegM(station->longitude, station->latitude, station->elevation_feet * SG_FEET_TO_METER);
-    QVector<SGGeod*> positions = Util::drawDisk(center,10*1000,2,_terrain_sampling_distance);
-    for(int i=0;i<positions.size();++i)
+    QVector<SGGeod*> *positions = Util::drawDisk(center,30*1000,1,_terrain_sampling_distance);
+    for(int i=0;i<positions->size();++i)
     {
-        SGGeod *plot_pos = positions[i];
+        SGGeod *plot_pos = positions->at(i);
 
 
         SGGeod tx_pos = SGGeod::fromDegM(lon, lat, elev * SG_FEET_TO_METER);
@@ -293,29 +293,38 @@ void FGRadio::plot()
 
 
 
-        transmission->e_size = (deque<unsigned>::size_type)max_points;
+        transmission->e_size = max_points;
         _plot_transmissions->push_back(transmission);
     }
-    for(int i=0;i<positions.size();++i)
+    for(int i=0;i<positions->size();++i)
     {
-        delete positions[i];
-        positions.clear();
+        delete positions->at(i);
     }
-    qDebug() << _plot_transmissions->size();
-    //return;
+    positions->clear();
+    delete positions;
+
     //phase #2
     while(_plot_transmissions->size() > 0)
     {
         Transmission * transmission = _plot_transmissions->front();
-        if (transmission->elevations.size() >= transmission->e_size)
+        if (transmission->plot_elevations->size() >= transmission->e_size)
         {
 
             Transmission * t = new Transmission(transmission);
 
             //delete transmission->radiosignal;
+            for(int l =0;l<transmission->plot_materials->size();++l)
+            {
+                delete transmission->plot_materials->at(l);
+            }
+            transmission->plot_elevations->clear();
+            transmission->plot_materials->clear();
+            delete transmission->plot_elevations;
+            delete transmission->plot_materials;
             delete transmission;
             _plot_transmissions->pop_front();
             processTerrain(t);
+            continue;
         }
         transmission->probe_distance += transmission->point_distance;
         SGGeod probe = SGGeod::fromGeoc(transmission->center.advanceRadM( transmission->course, transmission->probe_distance ));
@@ -324,41 +333,40 @@ void FGRadio::plot()
 
         if (_scenery->get_elevation_m( probe, elevation_m, material ))
         {
-            qDebug() << elevation_m;
 
             if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
-                transmission->elevations.push_back(elevation_m);
+                transmission->plot_elevations->append(elevation_m);
                 if(!material.empty()) {
                     string* name = new string(material);
-                    transmission->materials.push_back(name);
+                    transmission->plot_materials->append(name);
                 }
                 else {
                     string* no_material = new string("None");
-                    transmission->materials.push_back(no_material);
+                    transmission->plot_materials->append(no_material);
                 }
             }
             else {
-                 transmission->elevations.push_front(elevation_m);
+                 transmission->plot_elevations->prepend(elevation_m);
                  if(!material.empty()) {
                      string* name = new string(material);
-                     transmission->materials.push_front(name);
+                     transmission->plot_materials->prepend(name);
                 }
                 else {
                     string* no_material = new string("None");
-                    transmission->materials.push_front(no_material);
+                    transmission->plot_materials->prepend(no_material);
                 }
             }
         }
         else {
             if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
-                transmission->elevations.push_back(0.0);
+                transmission->plot_elevations->append(0.0);
                 string* no_material = new string("None");
-                transmission->materials.push_back(no_material);
+                transmission->plot_materials->append(no_material);
             }
             else {
                 string* no_material = new string("None");
-                transmission->elevations.push_front(0.0);
-                transmission->materials.push_front(no_material);
+                transmission->plot_elevations->prepend(0.0);
+                transmission->plot_materials->prepend(no_material);
             }
         }
     }
@@ -687,24 +695,51 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 }
 
 void FGRadio::processTerrain(Transmission* transmission) {
-	
-	if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
-		transmission->elevations.push_front(transmission->elevation_under_pilot);
-		//if (delta_last > (point_distance / 2) )			
-			transmission->elevations.push_back(transmission->elevation_under_sender);
-	}
-	else {
-		transmission->elevations.push_back(transmission->elevation_under_pilot);
-		//if (delta_last > (point_distance / 2) )
-			transmission->elevations.push_front(transmission->elevation_under_sender);
-	}
-	
-	
-	double num_points= (double)transmission->elevations.size();
+
+    if(transmission->plot)
+    {
+        if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+            transmission->plot_elevations->prepend(transmission->elevation_under_pilot);
+            //if (delta_last > (point_distance / 2) )
+                transmission->plot_elevations->append(transmission->elevation_under_sender);
+        }
+        else {
+            transmission->plot_elevations->append(transmission->elevation_under_pilot);
+            //if (delta_last > (point_distance / 2) )
+                transmission->plot_elevations->prepend(transmission->elevation_under_sender);
+        }
 
 
-	transmission->elevations.push_front(transmission->point_distance);
-	transmission->elevations.push_front(num_points -1);
+        double num_points= (double)transmission->plot_elevations->size();
+
+
+        transmission->plot_elevations->prepend(transmission->point_distance);
+        transmission->plot_elevations->prepend(num_points -1);
+
+    }
+    else
+    {
+        if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+            transmission->elevations.push_front(transmission->elevation_under_pilot);
+            //if (delta_last > (point_distance / 2) )
+                transmission->elevations.push_back(transmission->elevation_under_sender);
+        }
+        else {
+            transmission->elevations.push_back(transmission->elevation_under_pilot);
+            //if (delta_last > (point_distance / 2) )
+                transmission->elevations.push_front(transmission->elevation_under_sender);
+        }
+
+
+        double num_points= (double)transmission->elevations.size();
+
+
+        transmission->elevations.push_front(transmission->point_distance);
+        transmission->elevations.push_front(num_points -1);
+
+    }
+	
+
 	
 	
 	
@@ -715,13 +750,25 @@ void FGRadio::processTerrain(Transmission* transmission) {
 
 void FGRadio::processSignal(Transmission* transmission) {
 	
-    // this used to do various stuff; now it's just cleanup, sorry
+
     if(transmission->plot)
     {
         SGGeod pos = transmission->player_pos;
+        SGGeoc pos_c = SGGeoc::fromGeod(transmission->pos);
+        SGGeoc pos_b = SGGeoc::fromGeod(pos);
+        pos_b.advanceRadM(transmission->course+90*SGD_PI/180,sqrt(2)*transmission->probe_distance*sin(1*SGD_PI/180));
         double signal = transmission->radiosignal->signal;
-        emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),signal);
-
+        emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),pos_b.getLongitudeDeg(),pos_b.getLatitudeDeg(), signal);
+        /*
+        transmission->plot_elevations->clear();
+        for(int i=0;i<transmission->plot_materials->size();++i)
+        {
+            delete transmission->plot_materials->at(i);
+        }
+        transmission->plot_materials->clear();
+        delete transmission->plot_elevations;
+        delete transmission->plot_materials;
+        */
     }
     else
     {
@@ -767,12 +814,28 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 			transmission->tx_line_losses + ant_gain;	
 	double signal_strength = tx_pow - transmission->rx_line_losses - transmission->tx_line_losses + ant_gain;	
 	double tx_erp = dbm_to_watt(tx_pow + transmission->tx_antenna_gain - transmission->tx_line_losses);
+    int size;
+    if(transmission->plot)
+    {
+        size = transmission->plot_elevations->size();
+    }
+    else
+    {
+        size = transmission->elevations.size();
+    }
 
-	int size = transmission->elevations.size();
 	boost::scoped_array<double> itm_elev( new double[size] );
 
 	for(int i=0;i<size;i++) {
-		itm_elev[i]=transmission->elevations[i];
+        if(transmission->plot)
+        {
+            itm_elev[i]=transmission->plot_elevations->at(i);
+        }
+        else
+        {
+            itm_elev[i]=transmission->elevations[i];
+        }
+
 	}
 	
 	if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {

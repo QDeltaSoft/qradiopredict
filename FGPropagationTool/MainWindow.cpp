@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _remote = new FGRemote(_telnet, _db);
     _show_signals = false;
     _last_station_id = -1;
+    _last_plot_point.setX(0);
+    _last_plot_point.setY(0);
 
 
     //!!!!!!!! connections must always come after setupUi!!!
@@ -333,6 +335,7 @@ void MainWindow::processRawAPRSData(QString data)
 
 void MainWindow::processAPRSData(AprsStation *st)
 {
+
     QMapIterator<AprsPixmapItem*, AprsIcon> i(_map_aprs);
     while(i.hasNext())
     {
@@ -344,6 +347,13 @@ void MainWindow::processAPRSData(AprsStation *st)
         {
             return;
         }
+        if((ic.callsign == st->callsign) &&
+                (fabs(pos.rx() - st->longitude) > 0.001) &&
+                (fabs(pos.ry() - st->latitude) >0.001 ) &&
+                (ic.time_seen > (st->time_seen - 3600)))
+        {
+
+        }
 
     }
     QPointF pos(st->longitude,st->latitude);
@@ -353,6 +363,8 @@ void MainWindow::processAPRSData(AprsStation *st)
     QString icon = st->getImage();
     ic.icon = icon;
     ic.position = pos;
+    ic.callsign = st->callsign;
+    ic.time_seen = st->time_seen;
     filename.append(icon).append(".png");
     QPixmap pixmap(filename);
     pixmap = pixmap.scaled(16,16);
@@ -1293,7 +1305,8 @@ void MainWindow::plotCoverage(GroundStation *g)
     FGRadio *radiosystem = new FGRadio(_db);
     radiosystem->setPlotStation(g);
     radiosystem->moveToThread(t);
-    connect(radiosystem, SIGNAL(havePlotPoint(double,double,double)), this, SLOT(drawPlot(double,double,double)));
+    connect(radiosystem, SIGNAL(havePlotPoint(double,double,double, double, double)),
+            this, SLOT(drawPlot(double,double,double, double, double)));
 
     connect(t, SIGNAL(started()), radiosystem, SLOT(plot()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
@@ -1304,31 +1317,33 @@ void MainWindow::plotCoverage(GroundStation *g)
 
 }
 
-void MainWindow::drawPlot(double lon, double lat, double signal)
+void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, double signal)
 {
     if(signal >0)
     {
-        qDebug() << signal;
+
         QPointF plot_pos(lon,lat);
+        QPointF plot_pos1(lon+0.001,lat+0.001);
+        QPointF plot_pos2(lon-0.001,lat-0.001);
+        QPointF plot_pos3(lon+0.001,lat-0.001);
         QPointF xy_plot_pos = Util::convertToXY(plot_pos,_view->zoomLevel());
-        QBrush brush;
-        if(signal >0 && signal <=10)
+        QPointF xy_plot_pos1 = Util::convertToXY(plot_pos1,_view->zoomLevel());
+        QPointF xy_plot_pos2 = Util::convertToXY(plot_pos2,_view->zoomLevel());
+        QPointF xy_plot_pos3 = Util::convertToXY(plot_pos3,_view->zoomLevel());
+        if(_last_plot_point.rx()==0 || _last_plot_point.ry()==0)
         {
-            brush= Qt::yellow;
+            _last_plot_point.setX(xy_plot_pos.rx()+0.001);
+            _last_plot_point.setY(xy_plot_pos.ry()+0.001);
         }
-        else if(signal > 10 && signal <=30)
-        {
-            brush = Qt::green;
-        }
-        else if(signal > 30)
-        {
-            brush = Qt::red;
-        }
-        QPen pen(brush, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+        int alpha = 150;
+        QColor colour = Util::getScaleColor(signal, alpha);
+        QBrush brush(colour);
+        QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QPolygonF poly;
-        poly << xy_plot_pos;
+        poly << xy_plot_pos  << xy_plot_pos1 << xy_plot_pos2 << xy_plot_pos3;
         QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen);
         //_signal_lines.push_back(polygon);
+        _last_plot_point = xy_plot_pos;
     }
 
 }

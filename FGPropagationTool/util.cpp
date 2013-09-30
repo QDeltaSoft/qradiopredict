@@ -133,14 +133,14 @@ void Util::startFlightgear(DatabaseApi *db)
 }
 
 
-QVector<SGGeod*> Util::drawDisk(const SGGeod &center, const double &radius, const int &step_deg, const double &step_point)
+QVector<SGGeod*>* Util::drawDisk(const SGGeod &center, const double &radius, const int &step_deg, const double &step_point)
 {
-    QVector<SGGeod*> disk;
+    QVector<SGGeod*> *disk = new QVector<SGGeod*>;
     SGGeod *g = new SGGeod();
     g->setLatitudeDeg(center.getLatitudeDeg());
     g->setLongitudeDeg(center.getLongitudeDeg());
-    g->setElevationM(g->getElevationM());
-    disk.append(g);
+    g->setElevationM(center.getElevationM());
+    disk->append(g);
     SGGeoc center_c = SGGeoc::fromGeod(center);
     for(int i=0;i<360;i+=step_deg)
     {
@@ -163,11 +163,59 @@ QVector<SGGeod*> Util::drawDisk(const SGGeod &center, const double &radius, cons
                 geod->setLatitudeDeg(probe.getLatitudeDeg());
                 geod->setLongitudeDeg(probe.getLongitudeDeg());
                 geod->setElevationM(probe.getElevationM());
-                disk.append(geod);
+                disk->append(geod);
             }
         }
     }
     return disk;
+}
+
+QColor Util::getScaleColor(double &signal, int &alpha)
+{
+    if(signal > 0 && signal <=3)
+    {
+        return QColor(0,0,245,alpha);
+    }
+    if(signal > 3 && signal <=6)
+    {
+        return QColor(16,104,245,alpha);
+    }
+    if(signal > 6 && signal <=9)
+    {
+        return QColor(16,219,245,alpha);
+    }
+    if(signal > 9 && signal <=12)
+    {
+        return QColor(16,245,173,alpha);
+    }
+    if(signal > 12 && signal <=15)
+    {
+        return QColor(18,245,75,alpha);
+    }
+    if(signal > 15 && signal <=18)
+    {
+        return QColor(63,245,20,alpha);
+    }
+    if(signal > 18 && signal <=21)
+    {
+        return QColor(222,245,14,alpha);
+    }
+    if(signal > 21 && signal <=24)
+    {
+        return QColor(245,226,15,alpha);
+    }
+    if(signal > 24 && signal <=27)
+    {
+        return QColor(245,161,14,alpha);
+    }
+    if(signal > 27 && signal <=30)
+    {
+        return QColor(245,85,11,alpha);
+    }
+    if(signal > 30)
+    {
+        return QColor(245,0,0,alpha);
+    }
 }
 
 
