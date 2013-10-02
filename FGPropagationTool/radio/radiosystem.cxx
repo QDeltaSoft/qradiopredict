@@ -756,11 +756,15 @@ void FGRadio::processSignal(Transmission* transmission) {
         SGGeod pos = transmission->player_pos;
         SGGeoc pos_c = SGGeoc::fromGeod(transmission->pos);
         SGGeoc pos_b = SGGeoc::fromGeod(pos);
-        pos_b.advanceRadM(transmission->course+90*SGD_PI/180,sqrt(2)*transmission->probe_distance*sin(1*SGD_PI/180));
+        double course = transmission->course-SGD_PI/2;
+        double dist = sqrt(2)*transmission->probe_distance*sin(SGD_PI/180);
+        //qDebug() << course << " dist: " << dist;
+        SGGeoc pos_d = pos_b.advanceRadM(course, dist);
         double signal = transmission->radiosignal->signal;
-        emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),pos_b.getLongitudeDeg(),pos_b.getLatitudeDeg(), signal);
-        /*
+        emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),pos_d.getLongitudeDeg(),pos_d.getLatitudeDeg(), transmission->probe_distance, signal);
         transmission->plot_elevations->clear();
+        /*
+
         for(int i=0;i<transmission->plot_materials->size();++i)
         {
             delete transmission->plot_materials->at(i);

@@ -39,8 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
     _remote = new FGRemote(_telnet, _db);
     _show_signals = false;
     _last_station_id = -1;
+    _plot_opacity = 15;
     _last_plot_point.setX(0);
     _last_plot_point.setY(0);
+    _plot_pixmap = new QPixmap(1000,1000);
 
 
     //!!!!!!!! connections must always come after setupUi!!!
@@ -114,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->startStandaloneButton,SIGNAL(clicked()),this,SLOT(startStandalone()));
     QObject::connect(_tb->ui->stopStandaloneButton,SIGNAL(clicked()),this,SLOT(stopStandalone()));
 
-
+    QObject::connect(_tb->ui->opacitySlider,SIGNAL(valueChanged(int)),this,SLOT(changePlotOpacity(int)));
 
     QObject::connect(_tb->ui->aprsTimeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeAPRSTimeFilter(int)));
 
@@ -127,7 +129,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //this->createActions();
     //this->createTrayIcon();
 
-
+    _painted_pix = _view->_childView->scene()->addPixmap(*_plot_pixmap);
+    _painted_pix->setOpacity(0.0);
     /*\ This needs to go
     QPolygonF polygon;
     polygon << QPointF(10.4, 20.5) << QPointF(20.2, 30.2) << QPointF(24.2, 45.2);
@@ -584,6 +587,18 @@ void MainWindow::setMapItems(quint8 zoom)
             QPointF xypos = Util::convertToXY(pos, zoom);
             QGraphicsTextItem * callsign = i.key();
             callsign->setPos(xypos - QPoint(0,16));
+
+        }
+    }
+
+    {
+        QMapIterator<QGraphicsPolygonItem *, QPointF> i(_plot_points);
+        while (i.hasNext()) {
+            i.next();
+            QPointF pos = i.value();
+            QPointF xypos = Util::convertToXY(pos, zoom);
+            QGraphicsPolygonItem * signal_point = i.key();
+            signal_point->setPos(xypos);
 
         }
     }
@@ -1310,15 +1325,26 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
 
 void MainWindow::plotCoverage(GroundStation *g)
 {
+    QMapIterator<QGraphicsPolygonItem *, QPointF> i(_plot_points);
+    while (i.hasNext()) {
+        delete i.key();
+    }
+    _plot_points.clear();
     QThread *t= new QThread;
     FGRadio *radiosystem = new FGRadio(_db);
+    QPointF plot_pos(g->longitude,g->latitude);
+    QPointF xy_plot_pos = Util::convertToXY(plot_pos,_view->zoomLevel());
+    //_painted_pix->setOffset(xy_plot_pos - QPointF(500,500));
+    _painted_pix->setOpacity(0.2);
+
     radiosystem->setPlotStation(g);
     radiosystem->moveToThread(t);
-    connect(radiosystem, SIGNAL(havePlotPoint(double,double,double, double, double)),
-            this, SLOT(drawPlot(double,double,double, double, double)));
+    connect(radiosystem, SIGNAL(havePlotPoint(double,double,double, double, double, double)),
+            this, SLOT(drawPlot(double,double,double, double, double, double)));
 
     connect(t, SIGNAL(started()), radiosystem, SLOT(plot()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
+    //connect(radiosystem, SIGNAL(finished()), this, SLOT(paintPlotPicture()));
     connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
     _radio_subsystem = radiosystem;
@@ -1326,33 +1352,56 @@ void MainWindow::plotCoverage(GroundStation *g)
 
 }
 
-void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, double signal)
+void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, double distance, double signal)
 {
     if(signal >0)
     {
 
         QPointF plot_pos(lon,lat);
-        QPointF plot_pos1(lon+0.001,lat+0.001);
-        QPointF plot_pos2(lon+0.001,lat);
-        QPointF plot_pos3(lon,lat+0.001);
+        QPointF plot_pos1(lon+0.001*sqrt(2)*distance/100*sin(SGD_PI/180),lat+0.001*sqrt(2)*distance/100*sin(SGD_PI/180));
+        QPointF plot_pos2(lon+0.001*sqrt(2)*distance/100*sin(SGD_PI/180),lat);
+        QPointF plot_pos3(lon,lat+0.001*sqrt(2)*distance/100*sin(SGD_PI/180));
+        QPointF plot_pos_a(lon1,lat1);
         QPointF xy_plot_pos = Util::convertToXY(plot_pos,_view->zoomLevel());
         QPointF xy_plot_pos1 = Util::convertToXY(plot_pos1,_view->zoomLevel());
         QPointF xy_plot_pos2 = Util::convertToXY(plot_pos2,_view->zoomLevel());
         QPointF xy_plot_pos3 = Util::convertToXY(plot_pos3,_view->zoomLevel());
+        QPointF xy_plot_pos_a = Util::convertToXY(plot_pos_a,_view->zoomLevel());
         if(_last_plot_point.rx()==0 || _last_plot_point.ry()==0)
         {
             _last_plot_point.setX(xy_plot_pos.rx()+0.001);
             _last_plot_point.setY(xy_plot_pos.ry()+0.001);
         }
-        int alpha = 150;
+        int alpha = _plot_opacity;
         QColor colour = Util::getScaleColor(signal, alpha);
         QBrush brush(colour);
-        QPen pen(brush, 0, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QPolygonF poly;
-        poly << xy_plot_pos  << xy_plot_pos1 << xy_plot_pos2 << xy_plot_pos3;
-        QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen);
-        //_plot_points.push_back(polygon);
+        poly << xy_plot_pos  << xy_plot_pos3 << xy_plot_pos1 << xy_plot_pos2;
+        //poly << xy_plot_pos  << xy_plot_pos_a << _last_plot_point;
+
+        /*
+        QPainter painter(_plot_pixmap);
+        painter.setBrush(brush);
+        painter.setPen(pen);
+        painter.drawPolygon(poly);
+        */
+
+
+        QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen,brush);
+        //_plot_points.insert(polygon,plot_pos);
         _last_plot_point = xy_plot_pos;
+
     }
 
+}
+
+void MainWindow::changePlotOpacity(int opacity)
+{
+    _plot_opacity = opacity;
+}
+
+void MainWindow::paintPlotPicture()
+{
+    _painted_pix->setPixmap(*_plot_pixmap);
 }

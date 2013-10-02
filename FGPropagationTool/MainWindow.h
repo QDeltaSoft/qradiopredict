@@ -85,6 +85,7 @@ private slots:
     void connectToAPRS();
     void showRawAPRSMessages();
     void changeAPRSTimeFilter(int hours);
+    void changePlotOpacity(int opacity);
 
 
 
@@ -111,7 +112,8 @@ public slots:
     void processRawAPRSData(QString data);
     void sequenceWaypoint();
     void plotCoverage(GroundStation * g);
-    void drawPlot(double lon, double lat, double lon1, double lat1, double signal);
+    void drawPlot(double lon, double lat, double lon1, double lat1, double distance, double signal);
+    void paintPlotPicture();
 
 
 private:
@@ -138,7 +140,11 @@ private:
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
     QPointF _last_plot_point;
-    QVector<QGraphicsPolygonItem*> _plot_points;
+    QMap<QGraphicsPolygonItem*, QPointF> _plot_points;
+    int _plot_opacity;
+    QPixmap *_plot_pixmap;
+    QGraphicsPixmapItem *_painted_pix;
+
     Updater * _updater;
     FGRadio *_radio_subsystem;
 
