@@ -1187,19 +1187,10 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
                 QPointF xy_gs_pos = Util::convertToXY(gs_pos,_view->zoomLevel());
                 QPointF xy_mobile_pos = Util::convertToXY(mobile_pos,_view->zoomLevel());
                 QLineF signal_line(xy_gs_pos,xy_mobile_pos);
-                QBrush brush;
-                if(s->signal >0 && s->signal <=10)
-                {
-                    brush= Qt::yellow;
-                }
-                else if(s->signal > 10 && s->signal <=30)
-                {
-                    brush = Qt::green;
-                }
-                else if(s->signal > 30)
-                {
-                    brush = Qt::red;
-                }
+                int alpha = 254;
+                QColor colour = Util::getScaleColor(s->signal, alpha);
+                QBrush brush(colour);
+
                 QPen pen(brush, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
                 QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(signal_line,pen);
                 _signal_lines.push_back(line1);
