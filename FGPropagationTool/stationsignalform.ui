@@ -374,7 +374,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="resources.qrc">:/icons/images/s-meter-scale2.png</pixmap>
+    <pixmap resource="resources.qrc">:/icons/images/s-meter-scale3.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>false</bool>

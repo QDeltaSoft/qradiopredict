@@ -27,6 +27,7 @@
         <file>document-edit.png</file>
         <file>view-statistics.png</file>
         <file>office-chart-pie.png</file>
+        <file>s-meter-scale3.png</file>
     </qresource>
     <qresource prefix="/aprs">
         <file>aprs_icons/slice_0_0.png</file>

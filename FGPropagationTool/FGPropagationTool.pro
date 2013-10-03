@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     radio/antenna.cxx \
     radio/radiosystem.cxx \
     radio/itm.cpp \
-    radio/scenerymanager.cpp
+    radio/scenerymanager.cpp \
+    plotpolygon.cpp
 
 HEADERS  += MainWindow.h \
     WeatherImageObject.h \
@@ -90,7 +91,8 @@ HEADERS  += MainWindow.h \
     sg/sg_inlines.h \
     radio/antenna.hxx \
     radio/radiosystem.hxx \
-    radio/scenerymanager.h
+    radio/scenerymanager.h \
+    plotpolygon.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \

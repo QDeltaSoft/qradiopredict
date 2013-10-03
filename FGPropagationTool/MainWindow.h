@@ -12,6 +12,7 @@
 #include "groundstation.h"
 #include "flightplanpoints.h"
 #include "flightgearprefs.h"
+#include "plotpolygon.h"
 #include "util.h"
 #include "fgremote.h"
 #include "updater.h"
@@ -140,7 +141,7 @@ private:
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
     QPointF _last_plot_point;
-    QMap<QGraphicsPolygonItem*, QPointF> _plot_points;
+    QMap<QGraphicsPolygonItem*, PlotPolygon*> _plot_points;
     int _plot_opacity;
     QPixmap *_plot_pixmap;
     QGraphicsPixmapItem *_painted_pix;

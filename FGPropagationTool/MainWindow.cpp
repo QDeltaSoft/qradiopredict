@@ -592,14 +592,25 @@ void MainWindow::setMapItems(quint8 zoom)
     }
 
     {
-        QMapIterator<QGraphicsPolygonItem *, QPointF> i(_plot_points);
+        QMapIterator<QGraphicsPolygonItem *, PlotPolygon*> i(_plot_points);
         while (i.hasNext()) {
             i.next();
-            QPointF pos = i.value();
-            QPointF xypos = Util::convertToXY(pos, zoom);
+            PlotPolygon *pp = i.value();
+            QPointF rt = Util::convertToXY(pp->_rt, zoom);
+            QPointF rb = Util::convertToXY(pp->_rb, zoom);
+            QPointF lt = Util::convertToXY(pp->_lt, zoom);
+            QPointF lb = Util::convertToXY(pp->_lb, zoom);
             QGraphicsPolygonItem * signal_point = i.key();
-            signal_point->setPos(xypos);
-
+            QPen pen = pp->_pen;
+            QBrush brush = pp->_brush;
+            _view->_childView->scene()->removeItem(signal_point);
+            delete signal_point;
+            _plot_points.remove(signal_point);
+            //signal_point->setPos(xypos);
+            QPolygonF poly;
+            poly << lb << lt << rt << rb;
+            QGraphicsPolygonItem *s_point = _view->_childView->scene()->addPolygon(poly,pen,brush);
+            _plot_points.insert(s_point, pp);
         }
     }
 
@@ -1316,9 +1327,12 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
 
 void MainWindow::plotCoverage(GroundStation *g)
 {
-    QMapIterator<QGraphicsPolygonItem *, QPointF> i(_plot_points);
+    QMapIterator<QGraphicsPolygonItem *, PlotPolygon*> i(_plot_points);
     while (i.hasNext()) {
+        i.next();
+        _view->_childView->scene()->removeItem(i.key());
         delete i.key();
+        delete i.value();
     }
     _plot_points.clear();
     QThread *t= new QThread;
@@ -1380,7 +1394,16 @@ void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, doub
 
 
         QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen,brush);
-        //_plot_points.insert(polygon,plot_pos);
+        //polygon->setZValue(1000);
+        PlotPolygon *pp = new PlotPolygon;
+        pp->_lb = plot_pos;
+        pp->_rt = plot_pos1;
+        pp->_rb = plot_pos2;
+        pp->_lt = plot_pos3;
+        pp->_brush = brush;
+        pp->_pen = pen;
+
+        _plot_points.insert(polygon,pp);
         _last_plot_point = xy_plot_pos;
 
     }
