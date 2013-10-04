@@ -35,6 +35,8 @@
 #include "ui_toolbox.h"
 #include "connectionsuccessdialog.h"
 #include "ui_connectionsuccessdialog.h"
+#include "savedialog.h"
+#include "loaddialog.h"
 
 #include "Position.h"
 #include "guts/Conversions.h"
@@ -110,8 +112,10 @@ private slots:
     void showRawAPRSMessages();
     void changeAPRSTimeFilter(int hours);
     void changePlotOpacity(int opacity);
-    void savePlot();
-    void loadPlot();
+    void savePlot(QString filename);
+    void loadPlot(QString filename);
+    void openSavePlotDialog();
+    void openLoadPlotDialog();
 
 
 

@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionSend_to_Flightgear,SIGNAL(triggered()),this,SLOT(sendFlightgearData()));
     QObject::connect(ui->action_Settings,SIGNAL(triggered()),this,SLOT(showSettingsDialog()));
     QObject::connect(ui->actionConnect_APRS,SIGNAL(triggered()),this,SLOT(connectToAPRS()));
-    QObject::connect(ui->actionSave_plot,SIGNAL(triggered()),this,SLOT(savePlot()));
-    QObject::connect(ui->actionLoad_plot,SIGNAL(triggered()),this,SLOT(loadPlot()));
+    QObject::connect(ui->actionSave_plot,SIGNAL(triggered()),this,SLOT(openSavePlotDialog()));
+    QObject::connect(ui->actionLoad_plot,SIGNAL(triggered()),this,SLOT(openLoadPlotDialog()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
     QObject::connect(this->_telnet,SIGNAL(connectionFailure()),this,SLOT(connectionFailure()));
 
@@ -1320,11 +1320,13 @@ void MainWindow::plotCoverage(GroundStation *g)
         delete i.value();
     }
     _plot_points.clear();
+
     for(int k=0;k<_plotvalues->size();++k)
     {
         delete _plotvalues->at(k);
     }
     _plotvalues->clear();
+    _plotvalues->resize(0);
     QThread *t= new QThread;
     FGRadio *radiosystem = new FGRadio(_db);
     QPointF plot_pos(g->longitude,g->latitude);
@@ -1429,11 +1431,26 @@ void MainWindow::plottingFinished()
     _tb->ui->progressBar->setVisible(false);
 }
 
-void MainWindow::savePlot()
+
+void MainWindow::openSavePlotDialog()
+{
+    SaveDialog *dialog = new SaveDialog;
+    QObject::connect(dialog,SIGNAL(filenameSave(QString)),this, SLOT(savePlot(QString)));
+    dialog->show();
+}
+
+void MainWindow::openLoadPlotDialog()
+{
+    LoadDialog *dialog = new LoadDialog;
+    QObject::connect(dialog,SIGNAL(filenameLoad(QString)),this, SLOT(loadPlot(QString)));
+    dialog->show();
+}
+
+void MainWindow::savePlot(QString filename)
 {
     if(_plotvalues->size() > 0)
     {
-        ofstream file_save("plot.txt");
+        ofstream file_save(filename.toStdString().c_str());
         for(int i=0;i<_plotvalues->size();++i)
         {
             PlotValue *value= _plotvalues->at(i);
@@ -1446,9 +1463,9 @@ void MainWindow::savePlot()
     }
 }
 
-void MainWindow::loadPlot()
+void MainWindow::loadPlot(QString filename)
 {
-    ifstream file_load("plot.txt");
+    ifstream file_load(filename.toStdString().c_str());
     double lon, lat, signal, distance;
     while(!file_load.eof())
     {
