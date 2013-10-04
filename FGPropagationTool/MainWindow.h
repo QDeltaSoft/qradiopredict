@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+
 #include "fgtelnet.h"
 #include "aprs.h"
 #include "aprsstation.h"
@@ -13,6 +13,7 @@
 #include "flightplanpoints.h"
 #include "flightgearprefs.h"
 #include "plotpolygon.h"
+#include "plotvalue.h"
 #include "util.h"
 #include "fgremote.h"
 #include "updater.h"
@@ -30,12 +31,29 @@
 #include "ui_flightplanform.h"
 #include "rawmessagesform.h"
 #include "ui_rawmessagesform.h"
-#include <vector>
-#include <math.h>
+#include "toolbox.h"
+#include "ui_toolbox.h"
+#include "connectionsuccessdialog.h"
+#include "ui_connectionsuccessdialog.h"
+
+#include "Position.h"
+#include "guts/Conversions.h"
 #include "MapGraphicsView.h"
+#include "MapGraphicsScene.h"
+#include "tileSources/GridTileSource.h"
+#include "tileSources/OSMTileSource.h"
+#include "tileSources/CompositeTileSource.h"
+#include "guts/CompositeTileSourceConfigurationWidget.h"
+#include "CircleObject.h"
+#include "PolygonObject.h"
+#include "WeatherManager.h"
 
 #include "radio/radiosystem.hxx"
 
+#include <vector>
+#include <math.h>
+
+#include <QMainWindow>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QMap>
@@ -50,6 +68,11 @@
 #include <QMenu>
 #include <QAction>
 #include <QMessageBox>
+#include <QSharedPointer>
+#include <QtDebug>
+#include <QImage>
+#include <QGraphicsRectItem>
+
 
 namespace Ui {
 class MainWindow;
@@ -87,6 +110,8 @@ private slots:
     void showRawAPRSMessages();
     void changeAPRSTimeFilter(int hours);
     void changePlotOpacity(int opacity);
+    void savePlot();
+    void loadPlot();
 
 
 
@@ -114,7 +139,8 @@ public slots:
     void sequenceWaypoint();
     void plotCoverage(GroundStation * g);
     void drawPlot(double lon, double lat, double lon1, double lat1, double distance, double signal);
-    void paintPlotPicture();
+    void plottingFinished();
+    void setPlotProgressBar(int ticks);
 
 
 private:
@@ -145,6 +171,9 @@ private:
     int _plot_opacity;
     QPixmap *_plot_pixmap;
     QGraphicsPixmapItem *_painted_pix;
+    double _plot_progress_bar;
+    double _plot_progress_bar_value;
+    QVector<PlotValue*> *_plotvalues;
 
     Updater * _updater;
     FGRadio *_radio_subsystem;

@@ -73,6 +73,7 @@ public slots:
 
 signals:
     void finished();
+    void nrOfPos(int nr);
     void haveSignalReading(double longitude,double latitude,unsigned id, QString name, double freq, Signal *s);
     void haveMobilePosition(double lon, double lat);
     void havePlotPoint(double lon, double lat, double lon1, double lat1, double distance, double signal);

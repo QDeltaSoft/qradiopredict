@@ -1,30 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-#include "toolbox.h"
-#include "ui_toolbox.h"
-#include "connectionsuccessdialog.h"
-#include "ui_connectionsuccessdialog.h"
 
-#include "Position.h"
-#include "guts/Conversions.h"
-
-
-#include "MapGraphicsView.h"
-#include "MapGraphicsScene.h"
-#include "tileSources/GridTileSource.h"
-#include "tileSources/OSMTileSource.h"
-#include "tileSources/CompositeTileSource.h"
-#include "guts/CompositeTileSourceConfigurationWidget.h"
-#include "CircleObject.h"
-#include "PolygonObject.h"
-#include "WeatherManager.h"
-
-#include <QSharedPointer>
-#include <QtDebug>
-#include <QThread>
-#include <QImage>
-#include <QGraphicsRectItem>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -43,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _last_plot_point.setX(0);
     _last_plot_point.setY(0);
     _plot_pixmap = new QPixmap(1000,1000);
+    _plotvalues = new QVector<PlotValue*>;
 
 
     //!!!!!!!! connections must always come after setupUi!!!
@@ -51,17 +29,22 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionSend_to_Flightgear,SIGNAL(triggered()),this,SLOT(sendFlightgearData()));
     QObject::connect(ui->action_Settings,SIGNAL(triggered()),this,SLOT(showSettingsDialog()));
     QObject::connect(ui->actionConnect_APRS,SIGNAL(triggered()),this,SLOT(connectToAPRS()));
+    QObject::connect(ui->actionSave_plot,SIGNAL(triggered()),this,SLOT(savePlot()));
+    QObject::connect(ui->actionLoad_plot,SIGNAL(triggered()),this,SLOT(loadPlot()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
     QObject::connect(this->_telnet,SIGNAL(connectionFailure()),this,SLOT(connectionFailure()));
 
-    //Setup the MapGraphics scene and view
+
     MapGraphicsScene * scene = new MapGraphicsScene(this);
     MapGraphicsView * view = new MapGraphicsView(scene,this);
     _view=view;
-    //The view will be our central widget
+    //view->_childView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers | QGL::DirectRendering)));
+    //view->_childView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    //view->_childView->update();
+
     this->setCentralWidget(view);
 
-    //Setup some tile sources
+
     QSharedPointer<OSMTileSource> osmTiles(new OSMTileSource(OSMTileSource::OSMTiles), &QObject::deleteLater);
     QSharedPointer<OSMTileSource> aerialTiles(new OSMTileSource(OSMTileSource::MapQuestAerialTiles), &QObject::deleteLater);
     QSharedPointer<GridTileSource> gridTiles(new GridTileSource(), &QObject::deleteLater);
@@ -71,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     composite->addSourceTop(gridTiles);
     view->setTileSource(composite);
 
-    //Create a widget in the dock that lets us configure tile source layers
+
     CompositeTileSourceConfigurationWidget * tileConfigWidget = new CompositeTileSourceConfigurationWidget(composite.toWeakRef(),
                                                                                          this->ui->dockWidget);
     this->ui->dockWidget->setWidget(tileConfigWidget);
@@ -125,6 +108,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _tb->ui->sendToFlightgearButton->setVisible(true);
     _tb->ui->startUpdateButton->setVisible(true);
     _tb->ui->stopUpdateButton->setVisible(true);
+
+    _tb->ui->progressBar->setVisible(false);
 
     //this->createActions();
     //this->createTrayIcon();
@@ -1335,6 +1320,11 @@ void MainWindow::plotCoverage(GroundStation *g)
         delete i.value();
     }
     _plot_points.clear();
+    for(int k=0;k<_plotvalues->size();++k)
+    {
+        delete _plotvalues->at(k);
+    }
+    _plotvalues->clear();
     QThread *t= new QThread;
     FGRadio *radiosystem = new FGRadio(_db);
     QPointF plot_pos(g->longitude,g->latitude);
@@ -1346,15 +1336,24 @@ void MainWindow::plotCoverage(GroundStation *g)
     radiosystem->moveToThread(t);
     connect(radiosystem, SIGNAL(havePlotPoint(double,double,double, double, double, double)),
             this, SLOT(drawPlot(double,double,double, double, double, double)));
-
+    connect(radiosystem, SIGNAL(nrOfPos(int)), this, SLOT(setPlotProgressBar(int)));
     connect(t, SIGNAL(started()), radiosystem, SLOT(plot()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
-    //connect(radiosystem, SIGNAL(finished()), this, SLOT(paintPlotPicture()));
+    connect(radiosystem, SIGNAL(finished()), this, SLOT(plottingFinished()));
     connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
     _radio_subsystem = radiosystem;
     t->start();
 
+}
+
+void MainWindow::setPlotProgressBar(int ticks)
+{
+    _tb->ui->progressBar->setVisible(true);
+    _tb->ui->progressBar->setValue(3);
+
+    _plot_progress_bar = 97/(double)ticks;
+    _plot_progress_bar_value = 3;
 }
 
 void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, double distance, double signal)
@@ -1405,6 +1404,15 @@ void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, doub
 
         _plot_points.insert(polygon,pp);
         _last_plot_point = xy_plot_pos;
+        _plot_progress_bar_value += _plot_progress_bar;
+
+        _tb->ui->progressBar->setValue(_plot_progress_bar_value);
+        PlotValue *values = new PlotValue;
+        values->longitude = lon;
+        values->latitude = lat;
+        values->signal = signal;
+        values->distance = distance;
+        _plotvalues->append(values);
 
     }
 
@@ -1415,7 +1423,37 @@ void MainWindow::changePlotOpacity(int opacity)
     _plot_opacity = opacity;
 }
 
-void MainWindow::paintPlotPicture()
+void MainWindow::plottingFinished()
 {
-    _painted_pix->setPixmap(*_plot_pixmap);
+    //_painted_pix->setPixmap(*_plot_pixmap);
+    _tb->ui->progressBar->setVisible(false);
+}
+
+void MainWindow::savePlot()
+{
+    if(_plotvalues->size() > 0)
+    {
+        ofstream file_save("plot.txt");
+        for(int i=0;i<_plotvalues->size();++i)
+        {
+            PlotValue *value= _plotvalues->at(i);
+            double lon = value->longitude;
+            double lat = value->latitude;
+            double signal = value->signal;
+            double distance = value->distance;
+            file_save << lon << " " << lat << " " << signal << " " << distance << "\n";
+        }
+    }
+}
+
+void MainWindow::loadPlot()
+{
+    ifstream file_load("plot.txt");
+    double lon, lat, signal, distance;
+    while(!file_load.eof())
+    {
+        file_load >> lon >> lat >> signal >> distance;
+        drawPlot(lon,lat,0.0,0.0,distance,signal);
+    }
+
 }

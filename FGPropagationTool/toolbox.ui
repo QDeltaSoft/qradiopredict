@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>150</width>
-    <height>70</height>
+    <height>80</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -486,6 +486,19 @@
     </property>
     <property name="text">
      <string>Opacity</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>118</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
     </property>
    </widget>
   </widget>
