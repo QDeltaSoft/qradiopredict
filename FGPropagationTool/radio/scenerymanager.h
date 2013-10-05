@@ -17,7 +17,10 @@ class SceneryManager
 {
 public:
     SceneryManager(DatabaseApi *db, FlightgearPrefs *settings);
+    ~SceneryManager();
     bool get_elevation_m(const SGGeod &probe, double &elevation_m, string &material);
+    void preloadTiles(double lon, double lat);
+    void unloadTiles();
 
 private:
     SRTMReader *_srtmreader;

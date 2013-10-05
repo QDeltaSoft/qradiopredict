@@ -23,6 +23,6 @@ void SaveDialog::getFilename()
 
 void SaveDialog::openFileDialog()
 {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Open File"),"",tr("Files (*.*)"));
+    QString filename = QFileDialog::getSaveFileName(this, tr("Open File"),"",tr("Files (*.*)"));
     ui->filenameEdit->setText(filename);
 }

@@ -152,7 +152,7 @@
       <item row="9" column="0">
        <widget class="QLabel" name="txAntennaGainLabel">
         <property name="text">
-         <string>Tx antenna gain</string>
+         <string>Tx antenna gain(dBi)</string>
         </property>
        </widget>
       </item>
@@ -202,7 +202,7 @@
       <item row="14" column="0">
        <widget class="QLabel" name="rxAntennaGainLabel">
         <property name="text">
-         <string>Rx antenna gain</string>
+         <string>Rx antenna gain(dBi)</string>
         </property>
        </widget>
       </item>

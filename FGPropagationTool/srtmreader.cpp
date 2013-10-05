@@ -16,6 +16,72 @@ SRTMReader::SRTMReader(DatabaseApi *db)
     _latitude_secs = 0;
     _longitude_secs = 0;
     _last_filename = "";
+    _tiles = new QMap<QString, char*>;
+}
+
+SRTMReader::~SRTMReader()
+{
+    delete _tiles;
+}
+
+void SRTMReader::loadTiles(double lon, double lat)
+{
+
+    int lat_deg = (int) floor(fabs(lat));
+    int lon_deg = (int) floor(fabs(lon));
+    int min_lat = lat_deg-3;
+    int max_lat = lat_deg+3;
+    int min_lon = lon_deg-3;
+    int max_lon = lon_deg+3;
+
+    for(int i=min_lat;i<=max_lat;i++)
+    {
+        for(int j=min_lon;j<=max_lon;j++)
+        {
+            QString srtm_dir = _settings->_srtm_path;
+            srtm_dir.append(QDir::separator());
+            QString filename;
+            if(i >=0) filename.append("N");
+            else filename.append("S");
+            QString lat = QString::number(i);
+            if (lat.length() < 2) filename.append("0");
+            filename.append(QString::number(i));
+            if(j >=0) filename.append("E");
+            else filename.append("W");
+            QString lon = QString::number(j);
+            if (lon.length() < 3) filename.append("0");
+            if (lon.length() < 2) filename.append("0");
+            filename.append(lon);
+            filename.append(".hgt");
+            srtm_dir.append(filename);
+            char *buffer = new char[2884802];
+            ifstream file;
+            file.open (srtm_dir.toStdString().c_str(), ifstream::binary);
+            if(file.is_open())
+            {
+                file.read(buffer,2884802);
+                qDebug() << "read into memory: " << filename;
+            }
+            else
+            {
+                qDebug() << "SRTM path: " << srtm_dir << " unable to open";
+                continue;
+            }
+
+            _tiles->insert(filename,buffer);
+        }
+    }
+}
+
+void SRTMReader::unloadTiles()
+{
+    QMapIterator<QString, char*> it(*_tiles);
+    while(it.hasNext())
+    {
+        it.next();
+        delete[] it.value();
+    }
+    _tiles->clear();
 }
 
 void SRTMReader::setCoordinates(double lat, double lon)
@@ -24,8 +90,32 @@ void SRTMReader::setCoordinates(double lat, double lon)
     _longitude = lon;
 }
 
-
+// would be memory storage read
 double SRTMReader::readHeight()
+{
+    QString filename = this->getFilename();
+    unsigned temp_row  = (unsigned) round(_latitude_secs *3600/3);
+    unsigned temp_column = (unsigned) round(_longitude_secs *3600/3);
+    unsigned row = 1201 - temp_row - 1;
+    // SRTM 3 is 1201x1201, 2 bytes per sample, we have to read from lower left
+    unsigned pos = (row * 1201 + (temp_column - 1)) * 2;
+    char *buffer = _tiles->value(filename);
+    union {
+        unsigned char height_buf[2];
+        short height;
+    } conv;
+
+    conv.height_buf[0]=buffer[pos+1];
+    conv.height_buf[1]=buffer[pos];
+
+    if (conv.height != -32768)
+        return (double) conv.height;
+    else
+        return 0.0;
+}
+
+// classic method, works well but is slow
+double SRTMReader::readHeight2()
 {
     QString filename = this->getFilename();
     QString srtm_dir = _settings->_srtm_path;

@@ -11,7 +11,7 @@
 #include <QVector>
 
 /**
- * @brief Object which updates the radio result in a separate thread
+ * @brief Thread object which polls the radio result in a separate thread
  */
 class Updater : public QObject
 {

@@ -90,6 +90,7 @@ FGRadio::~FGRadio()
     delete _scenery;
     delete _mobile;
     delete _settings;
+    delete _plot_transmissions;
 }
 
 void FGRadio::moveMobile()
@@ -164,7 +165,8 @@ void FGRadio::plot()
     if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
         return;
     }
-
+    // This would pre-load all tiles around the station on 3+ distance
+    _scenery->preloadTiles(lon,lat);
     SGGeod center = SGGeod::fromDegM(station->longitude, station->latitude, station->elevation_feet * SG_FEET_TO_METER);
     QVector<SGGeod*> *positions = Util::drawDisk(center,_settings->_plot_range*1000,1,_terrain_sampling_distance);
     emit nrOfPos(positions->size());
@@ -304,6 +306,8 @@ void FGRadio::plot()
     positions->clear();
     delete positions;
 
+
+
     //phase #2
     while(_plot_transmissions->size() > 0)
     {
@@ -377,6 +381,9 @@ void FGRadio::plot()
         delete _plot_transmissions->at(i);
     }
     _plot_transmissions->clear();
+    // Here we should unload tiles from memory
+    _scenery->unloadTiles();
+    emit finished();
 
 }
 

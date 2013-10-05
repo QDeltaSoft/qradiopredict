@@ -8,6 +8,22 @@ SceneryManager::SceneryManager(DatabaseApi *db, FlightgearPrefs *settings)
     _settings = settings;
 }
 
+SceneryManager::~SceneryManager()
+{
+    delete _srtmreader;
+    delete _shpreader;
+}
+
+void SceneryManager::preloadTiles(double lon, double lat)
+{
+    _srtmreader->loadTiles(lon,lat);
+}
+
+void SceneryManager::unloadTiles()
+{
+    _srtmreader->unloadTiles();
+}
+
 bool SceneryManager::get_elevation_m(const SGGeod &probe, double &elevation_m, string &material)
 {
 

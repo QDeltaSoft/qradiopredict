@@ -13,6 +13,7 @@
 
 /**
  * @brief Sqlite database access class
+ *      All database storage is processed here
  */
 class DatabaseApi
 {

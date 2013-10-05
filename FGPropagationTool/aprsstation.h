@@ -3,6 +3,9 @@
 
 #include <QString>
 
+/**
+ * @brief Object holding the properties of an APRS station
+ */
 class AprsStation
 {
 public:

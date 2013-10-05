@@ -3,6 +3,9 @@
 
 #include <QString>
 
+/**
+ * @brief Object holding Application preferences as retrieved from the database
+ */
 class FlightgearPrefs
 {
 public:

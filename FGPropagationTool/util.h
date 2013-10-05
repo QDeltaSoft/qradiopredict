@@ -13,6 +13,9 @@
 #include "mobilestation.h"
 #include "sg/sg_geodesy.hxx"
 
+/**
+ * @brief Static utility functions, used everywhere
+ */
 class Util
 {
 public:

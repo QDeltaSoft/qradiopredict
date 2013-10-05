@@ -13,6 +13,7 @@
  * @brief A simple shapefile reader class
  *          It will open a shapefile and
  *          search within it's layer the point
+ *          The shapefile needs to be 1 degree wide
  */
 class ShpReader
 {

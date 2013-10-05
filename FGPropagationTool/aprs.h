@@ -12,6 +12,14 @@
 #include <QTime>
 #include <QDateTime>
 
+/**
+ * @brief APRS connection interface
+ *      We are using the standard APRS network protocol
+ *      All communication takes place with the tier two servers,
+ *      on port 14580
+ *      Raw data is parsed and sent to be displayed on the map
+ */
+
 class Aprs : public QObject
 {
     Q_OBJECT

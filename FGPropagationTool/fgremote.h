@@ -14,6 +14,7 @@
 
 /**
  * @brief Accessory functions which set up the Flightgear environment
+ *      through the network interface.
  */
 class FGRemote : public QObject
 {
