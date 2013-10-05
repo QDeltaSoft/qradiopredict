@@ -12,8 +12,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    WeatherImageObject.cpp \
-    WeatherManager.cpp \
     databaseapi.cpp \
     fgtelnet.cpp \
     toolbox.cpp \
@@ -49,8 +47,6 @@ SOURCES += main.cpp\
     loaddialog.cpp
 
 HEADERS  += MainWindow.h \
-    WeatherImageObject.h \
-    WeatherManager.h \
     databaseapi.h \
     fgtelnet.h \
     toolbox.h \

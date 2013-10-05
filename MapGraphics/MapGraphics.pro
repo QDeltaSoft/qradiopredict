@@ -32,6 +32,8 @@ SOURCES += MapGraphicsScene.cpp \
     guts/PrivateQGraphicsInfoSource.cpp \
     PolygonObject.cpp \
     Position.cpp \
+    WeatherImageObject.cpp \
+    WeatherManager.cpp \
     LineObject.cpp
 
 HEADERS += MapGraphicsScene.h\
@@ -55,6 +57,8 @@ HEADERS += MapGraphicsScene.h\
     guts/PrivateQGraphicsInfoSource.h \
     PolygonObject.h \
     Position.h \
+    WeatherImageObject.h \
+    WeatherManager.h \
     LineObject.h
 
 symbian {

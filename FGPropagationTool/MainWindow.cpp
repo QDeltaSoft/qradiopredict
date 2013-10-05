@@ -128,10 +128,10 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setZoomLevel(4);
     view->centerOn(24.658752, 46.255456);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
-    /* THis shows some pretty radar images, we are not using
+    /* This shows some pretty radar images, we are not using */
     WeatherManager * weatherMan = new WeatherManager(scene, this);
     Q_UNUSED(weatherMan)
-    */
+
 }
 
 MainWindow::~MainWindow()
