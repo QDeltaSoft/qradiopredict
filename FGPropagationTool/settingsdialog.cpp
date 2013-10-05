@@ -66,13 +66,25 @@ void SettingsDialog::saveData()
     {
         p->_use_antenna_pattern =1;
     }
+    else
+    {
+        p->_use_antenna_pattern =0;
+    }
     if(this->ui->clutterCheckBox->isChecked())
     {
         p->_use_clutter =1;
     }
+    else
+    {
+        p->_use_clutter =0;
+    }
     if(this->ui->ITMCheckBox->isChecked())
     {
         p->_itm_radio_performance =1;
+    }
+    else
+    {
+        p->_itm_radio_performance =0;
     }
     p->_windowX = this->ui->windowXEdit->text().toInt();
     p->_windowY = this->ui->windowYEdit->text().toInt();

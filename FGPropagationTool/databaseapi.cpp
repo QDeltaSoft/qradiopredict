@@ -193,7 +193,7 @@ DatabaseApi::select_prefs()
     int srtm_path_idx = query.record().indexOf("srtm_path");
     int shapefile_path_idx = query.record().indexOf("shapefile_path");
     int use_clutter_idx = query.record().indexOf("use_clutter");
-    int itm_perfomance_idx = query.record().indexOf("itm_performance_mode");
+    int itm_performance_idx = query.record().indexOf("itm_performance_mode");
     int use_antenna_pattern_idx = query.record().indexOf("use_antenna_pattern");
     int windowX_idx = query.record().indexOf("windowX");
     int windowY_idx = query.record().indexOf("windowY");
@@ -211,7 +211,7 @@ DatabaseApi::select_prefs()
         p->_srtm_path = query.value(srtm_path_idx).toString();
         p->_shapefile_path = query.value(shapefile_path_idx).toString();
         p->_use_clutter = query.value(use_clutter_idx).toInt();
-        p->_itm_radio_performance = query.value(itm_perfomance_idx).toInt();
+        p->_itm_radio_performance = query.value(itm_performance_idx).toInt();
         p->_use_antenna_pattern = query.value(use_antenna_pattern_idx).toInt();
         p->_windowX = query.value(windowX_idx).toInt();
         p->_windowY = query.value(windowY_idx).toInt();
