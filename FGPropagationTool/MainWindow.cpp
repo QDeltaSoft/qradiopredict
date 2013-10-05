@@ -816,6 +816,7 @@ void MainWindow::showEditBoxes()
             dw->setMaximumWidth(260);
             dw->setWidget(gs_form);
             this->addDockWidget(Qt::LeftDockWidgetArea,dw);
+            this->setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::North);
             _docks.push_back(dw);
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(gs_form,SIGNAL(haveData(GroundStation*)),this,SLOT(saveGroundStation(GroundStation *)));
@@ -862,6 +863,7 @@ void MainWindow::showEditBoxes()
             dw->setMaximumWidth(260);
             dw->setWidget(fp_form);
             this->addDockWidget(Qt::LeftDockWidgetArea,dw);
+            this->setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::North);
             _docks.push_back(dw);
             //fp_form->show();
             delete fp;
