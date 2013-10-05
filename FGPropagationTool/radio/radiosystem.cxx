@@ -324,6 +324,7 @@ void FGRadio::plot()
             }
             transmission->plot_elevations->clear();
             transmission->plot_materials->clear();
+
             delete transmission->plot_elevations;
             delete transmission->plot_materials;
             delete transmission;
@@ -771,16 +772,18 @@ void FGRadio::processSignal(Transmission* transmission) {
         double signal = transmission->radiosignal->signal;
         emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),pos_d.getLongitudeDeg(),pos_d.getLatitudeDeg(), transmission->probe_distance, signal);
         transmission->plot_elevations->clear();
-        /*
+        delete transmission->radiosignal;
 
+        /*
         for(int i=0;i<transmission->plot_materials->size();++i)
         {
             delete transmission->plot_materials->at(i);
         }
+        */
         transmission->plot_materials->clear();
         delete transmission->plot_elevations;
         delete transmission->plot_materials;
-        */
+
     }
     else
     {
