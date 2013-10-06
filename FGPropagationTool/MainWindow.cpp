@@ -1,3 +1,19 @@
+// Written by Adrian Musceac YO8RZZ, started August 2013.
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -117,22 +133,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _painted_pix = _view->_childView->scene()->addPixmap(*_plot_pixmap);
     _painted_pix->setOpacity(0.0);
-    /*\ This needs to go
-    QPolygonF polygon;
-    polygon << QPointF(10.4, 20.5) << QPointF(20.2, 30.2) << QPointF(24.2, 45.2);
-    PolygonObject * obj = new PolygonObject(polygon, QColor(20,200,20,200));
 
-    scene->addObject(obj);
-    */
 
     this->restoreMapState();
     view->setZoomLevel(4);
     view->centerOn(24.658752, 46.255456);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
-    /* This shows some pretty radar images, we are not using
-    WeatherManager * weatherMan = new WeatherManager(scene, this);
-    Q_UNUSED(weatherMan)
-    */
+
 }
 
 MainWindow::~MainWindow()
@@ -151,7 +158,7 @@ MainWindow::~MainWindow()
     */
 }
 
-//private slot
+
 void MainWindow::on_actionExit_triggered()
 {
     this->close();
@@ -182,8 +189,8 @@ void MainWindow::createTrayIcon()
     _trayIcon->setIcon(icon);
     //setWindowIcon(icon);
     connect(_trayIcon,SIGNAL(messageClicked()),this,SLOT(raise()));
-
-    _trayIcon->setToolTip("Click me");
+    // workaround against KDE tray icon bug
+    _trayIcon->setToolTip("Close");
     _trayIcon->setVisible(true);
     _trayIcon->show();
 
