@@ -1435,6 +1435,12 @@ void MainWindow::drawPlot(double lon, double lat,
         PlotValue *values = new PlotValue;
         values->longitude = lon;
         values->latitude = lat;
+        values->longitude1 = lon1;
+        values->latitude1 = lat1;
+        values->longitude2 = lon2;
+        values->latitude2 = lat2;
+        values->longitude3 = lon3;
+        values->latitude3 = lat3;
         values->signal = signal;
         values->distance = distance;
         _plotvalues->append(values);
@@ -1477,11 +1483,11 @@ void MainWindow::savePlot(QString filename)
         for(int i=0;i<_plotvalues->size();++i)
         {
             PlotValue *value= _plotvalues->at(i);
-            double lon = value->longitude;
-            double lat = value->latitude;
-            double signal = value->signal;
-            double distance = value->distance;
-            file_save << lon << " " << lat << " " << signal << " " << distance << "\n";
+            file_save << value->longitude << " " << value->latitude << " "
+                      << value->longitude1 << " " << value->latitude1 << " "
+                      << value->longitude2 << " " << value->latitude2 << " "
+                      << value->longitude3 << " " << value->latitude3 << " "
+                      << value->signal << " " << value->distance << "\n";
         }
     }
 }
@@ -1489,11 +1495,15 @@ void MainWindow::savePlot(QString filename)
 void MainWindow::loadPlot(QString filename)
 {
     ifstream file_load(filename.toStdString().c_str());
-    double lon, lat, signal, distance;
+    double lon, lat, lon1, lat1, lon2, lat2, lon3, lat3, signal, distance;
     while(!file_load.eof())
     {
-        file_load >> lon >> lat >> signal >> distance;
-        drawPlot(lon,lat,0.0,0.0,0.0,0.0,0.0,0.0,distance,signal);
+        file_load >> lon >> lat >>
+                     lon1 >> lat1 >>
+                     lon2 >> lat2 >>
+                     lon3 >> lat3 >>
+                     signal >> distance;
+        drawPlot(lon,lat,lon1,lat1,lon2,lat2,lon3,lat3,distance,signal);
     }
 
 }
