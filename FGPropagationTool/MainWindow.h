@@ -143,7 +143,11 @@ public slots:
     void processRawAPRSData(QString data);
     void sequenceWaypoint();
     void plotCoverage(GroundStation * g);
-    void drawPlot(double lon, double lat, double lon1, double lat1, double distance, double signal);
+    void drawPlot(double lon, double lat,
+                  double lon1, double lat1,
+                  double lon2, double lat2,
+                  double lon3, double lat3,
+                  double distance, double signal);
     void plottingFinished();
     void setPlotProgressBar(int ticks);
 

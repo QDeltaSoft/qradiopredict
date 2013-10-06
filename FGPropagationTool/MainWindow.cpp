@@ -1339,8 +1339,16 @@ void MainWindow::plotCoverage(GroundStation *g)
 
     radiosystem->setPlotStation(g);
     radiosystem->moveToThread(t);
-    connect(radiosystem, SIGNAL(havePlotPoint(double,double,double, double, double, double)),
-            this, SLOT(drawPlot(double,double,double, double, double, double)));
+    connect(radiosystem, SIGNAL(havePlotPoint(double,double,
+                                              double, double,
+                                              double, double,
+                                              double, double,
+                                              double, double)),
+            this, SLOT(drawPlot(double,double,
+                                double, double,
+                                double, double,
+                                double, double,
+                                double, double)));
     connect(radiosystem, SIGNAL(nrOfPos(int)), this, SLOT(setPlotProgressBar(int)));
     connect(t, SIGNAL(started()), radiosystem, SLOT(plot()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
@@ -1361,21 +1369,33 @@ void MainWindow::setPlotProgressBar(int ticks)
     _plot_progress_bar_value = 3;
 }
 
-void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, double distance, double signal)
+void MainWindow::drawPlot(double lon, double lat,
+                          double lon1, double lat1,
+                          double lon2, double lat2,
+                          double lon3, double lat3,
+                          double distance, double signal)
 {
     if(signal >0)
     {
 
         QPointF plot_pos(lon,lat);
+        /*
         QPointF plot_pos1(lon+0.001*sqrt(2)*distance/100*sin(SGD_PI/180),lat+0.001*sqrt(2)*distance/100*sin(SGD_PI/180));
         QPointF plot_pos2(lon+0.001*sqrt(2)*distance/100*sin(SGD_PI/180),lat);
         QPointF plot_pos3(lon,lat+0.001*sqrt(2)*distance/100*sin(SGD_PI/180));
-        QPointF plot_pos_a(lon1,lat1);
+        */
+
+        QPointF plot_pos1(lon1,lat1);
+        QPointF plot_pos2(lon2,lat2);
+        QPointF plot_pos3(lon3,lat3);
+
+
+
         QPointF xy_plot_pos = Util::convertToXY(plot_pos,_view->zoomLevel());
         QPointF xy_plot_pos1 = Util::convertToXY(plot_pos1,_view->zoomLevel());
         QPointF xy_plot_pos2 = Util::convertToXY(plot_pos2,_view->zoomLevel());
         QPointF xy_plot_pos3 = Util::convertToXY(plot_pos3,_view->zoomLevel());
-        QPointF xy_plot_pos_a = Util::convertToXY(plot_pos_a,_view->zoomLevel());
+
         if(_last_plot_point.rx()==0 || _last_plot_point.ry()==0)
         {
             _last_plot_point.setX(xy_plot_pos.rx()+0.001);
@@ -1386,7 +1406,7 @@ void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, doub
         QBrush brush(colour);
         QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QPolygonF poly;
-        poly << xy_plot_pos  << xy_plot_pos3 << xy_plot_pos1 << xy_plot_pos2;
+        poly << xy_plot_pos  << xy_plot_pos3 << xy_plot_pos2 << xy_plot_pos1;
         //poly << xy_plot_pos  << xy_plot_pos_a << _last_plot_point;
 
         /*
@@ -1401,8 +1421,8 @@ void MainWindow::drawPlot(double lon, double lat, double lon1, double lat1, doub
         //polygon->setZValue(1000);
         PlotPolygon *pp = new PlotPolygon;
         pp->_lb = plot_pos;
-        pp->_rt = plot_pos1;
-        pp->_rb = plot_pos2;
+        pp->_rt = plot_pos2;
+        pp->_rb = plot_pos1;
         pp->_lt = plot_pos3;
         pp->_brush = brush;
         pp->_pen = pen;
@@ -1473,7 +1493,7 @@ void MainWindow::loadPlot(QString filename)
     while(!file_load.eof())
     {
         file_load >> lon >> lat >> signal >> distance;
-        drawPlot(lon,lat,0.0,0.0,distance,signal);
+        drawPlot(lon,lat,0.0,0.0,0.0,0.0,0.0,0.0,distance,signal);
     }
 
 }

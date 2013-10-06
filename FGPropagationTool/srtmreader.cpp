@@ -60,7 +60,6 @@ void SRTMReader::loadTiles(double lon, double lat)
             if(file.is_open())
             {
                 file.read(buffer,2884802);
-                qDebug() << "read into memory: " << filename;
             }
             else
             {

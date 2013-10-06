@@ -762,15 +762,23 @@ void FGRadio::processSignal(Transmission* transmission) {
 
     if(transmission->plot)
     {
-        SGGeod pos = transmission->player_pos;
-        SGGeoc pos_c = SGGeoc::fromGeod(transmission->pos);
-        SGGeoc pos_b = SGGeoc::fromGeod(pos);
-        double course = transmission->course-SGD_PI/2;
+        SGGeoc pos_a = SGGeoc::fromGeod(transmission->player_pos);
+        double course = transmission->course+SGD_PI/2;
         double dist = sqrt(2)*transmission->probe_distance*sin(SGD_PI/180);
-        //qDebug() << course << " dist: " << dist;
-        SGGeoc pos_d = pos_b.advanceRadM(course, dist);
+
+        SGGeoc pos_b = pos_a.advanceRadM(transmission->course, 90.0);
+        SGGeoc pos_c = pos_b.advanceRadM(course, dist);
+        SGGeoc pos_d = pos_a.advanceRadM(course, dist);
+        SGGeod pos1 = SGGeod::fromGeoc(pos_b);
+        SGGeod pos2 = SGGeod::fromGeoc(pos_c);
+        SGGeod pos3 = SGGeod::fromGeoc(pos_d);
         double signal = transmission->radiosignal->signal;
-        emit havePlotPoint(pos.getLongitudeDeg(),pos.getLatitudeDeg(),pos_d.getLongitudeDeg(),pos_d.getLatitudeDeg(), transmission->probe_distance, signal);
+
+        emit havePlotPoint(transmission->player_pos.getLongitudeDeg(),transmission->player_pos.getLatitudeDeg(),
+                           pos1.getLongitudeDeg(),pos1.getLatitudeDeg(),
+                           pos2.getLongitudeDeg(),pos2.getLatitudeDeg(),
+                           pos3.getLongitudeDeg(),pos3.getLatitudeDeg(),
+                           transmission->probe_distance, signal);
         transmission->plot_elevations->clear();
         delete transmission->radiosignal;
 
