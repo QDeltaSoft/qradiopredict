@@ -114,6 +114,7 @@ private slots:
     void changePlotOpacity(int opacity);
     void savePlot(QString filename);
     void loadPlot(QString filename);
+    void clearPlot();
     void openSavePlotDialog();
     void openLoadPlotDialog();
 

@@ -100,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->stopStandaloneButton,SIGNAL(clicked()),this,SLOT(stopStandalone()));
 
     QObject::connect(_tb->ui->opacitySlider,SIGNAL(valueChanged(int)),this,SLOT(changePlotOpacity(int)));
+    QObject::connect(_tb->ui->plotClearButton,SIGNAL(clicked()),this,SLOT(clearPlot()));
 
     QObject::connect(_tb->ui->aprsTimeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeAPRSTimeFilter(int)));
 
@@ -1475,4 +1476,23 @@ void MainWindow::loadPlot(QString filename)
         drawPlot(lon,lat,0.0,0.0,distance,signal);
     }
 
+}
+
+void MainWindow::clearPlot()
+{
+    QMapIterator<QGraphicsPolygonItem *, PlotPolygon*> i(_plot_points);
+    while (i.hasNext()) {
+        i.next();
+        _view->_childView->scene()->removeItem(i.key());
+        delete i.key();
+        delete i.value();
+    }
+    _plot_points.clear();
+
+    for(int k=0;k<_plotvalues->size();++k)
+    {
+        delete _plotvalues->at(k);
+    }
+    _plotvalues->clear();
+    _plotvalues->resize(0);
 }
