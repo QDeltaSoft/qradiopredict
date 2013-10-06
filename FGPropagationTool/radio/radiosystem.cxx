@@ -764,7 +764,7 @@ void FGRadio::processSignal(Transmission* transmission) {
     {
         SGGeoc pos_a = SGGeoc::fromGeod(transmission->player_pos);
         double course = transmission->course+SGD_PI/2;
-        double dist = sqrt(2)*transmission->probe_distance*sin(SGD_PI/180);
+        double dist = transmission->probe_distance*sin(SGD_PI/180);
 
         SGGeoc pos_b = pos_a.advanceRadM(transmission->course, 90.0);
         SGGeoc pos_c = pos_b.advanceRadM(course, dist);
