@@ -117,6 +117,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->plotClearButton,SIGNAL(clicked()),this,SLOT(clearPlot()));
 
     QObject::connect(_tb->ui->aprsTimeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeAPRSTimeFilter(int)));
+    QObject::connect(_tb->ui->groupBoxAPRS,SIGNAL(toggled(bool)),this,SLOT(activateAPRS(bool)));
 
     _tb->ui->startFlightgearButton->setVisible(true);
     _tb->ui->connectTelnetButton->setVisible(true);
@@ -234,6 +235,18 @@ void MainWindow::connectToAPRS()
     QObject::connect(ui->actionRaw_APRS_messages,SIGNAL(triggered()),this,SLOT(showRawAPRSMessages()));
     delete p;
     prefs.clear();
+}
+
+void MainWindow::activateAPRS(bool active)
+{
+    if(!active)
+    {
+        changeAPRSTimeFilter(0);
+    }
+    else
+    {
+        changeAPRSTimeFilter(3600);
+    }
 }
 
 void MainWindow::showRawAPRSMessages()

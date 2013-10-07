@@ -45,6 +45,7 @@ void SRTMReader::loadTiles(double lon, double lat)
 
     int lat_deg = (int) floor(fabs(lat));
     int lon_deg = (int) floor(fabs(lon));
+    // need to tie this into plot distance, to spare memory and avoid potential issues
     int min_lat = lat_deg-3;
     int max_lat = lat_deg+3;
     int min_lon = lon_deg-3;
