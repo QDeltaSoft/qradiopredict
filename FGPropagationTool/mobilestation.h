@@ -25,7 +25,7 @@
 class MobileStation
 {
 public:
-    unsigned id;
+    int id;
     unsigned id_session;
     QString name;
     double longitude;

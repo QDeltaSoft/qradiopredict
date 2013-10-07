@@ -2,6 +2,7 @@
 #define STATIONSIGNALFORM_H
 
 #include <QWidget>
+#include <QObject>
 
 namespace Ui {
 class StationSignalForm;

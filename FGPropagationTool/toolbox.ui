@@ -41,7 +41,7 @@
     </sizepolicy>
    </property>
    <property name="text">
-    <string> </string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_lat">
@@ -60,7 +60,7 @@
     </sizepolicy>
    </property>
    <property name="text">
-    <string> </string>
+    <string/>
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox">
@@ -426,7 +426,7 @@
     <rect>
      <x>700</x>
      <y>10</y>
-     <width>181</width>
+     <width>211</width>
      <height>71</height>
     </rect>
    </property>
@@ -441,7 +441,7 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>121</width>
+      <width>141</width>
       <height>16</height>
      </rect>
     </property>
@@ -497,7 +497,7 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>90</x>
       <y>50</y>
       <width>118</width>
       <height>20</height>
@@ -510,7 +510,7 @@
    <widget class="QPushButton" name="plotClearButton">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>170</x>
       <y>20</y>
       <width>31</width>
       <height>21</height>
@@ -522,6 +522,29 @@
     <property name="icon">
      <iconset resource="resources.qrc">
       <normaloff>:/icons/images/editdelete.png</normaloff>:/icons/images/editdelete.png</iconset>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="plotDistanceEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>65</x>
+      <y>50</y>
+      <width>21</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>KM</string>
     </property>
    </widget>
   </widget>

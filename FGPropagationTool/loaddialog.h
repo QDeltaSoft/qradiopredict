@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QString>
 #include <QFileDialog>
+#include <QObject>
 
 namespace Ui {
 class LoadDialog;

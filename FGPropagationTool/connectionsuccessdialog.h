@@ -2,6 +2,7 @@
 #define CONNECTIONSUCCESSDIALOG_H
 
 #include <QDialog>
+#include <QObject>
 
 namespace Ui {
 class ConnectionSuccessDialog;

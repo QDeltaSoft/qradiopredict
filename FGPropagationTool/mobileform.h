@@ -2,6 +2,7 @@
 #define MOBILEFORM_H
 
 #include <QWidget>
+#include <QObject>
 #include "mobilestation.h"
 
 namespace Ui {

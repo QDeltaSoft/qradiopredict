@@ -91,6 +91,7 @@
 #include <QtDebug>
 #include <QImage>
 #include <QGraphicsRectItem>
+#include <QObject>
 
 
 namespace Ui {
@@ -144,8 +145,8 @@ public slots:
     void saveMobile(MobileStation * m);
     void saveGroundStation(GroundStation * g);
     void saveFlightplan(FlightPlanPoints * fp);
-    void deleteGroundStation(unsigned id);
-    void deleteFlightplan(unsigned id);
+    void deleteGroundStation(int id);
+    void deleteFlightplan(int id);
     void sendFlightgearData();
     void enableStartButton();
     void startSignalUpdate();
@@ -153,7 +154,7 @@ public slots:
     void startStandalone();
     void stopStandalone();
     void moveMobile(double lon, double lat);
-    void showSignalReading(double lon, double lat, uint id_station,QString station_name,double freq,Signal*s);
+    void showSignalReading(double lon, double lat, int id_station, QString station_name, double freq, Signal*s);
     void newAPRSquery(quint8 zoom);
     void activateAPRS(bool active);
     void setReceived(QString data);

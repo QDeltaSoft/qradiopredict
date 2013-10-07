@@ -23,7 +23,7 @@
 class FlightPlanPoints
 {
 public:
-    unsigned id;
+    int id;
     unsigned id_session;
 
     double longitude;

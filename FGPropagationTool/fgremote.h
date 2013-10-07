@@ -19,6 +19,7 @@
 #define FGREMOTE_H
 
 #include <QPointF>
+#include <QObject>
 #include <QThread>
 #include <QTime>
 #include "fgtelnet.h"

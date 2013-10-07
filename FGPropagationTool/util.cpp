@@ -232,6 +232,7 @@ QColor Util::getScaleColor(double &signal, int &alpha)
     {
         return QColor(245,0,0,alpha);
     }
+    return QColor(10,10,10,alpha);
 }
 
 

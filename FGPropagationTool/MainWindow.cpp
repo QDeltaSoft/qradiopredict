@@ -33,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _show_signals = false;
     _last_station_id = -1;
     _plot_opacity = 15;
-    _plot_pixmap = new QPixmap(1000,1000);
     _plotvalues = new QVector<PlotValue*>;
 
 
@@ -129,9 +128,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //this->createActions();
     //this->createTrayIcon();
-
-    _painted_pix = _view->_childView->scene()->addPixmap(*_plot_pixmap);
-    _painted_pix->setOpacity(0.0);
 
 
     this->restoreMapState();
@@ -851,7 +847,7 @@ void MainWindow::showEditBoxes()
             _docks.push_back(dw);
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(gs_form,SIGNAL(haveData(GroundStation*)),this,SLOT(saveGroundStation(GroundStation *)));
-            QObject::connect(gs_form,SIGNAL(delStation(unsigned)),this,SLOT(deleteGroundStation(unsigned)));
+            QObject::connect(gs_form,SIGNAL(delStation(int)),this,SLOT(deleteGroundStation(int)));
             QObject::connect(gs_form,SIGNAL(plotStation(GroundStation*)),this,SLOT(plotCoverage(GroundStation*)));
             //gs_form->show();
             delete gs;
@@ -888,7 +884,7 @@ void MainWindow::showEditBoxes()
             fp_form->ui->altitudeLineEdit->setText(QString::number(fp->altitude));
             //this->ui->dockWidget2->setWidget(gs_form);
             QObject::connect(fp_form,SIGNAL(haveData(FlightPlanPoints *)),this,SLOT(saveFlightplan(FlightPlanPoints*)));
-            QObject::connect(fp_form,SIGNAL(delFP(unsigned)),this,SLOT(deleteFlightplan(unsigned)));
+            QObject::connect(fp_form,SIGNAL(delFP(int)),this,SLOT(deleteFlightplan(int)));
             QDockWidget *dw = new QDockWidget;
             dw->setWindowTitle(QString::number( fp->id));
             dw->setMaximumWidth(260);
@@ -940,7 +936,7 @@ void MainWindow::saveFlightplan(FlightPlanPoints * fp)
 
 }
 
-void MainWindow::deleteGroundStation(unsigned id)
+void MainWindow::deleteGroundStation(int id)
 {
     QPointF dbpos;
     QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
@@ -987,7 +983,7 @@ void MainWindow::deleteGroundStation(unsigned id)
     _db->delete_ground_station(0,id);
 }
 
-void MainWindow::deleteFlightplan(unsigned id)
+void MainWindow::deleteFlightplan(int id)
 {
     QPointF dbpos;
     QVector<FlightPlanPoints *> fp_points = _db->select_flightplan_positions(0);
@@ -1046,7 +1042,7 @@ void MainWindow::startStandalone()
     FGRadio *radiosystem = new FGRadio(_db);
     radiosystem->moveToThread(t);
     connect(radiosystem, SIGNAL(haveMobilePosition(double,double)), this, SLOT(moveMobile(double,double)));
-    connect(radiosystem, SIGNAL(haveSignalReading(double, double, uint,QString,double,Signal*)), this, SLOT(showSignalReading(double, double, uint,QString,double,Signal*)));
+    connect(radiosystem, SIGNAL(haveSignalReading(double, double, int,QString,double,Signal*)), this, SLOT(showSignalReading(double, double, int,QString,double,Signal*)));
     QObject::connect(_tb->ui->nextWaypointButton,SIGNAL(clicked()),this,SLOT(sequenceWaypoint()));
     connect(t, SIGNAL(started()), radiosystem, SLOT(update()));
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
@@ -1139,13 +1135,6 @@ void MainWindow::moveMobile(double lon, double lat)
     if(_map_mobiles.size() > 0)
     {
         QMap<QGraphicsPixmapItem *, QPointF>::const_iterator it = _map_mobiles.begin();
-        QPointF pos = it.value();
-        /** now why did I do this for?? I can't remember
-        if( (fabs(pos.rx()-lon)> 0.1) || ( fabs(pos.ry()-lat)>0.1) )
-        {
-            return;
-        }
-        */
         QGraphicsPixmapItem * oldicon = it.key();
         _view->_childView->scene()->removeItem(oldicon);
         _map_mobiles.remove(oldicon);
@@ -1164,7 +1153,7 @@ void MainWindow::moveMobile(double lon, double lat)
 }
 
 
-void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString station_name,double freq,Signal*s)
+void MainWindow::showSignalReading(double lon,double lat,int id_station,QString station_name,double freq,Signal*s)
 {
 
     for (int j=0;j<_signal_lines.size();++j)
@@ -1200,17 +1189,19 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
         {
             if(s->signal >0)
             {
+                /** now why did I do this for??
                 if(_map_mobiles.size() > 0)
                 {
                     QMap<QGraphicsPixmapItem *, QPointF>::const_iterator it = _map_mobiles.begin();
                     QPointF pos = it.value();
-                    /** now why did I do this for??
+
                     if( (fabs(pos.rx()-lon)> 0.1) || ( fabs(pos.ry()-lat)>0.1) )
                     {
                         continue;
                     }
-                    */
+
                 }
+                */
                 QPointF gs_pos(gs->longitude,gs->latitude);
                 QPointF mobile_pos(lon,lat);
                 QPointF xy_gs_pos = Util::convertToXY(gs_pos,_view->zoomLevel());
@@ -1228,7 +1219,7 @@ void MainWindow::showSignalReading(double lon,double lat,uint id_station,QString
             bool has_been =false;
             for(int k=0;k < _station_ids.size();++k)
             {
-                unsigned id = _station_ids.at(k);
+                int id = _station_ids.at(k);
                 if(id == id_station)
                 {
                     has_been =true;
@@ -1362,10 +1353,6 @@ void MainWindow::plotCoverage(GroundStation *g)
     _plotvalues->resize(0);
     QThread *t= new QThread;
     FGRadio *radiosystem = new FGRadio(_db);
-    QPointF plot_pos(g->longitude,g->latitude);
-    QPointF xy_plot_pos = Util::convertToXY(plot_pos,_view->zoomLevel());
-    //_painted_pix->setOffset(xy_plot_pos - QPointF(500,500));
-    _painted_pix->setOpacity(0.2);
 
     radiosystem->setPlotStation(g);
     radiosystem->moveToThread(t);
@@ -1434,15 +1421,6 @@ void MainWindow::drawPlot(double lon, double lat,
         QPolygonF poly;
         poly << xy_plot_pos  << xy_plot_pos3 << xy_plot_pos2 << xy_plot_pos1;
 
-
-        /*
-        QPainter painter(_plot_pixmap);
-        painter.setBrush(brush);
-        painter.setPen(pen);
-        painter.drawPolygon(poly);
-        */
-
-
         QGraphicsPolygonItem *polygon = _view->_childView->scene()->addPolygon(poly,pen,brush);
         //polygon->setZValue(1000);
         PlotPolygon *pp = new PlotPolygon;
@@ -1481,7 +1459,6 @@ void MainWindow::changePlotOpacity(int opacity)
 
 void MainWindow::plottingFinished()
 {
-    //_painted_pix->setPixmap(*_plot_pixmap);
     _tb->ui->progressBar->setVisible(false);
 }
 

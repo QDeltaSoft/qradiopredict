@@ -21,7 +21,7 @@ public:
 
 signals:
     void haveData(FlightPlanPoints * fp);
-    void delFP(unsigned id);
+    void delFP(int id);
 private slots:
     void saveFP();
     void deleteFP();

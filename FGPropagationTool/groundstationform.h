@@ -2,6 +2,7 @@
 #define GROUNDSTATIONFORM_H
 
 #include <QWidget>
+#include <QObject>
 #include "groundstation.h"
 
 namespace Ui {
@@ -20,7 +21,7 @@ public:
     Ui::GroundStationForm *ui;
 signals:
     void haveData(GroundStation * g);
-    void delStation(unsigned id);
+    void delStation(int id);
     void plotStation(GroundStation *g);
 private slots:
     void saveGround();

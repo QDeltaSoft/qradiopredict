@@ -2,6 +2,7 @@
 #define TOOLBOX_H
 
 #include <QWidget>
+#include <QObject>
 
 namespace Ui {
 class toolbox;

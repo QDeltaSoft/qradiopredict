@@ -18,6 +18,7 @@
 
 
 #include <QTcpSocket>
+#include <QObject>
 #include <QString>
 #include <QStringList>
 #include <QTime>

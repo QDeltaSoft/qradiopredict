@@ -74,7 +74,7 @@ public slots:
 signals:
     void finished();
     void nrOfPos(int nr);
-    void haveSignalReading(double longitude,double latitude,unsigned id, QString name, double freq, Signal *s);
+    void haveSignalReading(double longitude,double latitude,int id, QString name, double freq, Signal *s);
     void haveMobilePosition(double lon, double lat);
     void havePlotPoint(double lon, double lat,
                        double lon1, double lat1,
@@ -252,7 +252,7 @@ private:
     QTime _start_move;
     bool _move_flag;
     QVector<FlightPlanPoints*> _fp_points;
-    unsigned _current_waypoint;
+    int _current_waypoint;
     FlightgearPrefs *_settings;
 	double _terrain_sampling_distance;
 	
