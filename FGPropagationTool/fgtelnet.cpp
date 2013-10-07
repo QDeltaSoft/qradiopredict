@@ -79,7 +79,7 @@ void FGTelnet::disconnectFromFGFS()
     _socket->disconnectFromHost();
     _status=0;
     _connection_tries=0;
-
+    emit connectionFailure();
 }
 
 

@@ -33,8 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _show_signals = false;
     _last_station_id = -1;
     _plot_opacity = 15;
-    _last_plot_point.setX(0);
-    _last_plot_point.setY(0);
     _plot_pixmap = new QPixmap(1000,1000);
     _plotvalues = new QVector<PlotValue*>;
 
@@ -413,6 +411,8 @@ void MainWindow::connectionSuccess()
 {
     ConnectionSuccessDialog *dialog = new ConnectionSuccessDialog;
     this->_tb->ui->connectTelnetButton->setEnabled(false);
+    this->_tb->ui->sendToFlightgearButton->setEnabled(true);
+    this->_tb->ui->stopUpdateButton->setEnabled(true);
     dialog->show();
     this->ui->dockWidget3->toggleViewAction()->setText("&Toolbox (active)");
 }
@@ -421,6 +421,8 @@ void MainWindow::connectionFailure()
 {
     ConnectionSuccessDialog *dialog = new ConnectionSuccessDialog;
     this->_tb->ui->connectTelnetButton->setEnabled(true);
+    this->_tb->ui->sendToFlightgearButton->setEnabled(false);
+    this->_tb->ui->stopUpdateButton->setEnabled(false);
     dialog->ui->label->setText("Could not connect to Flightgear. Maybe it's not running?");
     dialog->show();
     this->ui->dockWidget3->toggleViewAction()->setText("&Toolbox (active)");
@@ -1403,18 +1405,14 @@ void MainWindow::drawPlot(double lon, double lat,
         QPointF xy_plot_pos2 = Util::convertToXY(plot_pos2,_view->zoomLevel());
         QPointF xy_plot_pos3 = Util::convertToXY(plot_pos3,_view->zoomLevel());
 
-        if(_last_plot_point.rx()==0 || _last_plot_point.ry()==0)
-        {
-            _last_plot_point.setX(xy_plot_pos.rx()+0.001);
-            _last_plot_point.setY(xy_plot_pos.ry()+0.001);
-        }
+
         int alpha = _plot_opacity;
         QColor colour = Util::getScaleColor(signal, alpha);
         QBrush brush(colour);
         QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QPolygonF poly;
         poly << xy_plot_pos  << xy_plot_pos3 << xy_plot_pos2 << xy_plot_pos1;
-        //poly << xy_plot_pos  << xy_plot_pos_a << _last_plot_point;
+
 
         /*
         QPainter painter(_plot_pixmap);
@@ -1435,7 +1433,6 @@ void MainWindow::drawPlot(double lon, double lat,
         pp->_pen = pen;
 
         _plot_points.insert(polygon,pp);
-        _last_plot_point = xy_plot_pos;
         _plot_progress_bar_value += _plot_progress_bar;
 
         _tb->ui->progressBar->setValue(_plot_progress_bar_value);

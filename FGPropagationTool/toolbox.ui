@@ -122,6 +122,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="sendToFlightgearButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -165,6 +168,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="stopUpdateButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -366,7 +372,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_4">
+  <widget class="QGroupBox" name="groupBoxAPRS">
    <property name="geometry">
     <rect>
      <x>540</x>

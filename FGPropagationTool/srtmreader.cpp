@@ -114,7 +114,9 @@ double SRTMReader::readHeight()
     unsigned row = 1201 - temp_row - 1;
     // SRTM 3 is 1201x1201, 2 bytes per sample, we have to read from lower left
     unsigned pos = (row * 1201 + (temp_column - 1)) * 2;
-    char *buffer = _tiles->value(filename);
+    char *buffer = _tiles->value(filename,NULL);
+    if(!buffer)
+        return 0.0;
     union {
         unsigned char height_buf[2];
         short height;
