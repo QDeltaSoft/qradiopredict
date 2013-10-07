@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
+    _aprs = NULL;
     _telnet = new FGTelnet;
     _db = new DatabaseApi;
     _remote = new FGRemote(_telnet, _db);
@@ -242,10 +242,16 @@ void MainWindow::activateAPRS(bool active)
     if(!active)
     {
         changeAPRSTimeFilter(0);
+        if(_aprs)
+            _aprs->disconnectAPRS();
     }
     else
     {
         changeAPRSTimeFilter(3600);
+        if(_aprs)
+            _aprs->connectToAPRS();
+        else
+            this->connectToAPRS();
     }
 }
 
@@ -327,6 +333,8 @@ void MainWindow::changeAPRSTimeFilter(int hours)
 
 void MainWindow::newAPRSquery(quint8 zoom)
 {
+    if(!_aprs)
+        return;
     QPointF cursor_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()));
 
     QPointF pos = Util::convertToLL(cursor_pos, zoom);
