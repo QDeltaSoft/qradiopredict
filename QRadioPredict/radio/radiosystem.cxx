@@ -96,6 +96,10 @@ FGRadio::~FGRadio()
 void FGRadio::moveMobile()
 {
     //if(!_move_flag) return;
+    if(!(_fp_points.size()>0))
+    {
+        return;
+    }
     if((_start_move.elapsed() < 10*1000) && !_timer_started) return;
     if(_timer_started) _timer_started = false;
     _start_move.restart();

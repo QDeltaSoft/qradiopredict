@@ -647,20 +647,28 @@ void MainWindow::setFPType()
 void MainWindow::restoreMapState()
 {
     // mobile
-    QVector<MobileStation *> mobiles = _db->select_mobile_station(0);
-    MobileStation *mobile = mobiles[0];
-    QPixmap pixmap(":icons/images/phone.png");
-    pixmap = pixmap.scaled(32,32);
-    QGraphicsPixmapItem *phone= _view->_childView->scene()->addPixmap(pixmap);
-    QPointF pos = QPointF(mobile->longitude,mobile->latitude);
-    int zoom = _view->zoomLevel();
-    QPointF xypos = Util::convertToXY(pos, zoom);
-    phone->setOffset(xypos - QPoint(16,16));
-    _map_mobiles.insert(phone, pos);
-    delete mobile;
-    mobiles.clear();
+    {
+        QVector<MobileStation *> mobiles = _db->select_mobile_station(0);
+        if(!(mobiles.size()>0))
+        {
+            qDebug() << "No mobile station found";
+            goto ground;
+        }
+        MobileStation *mobile = mobiles[0];
+        QPixmap pixmap(":icons/images/phone.png");
+        pixmap = pixmap.scaled(32,32);
+        QGraphicsPixmapItem *phone= _view->_childView->scene()->addPixmap(pixmap);
+        QPointF pos = QPointF(mobile->longitude,mobile->latitude);
+        int zoom = _view->zoomLevel();
+        QPointF xypos = Util::convertToXY(pos, zoom);
+        phone->setOffset(xypos - QPoint(16,16));
+        _map_mobiles.insert(phone, pos);
+        delete mobile;
+        mobiles.clear();
+    }
 
     // ground
+    ground:
     QVector<GroundStation *> ground_stations = _db->select_ground_stations(0);
     for (int i=0;i<ground_stations.size();++i)
     {
@@ -773,7 +781,15 @@ void MainWindow::showEditBoxes()
         }
         _docks.clear();
         QVector<MobileStation *> mobiles = _db->select_mobile_station(0);
-        MobileStation *mobile = mobiles[0];
+        MobileStation *mobile;
+        if(!(mobiles.size()>0))
+        {
+            mobile = new MobileStation;
+        }
+        else
+        {
+            mobile = mobiles[0];
+        }
         MobileForm *mf = new MobileForm;
         //this->ui->dockWidget2->setWidget(mf);
         mf->ui->idEdit->setText(QString::number(mobile->id));
