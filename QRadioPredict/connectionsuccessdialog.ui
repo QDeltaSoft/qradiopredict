@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/images/qradiopredict_icon.png</normaloff>:/icons/images/qradiopredict_icon.png</iconset>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>

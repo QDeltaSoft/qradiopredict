@@ -114,6 +114,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(_tb->ui->opacitySlider,SIGNAL(valueChanged(int)),this,SLOT(changePlotOpacity(int)));
     QObject::connect(_tb->ui->plotClearButton,SIGNAL(clicked()),this,SLOT(clearPlot()));
+    QObject::connect(_tb->ui->plotDistanceButton,SIGNAL(clicked()),this,SLOT(setPlotDistance()));
 
     QObject::connect(_tb->ui->aprsTimeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeAPRSTimeFilter(int)));
     QObject::connect(_tb->ui->groupBoxAPRS,SIGNAL(toggled(bool)),this,SLOT(activateAPRS(bool)));
@@ -134,7 +135,7 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setZoomLevel(4);
     view->centerOn(24.658752, 46.255456);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
-
+    this->setPlotDistance();
 }
 
 MainWindow::~MainWindow()
@@ -341,7 +342,8 @@ void MainWindow::newAPRSquery(quint8 zoom)
         settings = prefs[0];
     }
     else
-        settings = 0;
+        return;
+
     int range = settings->_aprs_filter_range;
     _aprs->setFilter(pos, range);
 }
@@ -449,7 +451,7 @@ void MainWindow::connectionFailure()
 void MainWindow::showSettingsDialog()
 {
     SettingsDialog *dialog = new SettingsDialog(_db);
-
+    QObject::connect(dialog,SIGNAL(updatePlotDistance()),this,SLOT(showPlotDistance()));
     dialog->show();
 
 }
@@ -1401,6 +1403,37 @@ void MainWindow::setPlotProgressBar(int ticks)
     _plot_progress_bar = 97/(double)ticks;
     _plot_progress_bar_value = 3;
 }
+
+void MainWindow::showPlotDistance()
+{
+    QVector<FlightgearPrefs *> prefs = _db->select_prefs();
+    FlightgearPrefs *settings;
+    if(prefs.size()>0)
+    {
+        settings = prefs[0];
+    }
+    else
+        return;
+
+    int range = settings->_plot_range;
+    _tb->ui->plotDistanceEdit->setText(QString::number(range));
+}
+
+void MainWindow::setPlotDistance()
+{
+    QVector<FlightgearPrefs *> prefs = _db->select_prefs();
+    FlightgearPrefs *settings;
+    if(prefs.size()>0)
+    {
+        settings = prefs[0];
+    }
+    else
+        return;
+
+    settings->_plot_range = _tb->ui->plotDistanceEdit->text().toInt();
+    _db->savePrefs(settings);
+}
+
 
 void MainWindow::drawPlot(double lon, double lat,
                           double lon1, double lat1,

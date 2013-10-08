@@ -35,6 +35,9 @@ public:
 
 private slots:
     void saveData();
+
+signals:
+    void updatePlotDistance();
     
 private:
     Ui::SettingsDialog *ui;

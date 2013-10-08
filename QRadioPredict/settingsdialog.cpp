@@ -108,5 +108,6 @@ void SettingsDialog::saveData()
     p->_aprs_filter_range = this->ui->aprsRangeEdit->text().toInt();
     p->_plot_range = this->ui->plotRangeEdit->text().toInt();
     _db->savePrefs(p);
+    emit updatePlotDistance();
     delete p;
 }

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Raw APRS messages</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/images/qradiopredict_icon.png</normaloff>:/icons/images/qradiopredict_icon.png</iconset>
   </property>
   <widget class="QPushButton" name="closeButton">
    <property name="geometry">
@@ -63,7 +67,9 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>closeButton</sender>

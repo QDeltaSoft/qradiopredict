@@ -169,6 +169,8 @@ public slots:
                   double distance, double signal);
     void plottingFinished();
     void setPlotProgressBar(int ticks);
+    void showPlotDistance();
+    void setPlotDistance();
 
 
 private:

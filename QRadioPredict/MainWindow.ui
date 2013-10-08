@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>qRadioPredict</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/images/qradiopredict_icon.png</normaloff>:/icons/images/qradiopredict_icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QDockWidget" name="dockWidget">
    <property name="windowTitle">
@@ -140,6 +144,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
