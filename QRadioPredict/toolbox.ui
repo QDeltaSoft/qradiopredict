@@ -103,7 +103,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/main.png</normaloff>:/icons/images/main.png</iconset>
+      <normaloff>:/icons/images/icons/main.png</normaloff>:/icons/images/icons/main.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="connectTelnetButton">
@@ -123,7 +123,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/connect_no.png</normaloff>:/icons/images/connect_no.png</iconset>
+      <normaloff>:/icons/images/icons/connect_no.png</normaloff>:/icons/images/icons/connect_no.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="sendToFlightgearButton">
@@ -146,7 +146,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/forward.png</normaloff>:/icons/images/forward.png</iconset>
+      <normaloff>:/icons/images/icons/forward.png</normaloff>:/icons/images/icons/forward.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="startUpdateButton">
@@ -169,7 +169,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/player_play.png</normaloff>:/icons/images/player_play.png</iconset>
+      <normaloff>:/icons/images/icons/player_play.png</normaloff>:/icons/images/icons/player_play.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="stopUpdateButton">
@@ -192,7 +192,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/player_stop.png</normaloff>:/icons/images/player_stop.png</iconset>
+      <normaloff>:/icons/images/icons/player_stop.png</normaloff>:/icons/images/icons/player_stop.png</iconset>
     </property>
    </widget>
   </widget>
@@ -239,7 +239,7 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/icons/images/antenna.png</normaloff>:/icons/images/antenna.png</iconset>
+         <normaloff>:/icons/images/icons/antenna.png</normaloff>:/icons/images/icons/antenna.png</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -258,8 +258,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../MapGraphics/resources.qrc">
-         <normaloff>:/icons/images/editdelete.png</normaloff>:/icons/images/editdelete.png</iconset>
+        <iconset resource="resources.qrc">
+         <normaloff>:/icons/images/icons/editdelete.png</normaloff>:/icons/images/icons/editdelete.png</iconset>
        </property>
       </widget>
      </item>
@@ -273,7 +273,7 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/icons/images/phone.png</normaloff>:/icons/images/phone.png</iconset>
+         <normaloff>:/icons/images/icons/phone.png</normaloff>:/icons/images/icons/phone.png</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -293,7 +293,7 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/icons/images/flag.png</normaloff>:/icons/images/flag.png</iconset>
+         <normaloff>:/icons/images/icons/flag.png</normaloff>:/icons/images/icons/flag.png</iconset>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -343,7 +343,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/player_stop.png</normaloff>:/icons/images/player_stop.png</iconset>
+      <normaloff>:/icons/images/icons/player_stop.png</normaloff>:/icons/images/icons/player_stop.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="nextWaypointButton">
@@ -363,7 +363,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/player_fwd.png</normaloff>:/icons/images/player_fwd.png</iconset>
+      <normaloff>:/icons/images/icons/player_fwd.png</normaloff>:/icons/images/icons/player_fwd.png</iconset>
     </property>
    </widget>
    <widget class="QPushButton" name="startStandaloneButton">
@@ -383,7 +383,7 @@
     </property>
     <property name="icon">
      <iconset resource="resources.qrc">
-      <normaloff>:/icons/images/player_play.png</normaloff>:/icons/images/player_play.png</iconset>
+      <normaloff>:/icons/images/icons/player_play.png</normaloff>:/icons/images/icons/player_play.png</iconset>
     </property>
    </widget>
   </widget>
@@ -535,8 +535,8 @@
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="../MapGraphics/resources.qrc">
-      <normaloff>:/icons/images/editdelete.png</normaloff>:/icons/images/editdelete.png</iconset>
+     <iconset resource="resources.qrc">
+      <normaloff>:/icons/images/icons/editdelete.png</normaloff>:/icons/images/icons/editdelete.png</iconset>
     </property>
    </widget>
    <widget class="QLineEdit" name="plotDistanceEdit">
@@ -565,7 +565,6 @@
   </widget>
  </widget>
  <resources>
-  <include location="../MapGraphics/resources.qrc"/>
   <include location="resources.qrc"/>
  </resources>
  <connections/>

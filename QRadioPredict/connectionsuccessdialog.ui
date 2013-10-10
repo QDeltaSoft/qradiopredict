@@ -14,11 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Alert</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/images/qradiopredict_icon.png</normaloff>:/icons/images/qradiopredict_icon.png</iconset>
+    <normaloff>:/icons/images/icons/qradiopredict_icon.png</normaloff>:/icons/images/icons/qradiopredict_icon.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -79,7 +79,7 @@ color: rgb(0, 0, 0);
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="resources.qrc">:/icons/images/messagebox_info.png</pixmap>
+    <pixmap>:/icons/images/messagebox_info.png</pixmap>
    </property>
   </widget>
  </widget>

@@ -135,7 +135,7 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setZoomLevel(4);
     view->centerOn(24.658752, 46.255456);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
-    this->setPlotDistance();
+    this->showPlotDistance();
 }
 
 MainWindow::~MainWindow()
@@ -606,6 +606,10 @@ void MainWindow::setMapItems(quint8 zoom)
     }
 
     {
+        _tb->ui->progressBar->setVisible(true);
+        int size= _plot_points.size();
+        double plot_progress_bar = 100 / ((double)size +0.00001);
+        _plot_progress_bar_value = 0;
         QMapIterator<QGraphicsPolygonItem *, PlotPolygon*> i(_plot_points);
         while (i.hasNext()) {
             i.next();
@@ -625,7 +629,10 @@ void MainWindow::setMapItems(quint8 zoom)
             poly << lb << lt << rt << rb;
             QGraphicsPolygonItem *s_point = _view->_childView->scene()->addPolygon(poly,pen,brush);
             _plot_points.insert(s_point, pp);
+            _plot_progress_bar_value += plot_progress_bar;
+            _tb->ui->progressBar->setValue(_plot_progress_bar_value);
         }
+        _tb->ui->progressBar->setVisible(false);
     }
 
 }

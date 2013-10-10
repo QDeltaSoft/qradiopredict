@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/images/qradiopredict_icon.png</normaloff>:/icons/images/qradiopredict_icon.png</iconset>
+    <normaloff>:/icons/images/icons/qradiopredict_icon.png</normaloff>:/icons/images/icons/qradiopredict_icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QDockWidget" name="dockWidget">

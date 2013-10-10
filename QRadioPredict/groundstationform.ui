@@ -249,7 +249,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/icons/images/button_cancel.png</normaloff>:/icons/images/button_cancel.png</iconset>
+          <normaloff>:/icons/images/icons/button_cancel.png</normaloff>:/icons/images/icons/button_cancel.png</iconset>
         </property>
        </widget>
       </item>
@@ -275,7 +275,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/icons/images/filesave.png</normaloff>:/icons/images/filesave.png</iconset>
+          <normaloff>:/icons/images/icons/filesave.png</normaloff>:/icons/images/icons/filesave.png</iconset>
         </property>
         <property name="default">
          <bool>true</bool>
@@ -357,7 +357,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icons/images/office-chart-pie.png</normaloff>:/icons/images/office-chart-pie.png</iconset>
+     <normaloff>:/icons/images/icons/office-chart-pie.png</normaloff>:/icons/images/icons/office-chart-pie.png</iconset>
    </property>
   </widget>
  </widget>
