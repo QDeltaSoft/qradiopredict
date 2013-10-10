@@ -116,7 +116,7 @@ void Util::startFlightgear(DatabaseApi *db)
          args <<     "--disable-hud"
          <<     "--disable-hud-3d"
          <<   "--log-level=normal"
-#if 1
+#if 0
            <<     "--prop:/sim/rendering/materials-file=Materials/my_mappings/materials.xml"
 #endif
          <<     "--prop:/sim/radio/use-radio=true";

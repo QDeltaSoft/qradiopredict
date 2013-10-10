@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     plotpolygon.cpp \
     plotvalue.cpp \
     savedialog.cpp \
-    loaddialog.cpp
+    loaddialog.cpp \
+    about.cpp
 
 HEADERS  += MainWindow.h \
     databaseapi.h \
@@ -94,7 +95,8 @@ HEADERS  += MainWindow.h \
     plotpolygon.h \
     plotvalue.h \
     savedialog.h \
-    loaddialog.h
+    loaddialog.h \
+    about.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
@@ -106,7 +108,8 @@ FORMS    += MainWindow.ui \
     stationsignalform.ui \
     rawmessagesform.ui \
     savedialog.ui \
-    loaddialog.ui
+    loaddialog.ui \
+    about.ui
 
 #Linkage for MapGraphics shared library
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/release/ -lMapGraphics

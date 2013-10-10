@@ -54,6 +54,7 @@
 #include "ui_connectionsuccessdialog.h"
 #include "savedialog.h"
 #include "loaddialog.h"
+#include "about.h"
 
 #include "Position.h"
 #include "guts/Conversions.h"
@@ -135,6 +136,7 @@ private slots:
     void clearPlot();
     void openSavePlotDialog();
     void openLoadPlotDialog();
+    void openAboutDialog();
 
 
 

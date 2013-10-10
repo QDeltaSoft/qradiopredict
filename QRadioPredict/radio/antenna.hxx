@@ -1,6 +1,6 @@
 // antenna.hxx -- FGRadioAntenna: class to represent antenna properties
 //
-// Written by Adrian Musceac YO8RZZ, started December 2011.
+// Written by Adrian Musceac YO8RZZ at gmail dot com, started December 2011.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as

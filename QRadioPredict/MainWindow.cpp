@@ -1,4 +1,4 @@
-// Written by Adrian Musceac YO8RZZ, started August 2013.
+// Written by Adrian Musceac YO8RZZ at gmail dot com, started August 2013.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionConnect_APRS,SIGNAL(triggered()),this,SLOT(connectToAPRS()));
     QObject::connect(ui->actionSave_plot,SIGNAL(triggered()),this,SLOT(openSavePlotDialog()));
     QObject::connect(ui->actionLoad_plot,SIGNAL(triggered()),this,SLOT(openLoadPlotDialog()));
+    QObject::connect(ui->actionAbout,SIGNAL(triggered()),this,SLOT(openAboutDialog()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
     QObject::connect(this->_telnet,SIGNAL(connectionFailure()),this,SLOT(connectionFailure()));
 
@@ -180,7 +181,7 @@ void MainWindow::createTrayIcon()
     _trayIcon->setContextMenu(_trayIconMenu);
     QIcon icon;
     QPixmap px;
-    px.load(":icons/images/flag.png");
+    px.load(":icons/images/icons/flag.png");
     icon.addPixmap(px, QIcon::Normal, QIcon::Off);
     _trayIcon->setIcon(icon);
     //setWindowIcon(icon);
@@ -211,6 +212,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 */
+
+void MainWindow::openAboutDialog()
+{
+    About *dailog = new About;
+    dailog->show();
+}
 
 void MainWindow::connectToAPRS()
 {
@@ -488,7 +495,7 @@ void MainWindow::mapClick(QPointF pos)
             _map_mobiles.remove(oldicon);
             _view->_childView->scene()->removeItem(oldicon);
         }
-        QPixmap pixmap(":icons/images/phone.png");
+        QPixmap pixmap(":icons/images/icons/phone.png");
         pixmap = pixmap.scaled(32,32);
         QGraphicsPixmapItem *phone= _view->_childView->scene()->addPixmap(pixmap);
         QPointF phone_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()-QPoint(16,16)));
@@ -506,7 +513,7 @@ void MainWindow::mapClick(QPointF pos)
         _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));
         _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
     {
-        QPixmap pixmap(":icons/images/antenna.png");
+        QPixmap pixmap(":icons/images/icons/antenna.png");
         pixmap = pixmap.scaled(32,32);
         QGraphicsPixmapItem *antenna= _view->_childView->scene()->addPixmap(pixmap);
         QPointF antenna_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()-QPoint(16,16)));
@@ -520,7 +527,7 @@ void MainWindow::mapClick(QPointF pos)
         _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));
         _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
     {
-        QPixmap pixmap(":icons/images/flag.png");
+        QPixmap pixmap(":icons/images/icons/flag.png");
         pixmap = pixmap.scaled(32,32);
         QGraphicsPixmapItem *fppos= _view->_childView->scene()->addPixmap(pixmap);
         QPointF fppos_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()-QPoint(7,25)));
@@ -664,7 +671,7 @@ void MainWindow::restoreMapState()
             goto ground;
         }
         MobileStation *mobile = mobiles[0];
-        QPixmap pixmap(":icons/images/phone.png");
+        QPixmap pixmap(":icons/images/icons/phone.png");
         pixmap = pixmap.scaled(32,32);
         QGraphicsPixmapItem *phone= _view->_childView->scene()->addPixmap(pixmap);
         QPointF pos = QPointF(mobile->longitude,mobile->latitude);
@@ -682,7 +689,7 @@ void MainWindow::restoreMapState()
     for (int i=0;i<ground_stations.size();++i)
     {
         GroundStation *gs = ground_stations.at(i);
-        QPixmap pixmap(":icons/images/antenna.png");
+        QPixmap pixmap(":icons/images/icons/antenna.png");
         pixmap = pixmap.scaled(32,32);
         QGraphicsPixmapItem *antenna= _view->_childView->scene()->addPixmap(pixmap);
         QPointF pos = QPointF(gs->longitude,gs->latitude);
@@ -700,7 +707,7 @@ void MainWindow::restoreMapState()
     for (int i=0;i<fp_points.size();++i)
     {
         FlightPlanPoints *fp = fp_points.at(i);
-        QPixmap pixmap(":icons/images/flag.png");
+        QPixmap pixmap(":icons/images/icons/flag.png");
         pixmap = pixmap.scaled(32,32);
         QGraphicsPixmapItem *flag= _view->_childView->scene()->addPixmap(pixmap);
         QPointF pos = QPointF(fp->longitude,fp->latitude);
@@ -1164,7 +1171,7 @@ void MainWindow::moveMobile(double lon, double lat)
         _view->_childView->scene()->removeItem(oldicon);
         _map_mobiles.remove(oldicon);
     }
-    QPixmap pixmap(":icons/images/phone.png");
+    QPixmap pixmap(":icons/images/icons/phone.png");
     pixmap = pixmap.scaled(32,32);
     QGraphicsPixmapItem *phone= _view->_childView->scene()->addPixmap(pixmap);
 

@@ -411,6 +411,9 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Time filter for stations</string>
+    </property>
     <property name="maximum">
      <number>3000</number>
     </property>
@@ -518,6 +521,9 @@
       <height>20</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Progress</string>
+    </property>
     <property name="value">
      <number>0</number>
     </property>
@@ -530,6 +536,9 @@
       <width>31</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Clear plot</string>
     </property>
     <property name="text">
      <string/>
@@ -548,6 +557,9 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Plot distance</string>
+    </property>
    </widget>
    <widget class="QPushButton" name="plotDistanceButton">
     <property name="geometry">
@@ -557,6 +569,9 @@
       <width>21</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>Set plot distance</string>
     </property>
     <property name="text">
      <string>KM</string>
