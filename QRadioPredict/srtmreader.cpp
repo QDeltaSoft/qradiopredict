@@ -107,7 +107,7 @@ void SRTMReader::setCoordinates(double lat, double lon)
 }
 
 // would be memory storage read
-double SRTMReader::readHeight()
+double SRTMReader::readHeight2()
 {
     QString filename = this->getFilename();
     unsigned temp_row  = (unsigned) round(_latitude_secs *3600/3);
@@ -133,7 +133,7 @@ double SRTMReader::readHeight()
 }
 
 // classic method, works well but is slow
-double SRTMReader::readHeight2()
+double SRTMReader::readHeight()
 {
     QString filename = this->getFilename();
     QString srtm_dir = _settings->_srtm_path;

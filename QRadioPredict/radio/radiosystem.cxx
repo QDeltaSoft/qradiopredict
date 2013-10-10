@@ -170,7 +170,7 @@ void FGRadio::plot()
         return;
     }
     // This would pre-load all tiles around the station on 3+ distance
-    _scenery->preloadTiles(lon,lat);
+    //_scenery->preloadTiles(lon,lat);
     SGGeod center = SGGeod::fromDegM(station->longitude, station->latitude, station->elevation_feet * SG_FEET_TO_METER);
     QVector<SGGeod*> *positions = Util::drawDisk(center,_settings->_plot_range*1000,1,_terrain_sampling_distance);
     emit nrOfPos(positions->size());
@@ -387,7 +387,7 @@ void FGRadio::plot()
     }
     _plot_transmissions->clear();
     // Here we should unload tiles from memory
-    _scenery->unloadTiles();
+    //_scenery->unloadTiles();
     emit finished();
 
 }
