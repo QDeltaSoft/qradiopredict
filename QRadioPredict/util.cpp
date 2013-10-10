@@ -76,7 +76,7 @@ void Util::startFlightgear(DatabaseApi *db)
     else
     {
 
-        args << "--fg-root=/home/adrian/games/fgfs/install/fgfs/fgdata/"
+        args << "--fg-root=/usr/share/flightgear/fgdata/"
              <<   "--aircraft=ufo";
     }
     if((lon==-1) || (lat==-1))
@@ -127,7 +127,7 @@ void Util::startFlightgear(DatabaseApi *db)
     else
     {
         args
-         <<   "--fg-scenery=/home/adrian/games/fgfs/scenery:/home/adrian/games/fgfs/terrasync:/home/adrian/games/fgfs/install/fgfs/fgdata/Scenery";
+         <<   "--fg-scenery=/usr/share/flightgear/scenery:/usr/share/flightgear/terrasync:/usr/share/flightgear/fgdata/Scenery";
     }
     args
          <<   "--prop:/sim/radio/use-clutter-attenuation=true"
@@ -140,7 +140,7 @@ void Util::startFlightgear(DatabaseApi *db)
 
     if(prefs.size()>0)
     {
-        p.startDetached("/home/adrian/games/fgfs/install/fgfs/bin/fgfs", args);
+        p.startDetached("/usr/bin/fgfs", args);
     }
     else
     {
