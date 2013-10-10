@@ -1,6 +1,6 @@
 // radiosystem.cxx -- implementation of FGRadio subsystem
 // Class to manage radio propagation using the ITM model
-// Written by Adrian Musceac YO8RZZ, started August 2011.
+// Written by Adrian Musceac YO8RZZ at gmail dot com, started August 2011.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
