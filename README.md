@@ -26,6 +26,10 @@ Download
 --------
 
 QRadioPredict is distributed as source code package and binaries for Linux. Please see https://sourceforge.net/projects/qradiopredict/ for downloads.
+To run QRadioPredict you need to have installed the following:
+- Qt >= 4.7
+- Sqlite 3
+- GDAL >= 1.7.0 with GEOS bindings
 
 
 Usage
@@ -76,7 +80,7 @@ To build in debug mode add "CONFIG+=debug" to the qmake step above. There are al
 Credits and License
 -------------------
 
-QRadioPredict is designed and developed by Adrian Musceac YO8RZZ, and it is licensed under the GNU General Public License.
+QRadioPredict is designed and developed by Adrian Musceac YO8RZZ, and it is licensed under the GNU General Public License version 2.
 The MapGraphics library was coded by Raptorswing and comes with a FreeBSD license.
 Following people and organisations have contributed:
 

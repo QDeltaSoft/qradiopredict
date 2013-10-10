@@ -167,7 +167,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
 
                 if(point.Within(poGeometry))
                 {
-                    qDebug() << "Within: " << terrain_type;
+                    qDebug() << "Using GEOS for: " << terrain_type;
                     delete [] buffer;
                     OGRFeature::DestroyFeature( poFeature );
                     OGRDataSource::DestroyDataSource( poDS );
