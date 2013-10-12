@@ -29,12 +29,16 @@ QRadioPredict is distributed as source code package and binaries for Linux. Plea
 To run QRadioPredict you need to have installed the following:
 - Qt >= 4.7
 - Sqlite 3
-- GDAL >= 1.7.0 with GEOS bindings
+- GDAL >= 1.9.2 with GEOS bindings
+- GEOS
+
+On Debian: apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0
 
 
 Usage
 -----
 
+Run the bash script qradiopredict.
 The first time you start QRadioPredict you should open Edit -> Settings and set your local preferences and paths. 
 Then, you might want to add a mobile station on the map, and up to four ground stations. Set the locations for the mobile using the flightplan tab. Each ground station tab has a button which generates 2D plots on the map. Set the opacity of the plot using the slider on the top right side, and the plot distance using the filed just below the opacity slider. Run the program standalone, or connect it to Flightgear by pressing the "Start Flightgear" button and then after it has started, the connect button. Send all data to Flightgear by pressing the third button, which should start your simulation.
 The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size.
@@ -62,6 +66,7 @@ To compile qradiopredict from source you need the following dependencies:
 - Sqlite 3
 - GDAL >= 1.7.0 compiled with GEOS (if using clutter attenuation)
 - Qt 4.7 or later and optionally Qt Creator (qradiopredict works with Qt 5)
+On Debian: apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0
 
 QRadioPredict comes with a simple qmake build setup. It can be compiled from within Qt Creator or in a terminal:
 
