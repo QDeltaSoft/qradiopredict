@@ -72,7 +72,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Frequency</string>
+         <string>Frequency (MHz)</string>
         </property>
        </widget>
       </item>
@@ -82,7 +82,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="beaconDelayLabel">
         <property name="text">
-         <string>Beacon delay</string>
+         <string>Beacon delay (s)</string>
         </property>
        </widget>
       </item>
@@ -102,7 +102,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="elevationFeetLabel">
         <property name="text">
-         <string>Elevation feet</string>
+         <string>Elevation (feet)</string>
         </property>
        </widget>
       </item>
@@ -112,7 +112,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="headingDegLabel">
         <property name="text">
-         <string>Heading deg</string>
+         <string>Heading (degrees)</string>
         </property>
        </widget>
       </item>
@@ -122,7 +122,7 @@
       <item row="6" column="0">
        <widget class="QLabel" name="pitchDegLabel">
         <property name="text">
-         <string>Pitch deg</string>
+         <string>Pitch (degrees)</string>
         </property>
        </widget>
       </item>
@@ -142,7 +142,7 @@
       <item row="8" column="0">
        <widget class="QLabel" name="txAntennaHeightLabel">
         <property name="text">
-         <string>Tx antenna height</string>
+         <string>Tx antenna height (m)</string>
         </property>
        </widget>
       </item>
@@ -172,7 +172,7 @@
       <item row="11" column="0">
        <widget class="QLabel" name="txLineLossesLabel">
         <property name="text">
-         <string>Tx line losses</string>
+         <string>Tx line losses (dBm)</string>
         </property>
        </widget>
       </item>
@@ -182,7 +182,7 @@
       <item row="12" column="0">
        <widget class="QLabel" name="txPowerWattLabel">
         <property name="text">
-         <string>Tx power watt</string>
+         <string>Tx power (Watt)</string>
         </property>
        </widget>
       </item>
@@ -192,7 +192,7 @@
       <item row="13" column="0">
        <widget class="QLabel" name="rxAntennaHeightLabel">
         <property name="text">
-         <string>Rx antenna height</string>
+         <string>Rx antenna height (m)</string>
         </property>
        </widget>
       </item>
@@ -222,7 +222,7 @@
       <item row="16" column="0">
        <widget class="QLabel" name="rxSensitivityLabel">
         <property name="text">
-         <string>Rx sensitivity</string>
+         <string>Rx sensitivity (dBm)</string>
         </property>
        </widget>
       </item>
@@ -232,7 +232,7 @@
       <item row="17" column="0">
        <widget class="QLabel" name="rxLineLossesLabel">
         <property name="text">
-         <string>Rx line losses</string>
+         <string>Rx line losses (dBm)</string>
         </property>
        </widget>
       </item>

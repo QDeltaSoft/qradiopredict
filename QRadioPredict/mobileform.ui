@@ -72,7 +72,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Heading</string>
+         <string>Heading (deg)</string>
         </property>
        </widget>
       </item>
@@ -82,7 +82,7 @@
       <item row="6" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Altitude</string>
+         <string>Altitude (ft)</string>
         </property>
        </widget>
       </item>
@@ -102,7 +102,7 @@
       <item row="9" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Speed</string>
+         <string>Speed (kts)</string>
         </property>
        </widget>
       </item>
@@ -149,7 +149,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="frequencyLabel">
         <property name="text">
-         <string>Frequency</string>
+         <string>Frequency (MHz)</string>
         </property>
        </widget>
       </item>
@@ -173,7 +173,7 @@
       <item row="7" column="0">
        <widget class="QLabel" name="elevationFeetLabel">
         <property name="text">
-         <string>Elevation feet</string>
+         <string>Elevation (feet)</string>
         </property>
        </widget>
       </item>
@@ -183,7 +183,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Lon</string>
+         <string>Longitude</string>
         </property>
        </widget>
       </item>
@@ -197,7 +197,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Lat</string>
+         <string>Latitude</string>
         </property>
        </widget>
       </item>

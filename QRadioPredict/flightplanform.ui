@@ -67,7 +67,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="lonLabel">
         <property name="text">
-         <string>Lon</string>
+         <string>Longitude</string>
         </property>
        </widget>
       </item>
@@ -81,7 +81,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="latLabel">
         <property name="text">
-         <string>Lat</string>
+         <string>Latitude</string>
         </property>
        </widget>
       </item>
@@ -95,7 +95,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="altitudeLabel">
         <property name="text">
-         <string>Altitude</string>
+         <string>Altitude (m)</string>
         </property>
        </widget>
       </item>
