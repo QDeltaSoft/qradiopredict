@@ -121,7 +121,7 @@ void FGRadio::moveMobile()
 
 void FGRadio::nextWaypoint()
 {
-    _current_waypoint++;
+
     if(_current_waypoint >= _fp_points.size())
     {
         _current_waypoint = 0;
@@ -134,6 +134,7 @@ void FGRadio::nextWaypoint()
     m.elevation_feet = fp->altitude;
     m.heading_deg = 0;
     setMobile(&m);
+    _current_waypoint++;
 }
 
 void FGRadio::stop()
