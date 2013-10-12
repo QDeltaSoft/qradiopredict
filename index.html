@@ -78,7 +78,7 @@ To run QRadioPredict you need to have installed the following:</p>
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>Run the bash script qradiopredict.
+<p>Run the bash script qradiopredict.<br/>
 The first time you start QRadioPredict you should open Edit -&gt; Settings and set your local preferences and paths. 
 Then, you might want to add a mobile station on the map, and up to four ground stations. Set the locations for the mobile using the flightplan tab. Each ground station tab has a button which generates 2D plots on the map. Set the opacity of the plot using the slider on the top right side, and the plot distance using the filed just below the opacity slider. Run the program standalone, or connect it to Flightgear by pressing the "Start Flightgear" button and then after it has started, the connect button. Send all data to Flightgear by pressing the third button, which should start your simulation.
 The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size.
@@ -88,7 +88,7 @@ The clutter data should be shapefiles obtained from the CLC2006 project, and cro
 <a name="known-problems" class="anchor" href="#known-problems"><span class="octicon octicon-link"></span></a>Known problems</h2>
 
 <p>Very slow static plot generation when enabling ground clutter: to be resolved in a future release.
-See the bug tracker on Github: <a href="https://github.com/k/QRadioPredict/issues">https://github.com/k/QRadioPredict/issues</a></p>
+See the bug tracker on Github: <a href="https://github.com/kantooon/qradiopredict/issues">https://github.com/k/QRadioPredict/issues</a></p>
 
 <h2>
 <a name="getting-help-and-reporting-bugs" class="anchor" href="#getting-help-and-reporting-bugs"><span class="octicon octicon-link"></span></a>Getting help and reporting bugs</h2>
@@ -98,7 +98,7 @@ See the bug tracker on Github: <a href="https://github.com/k/QRadioPredict/issue
 <h2>
 <a name="installation-from-source" class="anchor" href="#installation-from-source"><span class="octicon octicon-link"></span></a>Installation from source</h2>
 
-<p>The source code is hosted on Github: <a href="https://github.com/k/qradiopredict">https://github.com/k/qradiopredict</a></p>
+<p>The source code is hosted on Github: <a href="https://github.com/kantooon/qradiopredict">https://github.com/k/qradiopredict</a></p>
 
 <p>To compile qradiopredict from source you need the following dependencies:</p>
 
@@ -106,7 +106,7 @@ See the bug tracker on Github: <a href="https://github.com/k/QRadioPredict/issue
 <li>Qt 5</li>
 <li>Sqlite 3</li>
 <li>GDAL &gt;= 1.7.0 compiled with GEOS (if using clutter attenuation)</li>
-<li>Qt 4.7 or later and optionally Qt Creator (qradiopredict works with Qt 5)
+<li>Qt 4.7 or later and optionally Qt Creator (qradiopredict works with Qt 5)<br/>
 On Debian: apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0</li>
 </ul><p>QRadioPredict comes with a simple qmake build setup. It can be compiled from within Qt Creator or in a terminal:</p>
 
