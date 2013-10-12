@@ -27,8 +27,8 @@ GroundStation::GroundStation()
     heading_deg = 0.0;
     pitch_deg = 0.0;
     elevation_feet = 0.0;
-    frequency = 140.0;
-    beacon_delay = 2;
+    frequency = 144.8;
+    beacon_delay = 5;
     transmission_type =1;
     polarization = 1;
     rx_antenna_height = 0.0;

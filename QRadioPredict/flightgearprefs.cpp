@@ -21,7 +21,7 @@ FlightgearPrefs::FlightgearPrefs()
     _fgfs_bin = "";
     _fgdata_path = "";
     _scenery_path = "";
-    _aircraft = "";
+    _aircraft = "ufo";
     _airport = "";
     _use_clutter = 0;
     _use_antenna_pattern = 0;
