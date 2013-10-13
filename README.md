@@ -86,6 +86,7 @@ Credits and License
 -------------------
 
 QRadioPredict is designed and developed by Adrian Musceac YO8RZZ, and it is licensed under the GNU General Public License version 2.
+The Irregular Terrain Model was originally developed by the U.S. Department of Commerce NTIA/ITS - Institute for Telecommunication Sciences and converted to C++ and improved by several others.
 The MapGraphics library was coded by Raptorswing and comes with a FreeBSD license.
 Following people and organisations have contributed:
 
