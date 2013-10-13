@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionConnect_APRS,SIGNAL(triggered()),this,SLOT(connectToAPRS()));
     QObject::connect(ui->actionSave_plot,SIGNAL(triggered()),this,SLOT(openSavePlotDialog()));
     QObject::connect(ui->actionLoad_plot,SIGNAL(triggered()),this,SLOT(openLoadPlotDialog()));
+    QObject::connect(ui->actionTake_screenshot,SIGNAL(triggered()),this,SLOT(takeScreenshot()));
     QObject::connect(ui->actionAbout,SIGNAL(triggered()),this,SLOT(openAboutDialog()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
     QObject::connect(this->_telnet,SIGNAL(connectionFailure()),this,SLOT(connectionFailure()));
@@ -725,7 +726,19 @@ void MainWindow::restoreMapState()
     {
         AprsStation *st = aprs_stations.at(i);
         QString filename = ":aprs/aprs_icons/slice_";
-        QString icon = st->getImage();
+        QString icon;
+        /*
+        QVector<AprsStation *> related_stations = _db->similar_stations(st->callsign, st->time_seen);
+        if(related_stations.size()>0)
+        {
+            icon = "15_0";
+        }
+        else
+        {
+            icon = st->getImage();
+        }
+        */
+        icon = st->getImage();
         filename.append(icon).append(".png");
         QPixmap pixmap(filename);
         pixmap = pixmap.scaled(16,16);
@@ -1590,4 +1603,23 @@ void MainWindow::clearPlot()
     }
     _plotvalues->clear();
     _plotvalues->resize(0);
+}
+
+void MainWindow::takeScreenshot()
+{
+
+    QImage screenshot(1024,768,QImage::Format_ARGB32_Premultiplied);
+    QPainter p(&screenshot);
+    //p.setRenderHint(QPainter::Antialiasing);
+
+    QPointF tl(_view->_childView->horizontalScrollBar()->value(), _view->_childView->verticalScrollBar()->value());
+    QPointF br = tl + _view->_childView->viewport()->rect().bottomRight();
+    QMatrix mat = _view->_childView->matrix().inverted();
+    QRectF source = mat.mapRect(QRectF(tl,br));
+    qDebug() << source.left() << " " << source.right();
+    QRectF target(0,0,1024,768);
+    _view->_childView->scene()->render(&p,target,source,Qt::KeepAspectRatio);
+    p.end();
+    screenshot.save("plot.png");
+
 }

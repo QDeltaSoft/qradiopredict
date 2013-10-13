@@ -61,6 +61,8 @@
     <addaction name="actionSave_plot"/>
     <addaction name="actionLoad_plot"/>
     <addaction name="separator"/>
+    <addaction name="actionTake_screenshot"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -114,7 +116,7 @@
   </action>
   <action name="actionConnect_APRS">
    <property name="text">
-    <string>Connect APRS</string>
+    <string>Connect &amp;APRS</string>
    </property>
   </action>
   <action name="actionRaw_APRS_messages">
@@ -134,12 +136,17 @@
   </action>
   <action name="actionSave_plot">
    <property name="text">
-    <string>Save plot</string>
+    <string>&amp;Save plot</string>
    </property>
   </action>
   <action name="actionLoad_plot">
    <property name="text">
-    <string>Load plot</string>
+    <string>&amp;Load plot</string>
+   </property>
+  </action>
+  <action name="actionTake_screenshot">
+   <property name="text">
+    <string>&amp;Take screenshot</string>
    </property>
   </action>
  </widget>

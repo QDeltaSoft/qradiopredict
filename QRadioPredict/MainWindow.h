@@ -93,6 +93,7 @@
 #include <QImage>
 #include <QGraphicsRectItem>
 #include <QObject>
+#include <QScrollBar>
 
 
 namespace Ui {
@@ -137,6 +138,7 @@ private slots:
     void openSavePlotDialog();
     void openLoadPlotDialog();
     void openAboutDialog();
+    void takeScreenshot();
 
 
 

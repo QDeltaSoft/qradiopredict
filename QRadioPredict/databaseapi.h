@@ -20,6 +20,7 @@
 
 #include <QtSql>
 #include <QVector>
+#include <QString>
 #include <math.h>
 #include "mobilestation.h"
 #include "groundstation.h"
@@ -37,6 +38,9 @@ class DatabaseApi
 public:
     DatabaseApi();
     ~DatabaseApi();
+
+    QVector<AprsStation *>
+    similar_stations(QString &callsign, int time);
 
     QVector<AprsStation *>
     filter_aprs_stations(int time);
