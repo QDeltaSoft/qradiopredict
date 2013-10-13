@@ -725,11 +725,25 @@ void MainWindow::restoreMapState()
     for (int i=0;i<aprs_stations.size();++i)
     {
         AprsStation *st = aprs_stations.at(i);
+        QString callsign_text;
+        bool mobile = false;
+        QRegularExpression re(";(.+?)\\*");
+        QRegularExpressionMatch match = re.match(st->payload);
+        if(match.hasMatch())
+        {
+            callsign_text = match.captured(1);
+        }
+        else
+        {
+            callsign_text = st->callsign;
+        }
+        if(st->payload.startsWith('=') || st->payload.startsWith('/'))
+            mobile= true;
         QString filename = ":aprs/aprs_icons/slice_";
         QString icon;
-        /*
+
         QVector<AprsStation *> related_stations = _db->similar_stations(st->callsign, st->time_seen);
-        if(related_stations.size()>0)
+        if(related_stations.size()>1 && mobile)
         {
             icon = "15_0";
         }
@@ -737,8 +751,8 @@ void MainWindow::restoreMapState()
         {
             icon = st->getImage();
         }
-        */
-        icon = st->getImage();
+
+        //icon = st->getImage();
         filename.append(icon).append(".png");
         QPixmap pixmap(filename);
         pixmap = pixmap.scaled(16,16);
@@ -757,17 +771,7 @@ void MainWindow::restoreMapState()
         ic.icon = icon;
         _map_aprs.insert(pic, ic);
 
-        QString callsign_text;
-        QRegularExpression re(";(.+?)\\*");
-        QRegularExpressionMatch match = re.match(st->payload);
-        if(match.hasMatch())
-        {
-            callsign_text = match.captured(1);
-        }
-        else
-        {
-            callsign_text = st->callsign;
-        }
+
         QGraphicsTextItem * callsign = new QGraphicsTextItem;
         callsign->setPos(xypos - QPoint(0,16));
         callsign->setPlainText(callsign_text);
