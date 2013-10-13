@@ -1,7 +1,7 @@
 QRadioPredict
 ====
 
-QRadioPredict is an experimental software for VHF-UHF propagation prediction and radio coverage. Currently it works on Linux and has the following features:
+QRadioPredict is an experimental software for VHF-UHF propagation prediction and radio coverage analysis. Currently it works on Linux and has the following features:
 - Uses the Irregular Terrain Model, also known as Longley-Rice
 - Can be used as a repeater site planing tool
 - Static signal plot coverage, distance configurable
