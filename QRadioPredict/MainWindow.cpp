@@ -612,7 +612,32 @@ void MainWindow::setMapItems(quint8 zoom)
 
         }
     }
+    /*
+    {
+        QMapIterator<QString, draw_lines*> it(_aprs_lines);
+        while (it.hasNext())
+        {
+            it.next();
 
+            for(int i=0;i<it.value()->size()-1;++i)
+            {
+
+                QPointF pos = it.value()->at(i);
+                QPointF next_pos = it.value()->at(i+1);
+                QPointF xypos = Util::convertToXY(pos, zoom);
+                QPointF next_xypos = Util::convertToXY(next_pos, zoom);
+                QLineF progress_line(next_xypos,xypos);
+
+                QColor colour(77,255,241,45);
+                QBrush brush(colour);
+
+                QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+                QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
+
+            }
+        }
+    }
+    */
     {
         _tb->ui->progressBar->setVisible(true);
         int size= _plot_points.size();
@@ -741,17 +766,35 @@ void MainWindow::restoreMapState()
             mobile= true;
         QString filename = ":aprs/aprs_icons/slice_";
         QString icon;
-
+        QPointF pos = QPointF(st->longitude,st->latitude);
+        int zoom = _view->zoomLevel();
+        QPointF xypos = Util::convertToXY(pos, zoom);
+        //draw_lines *lines = new draw_lines;
         QVector<AprsStation *> related_stations = _db->similar_stations(st->callsign, st->time_seen);
         if(related_stations.size()>1 && mobile)
         {
             icon = "15_0";
+            /*
+            AprsStation *next = related_stations[1];
+            QPointF next_pos = QPointF(next->longitude,next->latitude);
+
+            QPointF next_xypos = Util::convertToXY(next_pos, zoom);
+            QLineF progress_line(next_xypos,xypos);
+
+            QColor colour(77,255,241,45);
+            QBrush brush(colour);
+
+            QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
+            lines->push_back(pos);
+            lines->push_back(next_pos);
+            */
         }
         else
         {
             icon = st->getImage();
         }
-
+        //_aprs_lines.insert(st->callsign,lines);
         //icon = st->getImage();
         filename.append(icon).append(".png");
         QPixmap pixmap(filename);
@@ -760,9 +803,7 @@ void MainWindow::restoreMapState()
         pic->setAcceptHoverEvents(true);
 
         _view->_childView->scene()->addItem(pic);
-        QPointF pos = QPointF(st->longitude,st->latitude);
-        int zoom = _view->zoomLevel();
-        QPointF xypos = Util::convertToXY(pos, zoom);
+
         pic->setMessage(st->callsign,st->via,st->message);
         pic->setPosition(xypos);
         pic->setOffset(xypos - QPoint(7,25));
@@ -1497,7 +1538,7 @@ void MainWindow::drawPlot(double lon, double lat,
         int alpha = _plot_opacity;
         QColor colour = Util::getScaleColor(signal, alpha);
         QBrush brush(colour);
-        QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(QBrush(QColor(0,0,0,0)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QPolygonF poly;
         poly << xy_plot_pos  << xy_plot_pos3 << xy_plot_pos2 << xy_plot_pos1;
 

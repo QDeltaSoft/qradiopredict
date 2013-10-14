@@ -200,6 +200,8 @@ private:
     int _last_station_id;
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
+    typedef QVector<QPointF> draw_lines;
+    QMap<QString,draw_lines*> _aprs_lines;
     QPointF _last_plot_point;
     QMap<QGraphicsPolygonItem*, PlotPolygon*> _plot_points;
     int _plot_opacity;

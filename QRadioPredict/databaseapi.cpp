@@ -37,7 +37,7 @@ DatabaseApi::similar_stations(QString &callsign, int time)
 {
     QVector<AprsStation *> stations;
     QSqlQuery query(_db);
-    query.prepare("SELECT * FROM aprs_stations WHERE callsign=:callsign AND time_seen>=:time ORDER BY time_seen,id DESC");
+    query.prepare("SELECT * FROM aprs_stations WHERE callsign=:callsign AND time_seen>=:time ORDER BY time_seen ASC");
     query.bindValue(":callsign", callsign);
     query.bindValue(":time", time);
     query.exec();
