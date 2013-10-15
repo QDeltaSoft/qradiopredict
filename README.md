@@ -27,7 +27,7 @@ Download
 
 QRadioPredict is distributed as source code package and binaries for Linux. Please see https://sourceforge.net/projects/qradiopredict/ for downloads.
 To run QRadioPredict you need to have installed the following:
-- Qt >= 5.0
+- Qt >= 4.7
 - Sqlite 3
 - GDAL >= 1.9.2 with GEOS bindings
 - GEOS
@@ -62,7 +62,7 @@ Installation from source
 The source code is hosted on Github: https://github.com/k/qradiopredict
 
 To compile qradiopredict from source you need the following dependencies:
-- Qt 5
+- Qt >=4.7
 - Sqlite 3
 - GDAL >= 1.7.0 compiled with GEOS (if using clutter attenuation)
 - optionally Qt Creator (qradiopredict works with Qt 5)
@@ -75,7 +75,7 @@ $ git clone https://github.com/k/qradiopredict.git qradiopredict
 $ cd qradiopredict
 $ mkdir build
 $ cd build
-$ qmake ..
+$ qmake-qt4 ..
 $ make
 </pre>
 

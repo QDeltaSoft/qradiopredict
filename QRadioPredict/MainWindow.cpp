@@ -315,11 +315,11 @@ void MainWindow::changeAPRSTimeFilter(int hours)
         _map_aprs.insert(img, ic);
 
         QString callsign_text;
-        QRegularExpression re(";(.+?)\\*");
-        QRegularExpressionMatch match = re.match(st->payload);
-        if(match.hasMatch())
+        QRegExp re(";(.+?)\\*");
+        //QRegularExpressionMatch match = re.match(st->payload);
+        if(re.exactMatch(st->payload))
         {
-            callsign_text = match.captured(1);
+            callsign_text = re.cap(1);
         }
         else
         {
@@ -409,11 +409,11 @@ void MainWindow::processAPRSData(AprsStation *st)
     _map_aprs.insert(img, ic);
 
     QString callsign_text;
-    QRegularExpression re(";(.+?)\\*");
-    QRegularExpressionMatch match = re.match(st->payload);
-    if(match.hasMatch())
+    QRegExp re(";(.+?)\\*");
+    //QRegularExpressionMatch match = re.match(st->payload);
+    if(re.exactMatch(st->payload))
     {
-        callsign_text = match.captured(1);
+        callsign_text = re.cap(1);
     }
     else
     {
@@ -752,11 +752,11 @@ void MainWindow::restoreMapState()
         AprsStation *st = aprs_stations.at(i);
         QString callsign_text;
         bool mobile = false;
-        QRegularExpression re(";(.+?)\\*");
-        QRegularExpressionMatch match = re.match(st->payload);
-        if(match.hasMatch())
+        QRegExp re(";(.+?)\\*");
+        //QRegularExpressionMatch match = re.match(st->payload);
+        if(re.exactMatch(st->payload))
         {
-            callsign_text = match.captured(1);
+            callsign_text = re.cap(1);
         }
         else
         {

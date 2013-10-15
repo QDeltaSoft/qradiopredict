@@ -96,7 +96,8 @@ QString ShpReader::getTerrainType()
     return QString("none");
 }
 
-
+// I'm trying very hard to make this function faster
+// It's extremely slow right now
 QString ShpReader::openShapefile(QString &name, QString &terrain_type)
 {
 
@@ -138,7 +139,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
         if( poGeometry != NULL)
         {
 
-            // this code relies on binary export; multipolygons are skipped
+            // this code relies on binary export; multipolygons are skipped using GEOS
 
             int buf_size = poGeometry->WkbSize();
             unsigned char *buffer = new unsigned char[buf_size];

@@ -94,7 +94,7 @@
 #include <QGraphicsRectItem>
 #include <QObject>
 #include <QScrollBar>
-
+#include <QRegExp>
 
 namespace Ui {
 class MainWindow;
@@ -200,8 +200,9 @@ private:
     int _last_station_id;
     QVector<int> _station_ids;
     QVector<QGraphicsLineItem*> _signal_lines;
+    QVector<QGraphicsLineItem*> _aprs_lines;
     typedef QVector<QPointF> draw_lines;
-    QMap<QString,draw_lines*> _aprs_lines;
+    //QMap<QString,draw_lines*> _aprs_lines;
     QPointF _last_plot_point;
     QMap<QGraphicsPolygonItem*, PlotPolygon*> _plot_points;
     int _plot_opacity;

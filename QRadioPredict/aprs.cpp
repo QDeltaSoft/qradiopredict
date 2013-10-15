@@ -134,13 +134,13 @@ void Aprs::processData()
 
         QString lat;
         QString lon;
-        QRegularExpression re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)(.+)");
-        QRegularExpressionMatch match = re.match(payload);
-        if (match.hasMatch()) {
-            lat = match.captured(1);
-            lon = match.captured(3);
-            QString symbol = match.captured(4);
-            QString message = match.captured(5);
+        QRegExp re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)(.+)");
+        //QRegularExpressionMatch match = re.match(payload);
+        if (re.exactMatch(payload)) {
+            lat = re.cap(1);
+            lon = re.cap(3);
+            QString symbol = re.cap(4);
+            QString message = re.cap(5);
             QString lat_degrees;
             QString lon_degrees;
             lat_degrees.append(lat[0]).append(lat[1]);

@@ -23,8 +23,8 @@
 #include <QPointF>
 #include <QString>
 #include <QStringList>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
+
+#include <QRegExp>
 #include "aprsstation.h"
 #include <QTime>
 #include <QDateTime>
