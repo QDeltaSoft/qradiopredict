@@ -612,32 +612,36 @@ void MainWindow::setMapItems(quint8 zoom)
 
         }
     }
-    /*
+
     {
-        QMapIterator<QString, draw_lines*> it(_aprs_lines);
-        while (it.hasNext())
+
+        for (int i=0;i<_aprs_lines.size();++i)
+        {
+            _view->_childView->scene()->removeItem(_aprs_lines.at(i));
+
+        }
+
+
+        QMapIterator<QString,draw_lines> it(_moving_stations);
+        while(it.hasNext())
         {
             it.next();
+            QPointF pos = it.value().at(0);
+            QPointF next_pos = it.value().at(1);
+            QPointF xypos = Util::convertToXY(pos, zoom);
+            QPointF next_xypos = Util::convertToXY(next_pos, zoom);
+            QLineF progress_line(next_xypos,xypos);
 
-            for(int i=0;i<it.value()->size()-1;++i)
-            {
+            QColor colour(30,169,255,254);
+            QBrush brush(colour);
 
-                QPointF pos = it.value()->at(i);
-                QPointF next_pos = it.value()->at(i+1);
-                QPointF xypos = Util::convertToXY(pos, zoom);
-                QPointF next_xypos = Util::convertToXY(next_pos, zoom);
-                QLineF progress_line(next_xypos,xypos);
-
-                QColor colour(77,255,241,45);
-                QBrush brush(colour);
-
-                QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-                QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
-
-            }
+            QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
+            _aprs_lines.push_back(line1);
         }
+
     }
-    */
+
     {
         _tb->ui->progressBar->setVisible(true);
         int size= _plot_points.size();
@@ -769,26 +773,28 @@ void MainWindow::restoreMapState()
         QPointF pos = QPointF(st->longitude,st->latitude);
         int zoom = _view->zoomLevel();
         QPointF xypos = Util::convertToXY(pos, zoom);
-        //draw_lines *lines = new draw_lines;
+
         QVector<AprsStation *> related_stations = _db->similar_stations(st->callsign, st->time_seen);
         if(related_stations.size()>1 && mobile)
         {
             icon = "15_0";
-            /*
+
             AprsStation *next = related_stations[1];
             QPointF next_pos = QPointF(next->longitude,next->latitude);
 
             QPointF next_xypos = Util::convertToXY(next_pos, zoom);
             QLineF progress_line(next_xypos,xypos);
 
-            QColor colour(77,255,241,45);
+            QColor colour(30,169,255,254);
             QBrush brush(colour);
 
             QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
             QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
-            lines->push_back(pos);
-            lines->push_back(next_pos);
-            */
+            _aprs_lines.push_back(line1);
+            draw_lines lines;
+            lines.push_back(pos);
+            lines.push_back(next_pos);
+            _moving_stations.insertMulti(st->callsign,lines);
         }
         else
         {
@@ -812,13 +818,15 @@ void MainWindow::restoreMapState()
         ic.icon = icon;
         _map_aprs.insert(pic, ic);
 
+        if(!(related_stations.size()>1) || !mobile)
+        {
+            QGraphicsTextItem * callsign = new QGraphicsTextItem;
+            callsign->setPos(xypos - QPoint(0,16));
+            callsign->setPlainText(callsign_text);
+            _view->_childView->scene()->addItem(callsign);
+            _map_aprs_text.insert(callsign,pos);
+        }
 
-        QGraphicsTextItem * callsign = new QGraphicsTextItem;
-        callsign->setPos(xypos - QPoint(0,16));
-        callsign->setPlainText(callsign_text);
-
-        _view->_childView->scene()->addItem(callsign);
-        _map_aprs_text.insert(callsign,pos);
         delete st;
     }
     aprs_stations.clear();

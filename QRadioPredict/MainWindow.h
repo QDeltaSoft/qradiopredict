@@ -202,7 +202,7 @@ private:
     QVector<QGraphicsLineItem*> _signal_lines;
     QVector<QGraphicsLineItem*> _aprs_lines;
     typedef QVector<QPointF> draw_lines;
-    //QMap<QString,draw_lines*> _aprs_lines;
+    QMap<QString,draw_lines> _moving_stations;
     QPointF _last_plot_point;
     QMap<QGraphicsPolygonItem*, PlotPolygon*> _plot_points;
     int _plot_opacity;
