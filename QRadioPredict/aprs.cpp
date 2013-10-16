@@ -136,7 +136,7 @@ void Aprs::processData()
         QString lon;
         QRegExp re("(\\d\\d\\d\\d\\.\\d\\d\\w)(.)*(\\d\\d\\d\\d\\d.\\d\\d\\w)(\\S)(.+)");
         //QRegularExpressionMatch match = re.match(payload);
-        if (re.exactMatch(payload)) {
+        if (re.indexIn(payload)!=-1) {
             lat = re.cap(1);
             lon = re.cap(3);
             QString symbol = re.cap(4);

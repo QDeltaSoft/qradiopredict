@@ -40,6 +40,9 @@ public:
     ~DatabaseApi();
 
     QVector<AprsStation *>
+    older_positions(QString &callsign, int time);
+
+    QVector<AprsStation *>
     similar_stations(QString &callsign, int time);
 
     QVector<AprsStation *>

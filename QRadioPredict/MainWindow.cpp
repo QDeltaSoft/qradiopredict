@@ -294,11 +294,49 @@ void MainWindow::changeAPRSTimeFilter(int hours)
     for(int k=0;k<filtered_stations.size();++k)
     {
         AprsStation *st = filtered_stations[k];
+        bool replace_icon = false;
+        bool mobile = false;
+        if(st->payload.startsWith('=') || st->payload.startsWith('/'))
+            mobile= true;
+        QVector<AprsStation *> related_stations = _db->similar_stations(st->callsign, st->time_seen);
+        if(related_stations.size()>1 && mobile)
+        {
+            replace_icon = true;
+        }
+
         QPointF pos(st->longitude,st->latitude);
         double zoom = _view->zoomLevel();
+        QPointF xypos = Util::convertToXY(pos, zoom);
         QString filename = ":aprs/aprs_icons/slice_";
         AprsIcon ic;
-        QString icon = st->getImage();
+        QString icon;
+        if(replace_icon)
+        {
+            icon = "15_0";
+
+            AprsStation *next = related_stations[1];
+            QPointF next_pos = QPointF(next->longitude,next->latitude);
+
+            QPointF next_xypos = Util::convertToXY(next_pos, zoom);
+            QLineF progress_line(next_xypos,xypos);
+
+            QColor colour(30,169,255,254);
+            QBrush brush(colour);
+
+            QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
+            _aprs_lines.push_back(line1);
+            draw_lines lines;
+            lines.push_back(pos);
+            lines.push_back(next_pos);
+            _moving_stations.insertMulti(st->callsign,lines);
+        }
+        else
+        {
+            icon = st->getImage();
+        }
+
+
         ic.icon = icon;
         ic.position = pos;
         filename.append(icon).append(".png");
@@ -308,16 +346,16 @@ void MainWindow::changeAPRSTimeFilter(int hours)
         img->setAcceptHoverEvents(true);
 
         _view->_childView->scene()->addItem(img);
-        QPointF xypos = Util::convertToXY(pos, zoom);
+
         img->setMessage(st->callsign,st->via,st->message);
         img->setPosition(xypos);
         img->setOffset(xypos - QPoint(8,8));
         _map_aprs.insert(img, ic);
 
         QString callsign_text;
-        QRegExp re(";(.+?)\\*");
+        QRegExp re(";([^*]+)\\*");
         //QRegularExpressionMatch match = re.match(st->payload);
-        if(re.exactMatch(st->payload))
+        if(re.indexIn(st->payload)!=-1)
         {
             callsign_text = re.cap(1);
         }
@@ -325,12 +363,15 @@ void MainWindow::changeAPRSTimeFilter(int hours)
         {
             callsign_text = st->callsign;
         }
-        QGraphicsTextItem * callsign = new QGraphicsTextItem;
-        callsign->setPos(xypos - QPoint(0,16));
-        callsign->setPlainText(callsign_text);
+        if(!replace_icon)
+        {
+            QGraphicsTextItem * callsign = new QGraphicsTextItem;
+            callsign->setPos(xypos - QPoint(0,16));
+            callsign->setPlainText(callsign_text);
 
-        _view->_childView->scene()->addItem(callsign);
-        _map_aprs_text.insert(callsign,pos);
+            _view->_childView->scene()->addItem(callsign);
+            _map_aprs_text.insert(callsign,pos);
+        }
         delete st;
     }
 
@@ -366,6 +407,18 @@ void MainWindow::processRawAPRSData(QString data)
 void MainWindow::processAPRSData(AprsStation *st)
 {
 
+    QString filename = ":aprs/aprs_icons/slice_";
+    QPointF pos(st->longitude,st->latitude);
+    double zoom = _view->zoomLevel();
+    bool replace_icon = false;
+    bool mobile = false;
+    if(st->payload.startsWith('=') || st->payload.startsWith('/'))
+        mobile= true;
+    QVector<AprsStation *> older_pos = _db->older_positions(st->callsign, st->time_seen);
+    if(older_pos.size()>1 && mobile)
+    {
+        replace_icon = true;
+    }
     QMapIterator<AprsPixmapItem*, AprsIcon> i(_map_aprs);
     while(i.hasNext())
     {
@@ -377,18 +430,35 @@ void MainWindow::processAPRSData(AprsStation *st)
         {
             return;
         }
-        if((ic.callsign == st->callsign) &&
-                (fabs(pos.rx() - st->longitude) > 0.001) &&
-                (fabs(pos.ry() - st->latitude) >0.001 ) &&
-                (ic.time_seen > (st->time_seen - 3600)))
+        if(replace_icon)
         {
 
+            _view->_childView->scene()->removeItem(i.key());
+            AprsIcon ic;
+            QString icon = "15_0";
+            ic.icon = icon;
+            ic.position = pos;
+            ic.callsign = st->callsign;
+            ic.time_seen = st->time_seen;
+            filename.append(icon).append(".png");
+            QPixmap pixmap(filename);
+            pixmap = pixmap.scaled(16,16);
+            AprsPixmapItem *img = new AprsPixmapItem(pixmap);
+            img->setAcceptHoverEvents(true);
+
+            _view->_childView->scene()->addItem(img);
+            QPointF xypos = Util::convertToXY(pos, zoom);
+            img->setMessage(st->callsign,st->via,st->message);
+            img->setPosition(xypos);
+            img->setOffset(xypos - QPoint(8,8));
+            delete i.key();
+            _map_aprs.remove(i.key());
+            _map_aprs.insert(img, ic);
         }
 
     }
-    QPointF pos(st->longitude,st->latitude);
-    double zoom = _view->zoomLevel();
-    QString filename = ":aprs/aprs_icons/slice_";
+
+
     AprsIcon ic;
     QString icon = st->getImage();
     ic.icon = icon;
@@ -409,9 +479,9 @@ void MainWindow::processAPRSData(AprsStation *st)
     _map_aprs.insert(img, ic);
 
     QString callsign_text;
-    QRegExp re(";(.+?)\\*");
+    QRegExp re(";([^*]+)\\*");
     //QRegularExpressionMatch match = re.match(st->payload);
-    if(re.exactMatch(st->payload))
+    if(re.indexIn(st->payload)!=-1)
     {
         callsign_text = re.cap(1);
     }
@@ -617,9 +687,11 @@ void MainWindow::setMapItems(quint8 zoom)
 
         for (int i=0;i<_aprs_lines.size();++i)
         {
-            _view->_childView->scene()->removeItem(_aprs_lines.at(i));
 
+            _view->_childView->scene()->removeItem(_aprs_lines.at(i));
+            delete _aprs_lines.at(i);
         }
+        _aprs_lines.clear();
 
 
         QMapIterator<QString,draw_lines> it(_moving_stations);
@@ -756,9 +828,9 @@ void MainWindow::restoreMapState()
         AprsStation *st = aprs_stations.at(i);
         QString callsign_text;
         bool mobile = false;
-        QRegExp re(";(.+?)\\*");
+        QRegExp re(";([^*]+)\\*");
         //QRegularExpressionMatch match = re.match(st->payload);
-        if(re.exactMatch(st->payload))
+        if(re.indexIn(st->payload)!=-1)
         {
             callsign_text = re.cap(1);
         }
