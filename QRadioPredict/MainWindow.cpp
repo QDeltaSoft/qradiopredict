@@ -288,6 +288,14 @@ void MainWindow::changeAPRSTimeFilter(int hours)
     }
     _map_aprs_text.clear();
 
+    for (int i=0;i<_aprs_lines.size();++i)
+    {
+
+        _view->_childView->scene()->removeItem(_aprs_lines.at(i));
+        delete _aprs_lines.at(i);
+    }
+    _aprs_lines.clear();
+
     int time_now = QDateTime::currentDateTime().toTime_t();
 
     QVector<AprsStation *> filtered_stations = _db->filter_aprs_stations(time_now - (hours*3600));
