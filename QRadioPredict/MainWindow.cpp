@@ -415,7 +415,7 @@ void MainWindow::processRawAPRSData(QString data)
 void MainWindow::processAPRSData(AprsStation *st)
 {
     double zoom = _view->zoomLevel();
-    QString filename = ":aprs/aprs_icons/slice_";
+
     QPointF pos(st->longitude,st->latitude);
     QPointF xypos = Util::convertToXY(pos, zoom);
 
@@ -458,7 +458,7 @@ void MainWindow::processAPRSData(AprsStation *st)
         AprsPixmapItem *pm = i.key();
         if(replace_icon && (pm->_callsign == st->callsign))
         {
-
+            QString filename1 = ":aprs/aprs_icons/slice_";
             _view->_childView->scene()->removeItem(i.key());
             AprsIcon newic;
             QString newicon = "15_0";
@@ -466,8 +466,8 @@ void MainWindow::processAPRSData(AprsStation *st)
             newic.position = oldpos;
             newic.callsign = st->callsign;
             newic.time_seen = st->time_seen;
-            filename.append(newicon).append(".png");
-            QPixmap newpixmap(filename);
+            filename1.append(newicon).append(".png");
+            QPixmap newpixmap(filename1);
             newpixmap = newpixmap.scaled(16,16);
             AprsPixmapItem *newimg = new AprsPixmapItem(newpixmap);
             newimg->setAcceptHoverEvents(true);
@@ -485,7 +485,7 @@ void MainWindow::processAPRSData(AprsStation *st)
 
     }
 
-    filename = ":aprs/aprs_icons/slice_";
+    QString filename = ":aprs/aprs_icons/slice_";
     AprsIcon ic;
     QString icon = st->getImage();
     ic.icon = icon;
