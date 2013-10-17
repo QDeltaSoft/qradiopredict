@@ -427,6 +427,22 @@ void MainWindow::processAPRSData(AprsStation *st)
     if(older_pos.size()>0 && mobile)
     {
         replace_icon = true;
+        AprsStation *oldst = older_pos.at(0);
+        QPointF oldpos(oldst->longitude,oldst->latitude);
+        QPointF oldxypos = Util::convertToXY(oldpos, zoom);
+        QLineF progress_line(xypos,oldxypos);
+
+        QColor colour(30,169,255,254);
+        QBrush brush(colour);
+
+        QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
+        _aprs_lines.push_back(line1);
+        draw_lines lines;
+        lines.push_back(oldpos);
+        lines.push_back(pos);
+        _moving_stations.insertMulti(st->callsign,lines);
+
     }
     QMapIterator<AprsPixmapItem*, AprsIcon> i(_map_aprs);
     while(i.hasNext())
@@ -464,20 +480,7 @@ void MainWindow::processAPRSData(AprsStation *st)
             delete i.key();
             _map_aprs.remove(i.key());
             _map_aprs.insert(newimg, newic);
-            /*
-            QLineF progress_line(xypos,oldxypos);
 
-            QColor colour(30,169,255,254);
-            QBrush brush(colour);
-
-            QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-            QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
-            _aprs_lines.push_back(line1);
-            draw_lines lines;
-            lines.push_back(oldpos);
-            lines.push_back(pos);
-            _moving_stations.insertMulti(st->callsign,lines);
-            */
         }
 
     }
