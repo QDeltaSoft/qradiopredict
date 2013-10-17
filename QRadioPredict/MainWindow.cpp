@@ -421,7 +421,8 @@ void MainWindow::processAPRSData(AprsStation *st)
 
     bool replace_icon = false;
     bool mobile = false;
-    if(st->payload.startsWith('=') || st->payload.startsWith('/') || st->payload.startsWith('@'))
+    if(st->payload.startsWith('=') || st->payload.startsWith('/')
+            || st->payload.startsWith('@') || st->payload.startsWith('!'))
         mobile= true;
     QVector<AprsStation *> older_pos = _db->older_positions(st->callsign, st->time_seen);
     if(older_pos.size()>0 && mobile)
@@ -877,7 +878,8 @@ void MainWindow::restoreMapState()
         {
             callsign_text = st->callsign;
         }
-        if(st->payload.startsWith('=') || st->payload.startsWith('/'))
+        if(st->payload.startsWith('=') || st->payload.startsWith('/')
+                || st->payload.startsWith('@') || st->payload.startsWith('!'))
             mobile= true;
         QString filename = ":aprs/aprs_icons/slice_";
         QString icon;
