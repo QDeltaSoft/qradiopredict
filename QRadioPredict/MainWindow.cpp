@@ -414,16 +414,17 @@ void MainWindow::processRawAPRSData(QString data)
 
 void MainWindow::processAPRSData(AprsStation *st)
 {
-
+    double zoom = _view->zoomLevel();
     QString filename = ":aprs/aprs_icons/slice_";
     QPointF pos(st->longitude,st->latitude);
-    double zoom = _view->zoomLevel();
+    QPointF xypos = Util::convertToXY(pos, zoom);
+
     bool replace_icon = false;
     bool mobile = false;
-    if(st->payload.startsWith('=') || st->payload.startsWith('/'))
+    if(st->payload.startsWith('=') || st->payload.startsWith('/') || st->payload.startsWith('@'))
         mobile= true;
     QVector<AprsStation *> older_pos = _db->older_positions(st->callsign, st->time_seen);
-    if(older_pos.size()>1 && mobile)
+    if(older_pos.size()>0 && mobile)
     {
         replace_icon = true;
     }
@@ -431,42 +432,57 @@ void MainWindow::processAPRSData(AprsStation *st)
     while(i.hasNext())
     {
         i.next();
-        AprsIcon ic = i.value();
-        QPointF pos= ic.position;
-        if( (fabs(pos.rx() - st->longitude) <= 0.001) && (fabs(pos.ry() - st->latitude) <=0.001 )
-                && (ic.icon==st->getImage()) )
+        AprsIcon oldic = i.value();
+        QPointF oldpos= oldic.position;
+        if( (fabs(oldpos.rx() - st->longitude) <= 0.001) && (fabs(oldpos.ry() - st->latitude) <=0.001 )
+                && (oldic.icon==st->getImage()) )
         {
             return;
         }
-        if(replace_icon)
+        AprsPixmapItem *pm = i.key();
+        if(replace_icon && (pm->_callsign == st->callsign))
         {
 
             _view->_childView->scene()->removeItem(i.key());
-            AprsIcon ic;
-            QString icon = "15_0";
-            ic.icon = icon;
-            ic.position = pos;
-            ic.callsign = st->callsign;
-            ic.time_seen = st->time_seen;
-            filename.append(icon).append(".png");
-            QPixmap pixmap(filename);
-            pixmap = pixmap.scaled(16,16);
-            AprsPixmapItem *img = new AprsPixmapItem(pixmap);
-            img->setAcceptHoverEvents(true);
+            AprsIcon newic;
+            QString newicon = "15_0";
+            newic.icon = newicon;
+            newic.position = oldpos;
+            newic.callsign = st->callsign;
+            newic.time_seen = st->time_seen;
+            filename.append(newicon).append(".png");
+            QPixmap newpixmap(filename);
+            newpixmap = newpixmap.scaled(16,16);
+            AprsPixmapItem *newimg = new AprsPixmapItem(newpixmap);
+            newimg->setAcceptHoverEvents(true);
 
-            _view->_childView->scene()->addItem(img);
-            QPointF xypos = Util::convertToXY(pos, zoom);
-            img->setMessage(st->callsign,st->via,st->message);
-            img->setPosition(xypos);
-            img->setOffset(xypos - QPoint(8,8));
+            _view->_childView->scene()->addItem(newimg);
+            QPointF oldxypos = Util::convertToXY(oldpos, zoom);
+            newimg->setMessage(st->callsign,st->via,st->message);
+            newimg->setPosition(oldxypos);
+            newimg->setOffset(oldxypos - QPoint(8,8));
             delete i.key();
             _map_aprs.remove(i.key());
-            _map_aprs.insert(img, ic);
+            _map_aprs.insert(newimg, newic);
+            /*
+            QLineF progress_line(xypos,oldxypos);
+
+            QColor colour(30,169,255,254);
+            QBrush brush(colour);
+
+            QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
+            _aprs_lines.push_back(line1);
+            draw_lines lines;
+            lines.push_back(oldpos);
+            lines.push_back(pos);
+            _moving_stations.insertMulti(st->callsign,lines);
+            */
         }
 
     }
 
-
+    filename = ":aprs/aprs_icons/slice_";
     AprsIcon ic;
     QString icon = st->getImage();
     ic.icon = icon;
@@ -480,7 +496,7 @@ void MainWindow::processAPRSData(AprsStation *st)
     img->setAcceptHoverEvents(true);
 
     _view->_childView->scene()->addItem(img);
-    QPointF xypos = Util::convertToXY(pos, zoom);
+
     img->setMessage(st->callsign,st->via,st->message);
     img->setPosition(xypos);
     img->setOffset(xypos - QPoint(8,8));
@@ -496,6 +512,18 @@ void MainWindow::processAPRSData(AprsStation *st)
     else
     {
         callsign_text = st->callsign;
+    }
+    QMapIterator<QGraphicsTextItem*, QPointF> j(_map_aprs_text);
+    while(j.hasNext())
+    {
+        j.next();
+        QGraphicsTextItem *c = j.key();
+        if((c->toPlainText()==callsign_text) && replace_icon)
+        {
+            _view->_childView->scene()->removeItem(c);
+            delete c;
+            _map_aprs_text.remove(c);
+        }
     }
     QGraphicsTextItem * callsign = new QGraphicsTextItem;
     callsign->setPos(xypos - QPoint(0,16));
