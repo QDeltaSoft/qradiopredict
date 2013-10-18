@@ -457,7 +457,7 @@ void MainWindow::processAPRSData(AprsStation *st)
             return;
         }
         AprsPixmapItem *pm = i.key();
-        if(replace_icon && (pm->_callsign == st->callsign))
+        if(replace_icon && (pm->_callsign == st->callsign) && (oldic.icon!="15_0"))
         {
             QString filename1 = ":aprs/aprs_icons/slice_";
             _view->_childView->scene()->removeItem(i.key());
