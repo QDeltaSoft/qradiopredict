@@ -1,7 +1,7 @@
 QRadioPredict
 ====
 
-QRadioPredict is an experimental software for VHF-UHF propagation prediction and radio coverage analysis. Currently it works on Linux and has the following features:
+QRadioPredict is an experimental software for VHF-UHF propagation prediction and radio coverage analysis. Currently it works on Linux and Windows 32 bit (Vista) and has the following features:
 - Uses the Irregular Terrain Model, also known as Longley-Rice
 - Can be used as a repeater site planing tool
 - Static signal plot coverage, distance configurable
@@ -25,7 +25,7 @@ QRadioPredict can operate as a traditional standalone program with static plots 
 Download
 --------
 
-QRadioPredict is distributed as source code package and binaries for Linux. Please see https://sourceforge.net/projects/qradiopredict/ for downloads.
+QRadioPredict is distributed as source code package and binaries for Linux and Windows. Please see https://sourceforge.net/projects/qradiopredict/ for downloads.
 To run QRadioPredict you need to have installed the following:
 - Qt >= 4.7
 - Sqlite 3
@@ -34,21 +34,21 @@ To run QRadioPredict you need to have installed the following:
 
 On Debian: apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0
 
-
 Usage
 -----
 
-Run the bash script qradiopredict.
+Linux: Run the bash script qradiopredict.
 The first time you start QRadioPredict you should open Edit -> Settings and set your local preferences and paths. 
 Then, you might want to add a mobile station on the map, and up to four ground stations. Set the locations for the mobile using the flightplan tab. Each ground station tab has a button which generates 2D plots on the map. Set the opacity of the plot using the slider on the top right side, and the plot distance using the filed just below the opacity slider. Run the program standalone, or connect it to Flightgear by pressing the "Start Flightgear" button and then after it has started, the connect button. Send all data to Flightgear by pressing the third button, which should start your simulation.
-The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size.
-The clutter data should be shapefiles obtained from the CLC2006 project, and cropped to 1 degree size. Use the clip.py script to crop the shapefiles to the required size. Needs OGR and GDAL installed. Adjust the numbers to your location.
+The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size. After downloading the height files, fill in the setting box with the path to the directory where they are placed (no spaces).
+The clutter data should be shapefiles obtained from the CLC2006 project, and cropped to 1 degree size. Use the clip.py script to crop the shapefiles to the required size. Needs OGR and GDAL installed. Adjust the numbers in clip.py to your desired location. Fill in the setting box with the path to your shapefiles (no spaces).
+It is not recommended to tick the clutter checkbox when generating 2D plots.
 
 Known problems
 --------------
 
 Very slow static plot generation when enabling ground clutter: to be resolved in a future release.
-See the bug tracker on Github: https://github.com/k/QRadioPredict/issues
+See the bug tracker on Github: https://github.com/QDeltaSoft/QRadioPredict/issues
 
 
 Getting help and reporting bugs
@@ -59,7 +59,7 @@ You can either file a ticket at https://sourceforge.net/projects/qradiopredict/ 
 Installation from source
 ------------------------
 
-The source code is hosted on Github: https://github.com/k/qradiopredict
+The source code is hosted on Github: https://github.com/QDeltaSoft/qradiopredict
 
 To compile qradiopredict from source you need the following dependencies:
 - Qt >=4.7
@@ -71,7 +71,7 @@ On Debian: apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-
 QRadioPredict comes with a simple qmake build setup. It can be compiled from within Qt Creator or in a terminal:
 
 <pre>
-$ git clone https://github.com/k/qradiopredict.git qradiopredict
+$ git clone https://github.com/QDeltaSoft/qradiopredict.git qradiopredict
 $ cd qradiopredict
 $ mkdir build
 $ cd build
