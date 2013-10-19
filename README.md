@@ -32,7 +32,8 @@ To run QRadioPredict you need to have installed the following:
 - GDAL >= 1.9.2 with GEOS bindings
 - GEOS
 
-On Debian: apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0
+On Debian: 
+<pre>apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0</pre>
 
 Usage
 -----
@@ -40,9 +41,23 @@ Usage
 Linux: Run the bash script qradiopredict.
 The first time you start QRadioPredict you should open Edit -> Settings and set your local preferences and paths. 
 Then, you might want to add a mobile station on the map, and up to four ground stations. Set the locations for the mobile using the flightplan tab. Each ground station tab has a button which generates 2D plots on the map. Set the opacity of the plot using the slider on the top right side, and the plot distance using the filed just below the opacity slider. Run the program standalone, or connect it to Flightgear by pressing the "Start Flightgear" button and then after it has started, the connect button. Send all data to Flightgear by pressing the third button, which should start your simulation.
-The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size. After downloading the height files, fill in the setting box with the path to the directory where they are placed (no spaces).
-The clutter data should be shapefiles obtained from the CLC2006 project, and cropped to 1 degree size. Use the clip.py script to crop the shapefiles to the required size. Needs OGR and GDAL installed. Adjust the numbers in clip.py to your desired location. Fill in the setting box with the path to your shapefiles (no spaces).
+
+The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size.
+Tou can obtain the data from NASA sites like http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/Eurasia/
+After downloading the height files, fill in the setting box with the path to the directory where they are placed (no spaces).
+
+The clutter data should be shapefiles obtained from the CLC2006 project, and cropped to 1 degree size.
+You can download them from http://www.eea.europa.eu/data-and-maps/data/clc-2006-vector-data-version-2
+Use the clip.py script to crop the shapefiles to the required size (1 degree in height and width). Needs OGR and GDAL installed. Adjust the numbers in clip.py to your desired location. Fill in the setting box with the path to your shapefiles (no spaces).
 It is not recommended to tick the clutter checkbox when generating 2D plots.
+
+- Placing the mobile station on the map: click the top left button, the choose a location on the slippy map and double click on the map. You can't delete the mobile station from the map, but you can reposition it anywhere.
+- Placing a ground station: click on the second button from top left, the choose a map location and doubleclick on the map. You can then proceed to edit the station parameters in the tab on the left. Make sure to fill in the relevant fields, and press the Save button lower left. You can only have maximum four ground stations at a time. For now, antenna type and radiation pattern is not yet implemented.
+- Placing a waypoint: click the third button (which looks like a flag), choose a location on the map and doubleclick.
+
+You can delete a waypoint or a ground station by pressing the red X button on the lower left.
+When running standalone, the second button from the standalone group will sequence to the next waypoint.
+
 
 Known problems
 --------------
@@ -66,7 +81,8 @@ To compile qradiopredict from source you need the following dependencies:
 - Sqlite 3
 - GDAL >= 1.7.0 compiled with GEOS (if using clutter attenuation)
 - optionally Qt Creator (qradiopredict works with Qt 5)
-On Debian: apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0
+On Debian:
+<pre>apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0</pre>
 
 QRadioPredict comes with a simple qmake build setup. It can be compiled from within Qt Creator or in a terminal:
 
