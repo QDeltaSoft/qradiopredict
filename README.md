@@ -106,6 +106,7 @@ The Irregular Terrain Model was originally developed by the U.S. Department of C
 The MapGraphics library was coded by Raptorswing and comes with a FreeBSD license.
 Following people and organisations have contributed:
 
+- Mathias Froehlich and others, the geodesy math code
 - Holger Schurig, documenting the ITM source code in a good fashion
 - Raptorswing, providing the MapGraphics library, upon which this program is based
 
