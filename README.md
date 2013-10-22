@@ -26,11 +26,13 @@ Download
 --------
 
 QRadioPredict is distributed as source code package and binaries for Linux and Windows. Please see https://sourceforge.net/projects/qradiopredict/ for downloads.
-To run QRadioPredict you need to have installed the following:
+On Linux, to run QRadioPredict you need to have installed the following:
 - Qt >= 4.7
-- Sqlite 3
-- GDAL >= 1.9.2 with GEOS bindings
+- libsqlite 3
+- libGDAL >= 1.9.2 with GEOS bindings
 - GEOS
+- libboost
+- Cropping terrain shapefiles to required dimensions requires GDAL/OGR binaries
 
 On Debian: 
 <pre>apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0</pre>
@@ -78,9 +80,11 @@ The source code is hosted on Github: https://github.com/QDeltaSoft/qradiopredict
 
 To compile qradiopredict from source you need the following dependencies:
 - Qt >=4.7
-- Sqlite 3
-- GDAL >= 1.7.0 compiled with GEOS (if using clutter attenuation)
+- libsqlite 3
+- libboost
+- libGDAL >= 1.7.0 compiled with GEOS (if using clutter attenuation)
 - optionally Qt Creator (qradiopredict works with Qt 5)
+- to crop shapefiles, you need GDAL/OGR binaries
 On Debian:
 <pre>apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0</pre>
 
