@@ -44,14 +44,22 @@ Linux: Run the bash script qradiopredict.
 The first time you start QRadioPredict you should open Edit -> Settings and set your local preferences and paths. 
 Then, you might want to add a mobile station on the map, and up to four ground stations. Set the locations for the mobile using the flightplan tab. Each ground station tab has a button which generates 2D plots on the map. Set the opacity of the plot using the slider on the top right side, and the plot distance using the filed just below the opacity slider. Run the program standalone, or connect it to Flightgear by pressing the "Start Flightgear" button and then after it has started, the connect button. Send all data to Flightgear by pressing the third button, which should start your simulation.
 
-The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size.
-Tou can obtain the data from NASA sites like http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/Eurasia/
-After downloading the height files, fill in the setting box with the path to the directory where they are placed (no spaces).
 
-The clutter data should be shapefiles obtained from the CLC2006 project, and cropped to 1 degree size.
-You can download them from http://www.eea.europa.eu/data-and-maps/data/clc-2006-vector-data-version-2
-Use the clip.py script to crop the shapefiles to the required size (1 degree in height and width). Needs OGR and GDAL installed. Adjust the numbers in clip.py to your desired location. Fill in the setting box with the path to your shapefiles (no spaces).
-It is not recommended to tick the clutter checkbox when generating 2D plots.
+The terrain data format is NASA SRTM 3 arcsec, in HGT files which are 2884802 bytes in size.
+Tou can obtain the data from NASA sites like <a href="http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/Eurasia/">http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/Eurasia/</a>
+
+Newer versions with holes filled and contours seamless integrated are vailable from CGIAR (SRTM v4) <a href="http://www.cgiar-csi.org/data/srtm-90m-digital-elevation-database-v4-1">http://www.cgiar-csi.org/data/srtm-90m-digital-elevation-database-v4-1</a>.
+
+After downloading the height files, fill in the setting box with the path to the directory where they are placed (no spaces). <strong>Note:</strong> you need to extract the files before placing them in this directory. Only files with the extension <strong>.hgt</strong> are usable by the program.
+
+
+The clutter data should be shapefiles obtained from the CLC2006 project, and cropped to 1 degree size. You can also use any other type of terrain coverage data, as long as it is in classic shapefile format, and they are cropped into 1 degree tiles.
+
+You can download Europe shapefiles from <a href="http://www.eea.europa.eu/data-and-maps/data/clc-2006-vector-data-version-2">http://www.eea.europa.eu/data-and-maps/data/clc-2006-vector-data-version-2</a>.
+Alternatively, if you want to use global data from the global VMAP0 program as well as other sources, you can obtain them through the USGS interface <a href="http://landcover.usgs.gov/globallandcover.php">http://landcover.usgs.gov/globallandcover.php</a>.
+
+Use the included clip.py Python script to crop the shapefiles to the required size (1 degree in height and width). Needs Python 2.7, OGR and GDAL installed in order to run. Adjust the numbers in clip.py to your desired location. Fill in the application setting box with the path to your shapefiles directory (no spaces).
+<strong>It is not recommended to tick the clutter checkbox when generating 2D plots.</strong>
 
 - Placing the mobile station on the map: click the top left button, the choose a location on the slippy map and double click on the map. You can't delete the mobile station from the map, but you can reposition it anywhere.
 - Placing a ground station: click on the second button from top left, the choose a map location and doubleclick on the map. You can then proceed to edit the station parameters in the tab on the left. Make sure to fill in the relevant fields, and press the Save button lower left. You can only have maximum four ground stations at a time. For now, antenna type and radiation pattern is not yet implemented.
@@ -59,6 +67,8 @@ It is not recommended to tick the clutter checkbox when generating 2D plots.
 
 You can delete a waypoint or a ground station by pressing the red X button on the lower left.
 When running standalone, the second button from the standalone group will sequence to the next waypoint.
+
+<strong>Connecting to Flightgear:</strong> you should first read the Flightgear documentation at <a href="http://wiki.flightgear.org/Radio_propagation">http://wiki.flightgear.org/Radio_propagation</a> to understand how does the flight simulator fit into the radio environment. Note that the public available version may not be usable with QRadioPredict, due to stale (older) code. If you wish to use the latest Flighgear radio code, you should contact the author for details on obtaining and compiling from source.
 
 
 Known problems
