@@ -36,6 +36,7 @@ On Linux, to run QRadioPredict you need to have installed the following:
 
 On Debian: 
 <pre>apt-get install gdal-bin libgdal1 libgdal1-dev libgeos-3.3.3 libgeos-dev libsqlite3-0</pre>
+MacOSX: you can build the program from source, no binaries are available.
 
 Usage
 -----
