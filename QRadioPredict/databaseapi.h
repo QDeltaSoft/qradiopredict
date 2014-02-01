@@ -127,7 +127,7 @@ public:
                                        const double &tx_line_losses, const double &tx_power_watt,
                                        const double &rx_antenna_height, const QString &rx_antenna_type,
                                        const double &rx_antenna_gain, const double &rx_line_losses,
-                                       const double &rx_sensitivity, const unsigned &time);
+                                       const double &rx_sensitivity, const double &latitude, const double &longitude, const unsigned &time);
 
 
 

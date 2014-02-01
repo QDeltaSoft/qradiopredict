@@ -57,6 +57,8 @@ void GroundStationForm::saveGround()
     g->tx_antenna_gain = ui->txAntennaGainLineEdit->text().toDouble();
     g->tx_antenna_type = ui->txAntennaTypeLineEdit->text();
     g->tx_line_losses = ui->txLineLossesLineEdit->text().toDouble();
+    g->latitude = ui->latitudeEdit->text().toDouble();
+    g->longitude = ui->longitudeEdit->text().toDouble();
     g->enabled = 1;
     g->created_on = 0;
     emit haveData(g);
@@ -96,6 +98,8 @@ void GroundStationForm::plot()
     g->tx_antenna_gain = ui->txAntennaGainLineEdit->text().toDouble();
     g->tx_antenna_type = ui->txAntennaTypeLineEdit->text();
     g->tx_line_losses = ui->txLineLossesLineEdit->text().toDouble();
+    g->latitude = ui->latitudeEdit->text().toDouble();
+    g->longitude = ui->longitudeEdit->text().toDouble();
     g->enabled = 1;
     g->created_on = 0;
     emit plotStation(g);

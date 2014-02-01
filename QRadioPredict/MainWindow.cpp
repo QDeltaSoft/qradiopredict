@@ -105,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(setFPType()));
     QObject::connect(_tb->ui->addFPButton,SIGNAL(clicked()),this,SLOT(showEditBoxes()));
     QObject::connect(_tb->ui->clearLeftButton,SIGNAL(clicked()),this,SLOT(clearLeftDocks()));
+    QObject::connect(_tb->ui->terrainInfoButton,SIGNAL(clicked()),this,SLOT(setInfoType()));
 
     QObject::connect(_tb->ui->startFlightgearButton,SIGNAL(clicked()),this,SLOT(startFGFS()));
     QObject::connect(_tb->ui->connectTelnetButton,SIGNAL(clicked()),this->_telnet,SLOT(connectToFGFS()));
@@ -593,6 +594,8 @@ void MainWindow::mapClick(QPointF pos)
     QString lat;
     QDateTime dt = QDateTime::currentDateTime();
     unsigned time = dt.toTime_t();
+    SRTMReader r(_db);
+    double height;
     switch(_placed_item_type)
     {
     case 1:
@@ -650,6 +653,16 @@ void MainWindow::mapClick(QPointF pos)
         _db->add_flightplan_position(0,newpos.rx(),newpos.ry(),time);
     }
         break;
+
+    case 4:
+        _tb->ui->label_lat->setText(lat.setNum(newpos.rx()));
+        _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
+
+        r.setCoordinates(newpos.ry(),newpos.rx());
+        height = r.readHeight();
+        _tb->ui->labelAltitude->setText(QString::number(height));
+        break;
+
     default:
         qDebug("unknown op");
         break;
@@ -802,6 +815,11 @@ void MainWindow::setGroundType()
 void MainWindow::setFPType()
 {
     _placed_item_type = 3;
+}
+
+void MainWindow::setInfoType()
+{
+    _placed_item_type = 4;
 }
 
 
@@ -1053,7 +1071,7 @@ void MainWindow::showEditBoxes()
 
 
             QDockWidget *dw = new QDockWidget;
-            dw->setWindowTitle(QString::number( gs->id));
+            dw->setWindowTitle( gs->name);
             dw->setMaximumWidth(260);
             dw->setWidget(gs_form);
             this->addDockWidget(Qt::LeftDockWidgetArea,dw);
@@ -1137,7 +1155,9 @@ void MainWindow::saveGroundStation(GroundStation * g)
                                g->pitch_deg,g->polarization,g->tx_antenna_height,g->tx_antenna_type,
                                g->tx_antenna_gain,g->tx_line_losses,g->tx_power_watt,
                                g->rx_antenna_height,g->rx_antenna_type,g->rx_antenna_gain,
-                               g->rx_line_losses,g->rx_sensitivity,g->created_on);
+                               g->rx_line_losses,g->rx_sensitivity, g->latitude, g->longitude, g->created_on);
+
+    //TODO: move antenna position on map if necessary
     delete g;
 
 }

@@ -737,7 +737,8 @@ DatabaseApi::update_ground_station(const unsigned &id_session, const unsigned &i
                                    const double &tx_line_losses, const double &tx_power_watt,
                                    const double &rx_antenna_height, const QString &rx_antenna_type,
                                    const double &rx_antenna_gain, const double &rx_line_losses,
-                                   const double &rx_sensitivity, const unsigned &time)
+                                   const double &rx_sensitivity, const double &latitude, const double &longitude,
+                                   const unsigned &time)
 {
     QSqlQuery query(_db);
     query.prepare("UPDATE ground_stations SET id_session=:id_session,"
@@ -750,6 +751,7 @@ DatabaseApi::update_ground_station(const unsigned &id_session, const unsigned &i
                   "tx_power_watt = :tx_power_watt, rx_antenna_height=:rx_antenna_height,"
                   "rx_antenna_type=:rx_antenna_type, rx_antenna_gain=:rx_antenna_gain,"
                   "rx_sensitivity=:rx_sensitivity, rx_line_losses=:rx_line_losses,"
+                  "latitude=:latitude, longitude=:longitude,"
                   "created_on=:time WHERE id=:id");
     query.bindValue(":id_session", id_session);
     query.bindValue(":name", name);
@@ -770,6 +772,8 @@ DatabaseApi::update_ground_station(const unsigned &id_session, const unsigned &i
     query.bindValue(":rx_antenna_gain", rx_antenna_gain);
     query.bindValue(":rx_sensitivity", rx_sensitivity);
     query.bindValue(":rx_line_losses", rx_line_losses);
+    query.bindValue(":latitude", latitude);
+    query.bindValue(":longitude", longitude);
     query.bindValue(":time", time);
     query.bindValue(":id", id);
     query.exec();

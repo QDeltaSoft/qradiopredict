@@ -35,6 +35,7 @@
 #include "fgremote.h"
 #include "updater.h"
 #include "signal.h"
+#include "srtmreader.h"
 #include "toolbox.h"
 #include "mobileform.h"
 #include "ui_mobileform.h"
@@ -126,6 +127,7 @@ private slots:
     void setMobileType();
     void setGroundType();
     void setFPType();
+    void setInfoType();
     void showEditBoxes();
     void clearLeftDocks();
     void connectToAPRS();
