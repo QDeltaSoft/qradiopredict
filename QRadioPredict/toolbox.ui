@@ -75,7 +75,7 @@
      <x>358</x>
      <y>10</y>
      <width>221</width>
-     <height>79</height>
+     <height>95</height>
     </rect>
    </property>
    <property name="font">
@@ -335,7 +335,7 @@
      <x>210</x>
      <y>10</y>
      <width>131</width>
-     <height>79</height>
+     <height>95</height>
     </rect>
    </property>
    <property name="font">
@@ -416,7 +416,7 @@
      <x>594</x>
      <y>9</y>
      <width>141</width>
-     <height>81</height>
+     <height>95</height>
     </rect>
    </property>
    <property name="title">
@@ -468,7 +468,7 @@
      <x>748</x>
      <y>10</y>
      <width>211</width>
-     <height>83</height>
+     <height>93</height>
     </rect>
    </property>
    <property name="title">
@@ -483,7 +483,7 @@
       <x>10</x>
       <y>30</y>
       <width>141</width>
-      <height>16</height>
+      <height>19</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -493,7 +493,7 @@
      <number>254</number>
     </property>
     <property name="value">
-     <number>15</number>
+     <number>45</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -539,7 +539,7 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>54</y>
+      <y>56</y>
       <width>118</width>
       <height>20</height>
      </rect>
@@ -577,7 +577,7 @@
       <x>10</x>
       <y>56</y>
       <width>41</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -587,10 +587,10 @@
    <widget class="QPushButton" name="plotDistanceButton">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>56</x>
       <y>56</y>
-      <width>21</width>
-      <height>16</height>
+      <width>31</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="toolTip">
