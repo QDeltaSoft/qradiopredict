@@ -53,6 +53,8 @@ MainWindow::MainWindow(QWidget *parent) :
     MapGraphicsScene * scene = new MapGraphicsScene(this);
     MapGraphicsView * view = new MapGraphicsView(scene,this);
     _view=view;
+    _view->_childView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    _view->_childView->setRenderHint(QPainter::Antialiasing, false);
     //view->_childView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers | QGL::DirectRendering)));
     //view->_childView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     //view->_childView->update();
@@ -229,6 +231,7 @@ void MainWindow::connectToAPRS()
     {
          p = prefs[0];
          aprs_server = p->_aprs_server;
+         delete p;
     }
     else
     {
@@ -238,7 +241,7 @@ void MainWindow::connectToAPRS()
     QObject::connect(_aprs,SIGNAL(aprsData(AprsStation*)),this,SLOT(processAPRSData(AprsStation*)));
     QObject::connect(_aprs,SIGNAL(rawAprsData(QString)),this,SLOT(processRawAPRSData(QString)));
     QObject::connect(ui->actionRaw_APRS_messages,SIGNAL(triggered()),this,SLOT(showRawAPRSMessages()));
-    delete p;
+
     prefs.clear();
 }
 
