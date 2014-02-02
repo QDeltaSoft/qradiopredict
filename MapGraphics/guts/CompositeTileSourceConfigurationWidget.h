@@ -29,6 +29,8 @@ private slots:
     void addOSMTileLayer();
     void addMapQuestLayer();
     void addMapQuestSatLayer();
+    void addGoogleSatLayer();
+    void addGoogleMapLayer();
 
     void on_removeSourceButton_clicked();
 

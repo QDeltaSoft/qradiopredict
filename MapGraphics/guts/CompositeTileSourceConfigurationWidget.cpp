@@ -102,6 +102,28 @@ void CompositeTileSourceConfigurationWidget::addMapQuestSatLayer()
 }
 
 //private slot
+void CompositeTileSourceConfigurationWidget::addGoogleSatLayer()
+{
+    QSharedPointer<CompositeTileSource> composite = _composite.toStrongRef();
+    if (composite.isNull())
+        return;
+
+    QSharedPointer<OSMTileSource> source(new OSMTileSource(OSMTileSource::GoogleSatTiles));
+    composite->addSourceTop(source);
+}
+
+//private slot
+void CompositeTileSourceConfigurationWidget::addGoogleMapLayer()
+{
+    QSharedPointer<CompositeTileSource> composite = _composite.toStrongRef();
+    if (composite.isNull())
+        return;
+
+    QSharedPointer<OSMTileSource> source(new OSMTileSource(OSMTileSource::GoogleMapTiles));
+    composite->addSourceTop(source);
+}
+
+//private slot
 void CompositeTileSourceConfigurationWidget::on_removeSourceButton_clicked()
 {
     QItemSelectionModel * selModel = this->ui->listView->selectionModel();
@@ -208,5 +230,7 @@ void CompositeTileSourceConfigurationWidget::init()
     menu->addAction("OpenStreetMap Tiles", this, SLOT(addOSMTileLayer()));
     menu->addAction("MapQuest-OSM Tiles", this, SLOT(addMapQuestLayer()));
     menu->addAction("MapQuest Open Aerial Tiles", this, SLOT(addMapQuestSatLayer()));
+    menu->addAction("Google Sattelite Tiles", this, SLOT(addGoogleSatLayer()));
+    menu->addAction("Google Map Tiles", this, SLOT(addGoogleMapLayer()));
     this->ui->addSourceButton->setMenu(menu);
 }

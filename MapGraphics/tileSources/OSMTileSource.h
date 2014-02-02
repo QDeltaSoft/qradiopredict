@@ -17,7 +17,9 @@ public:
     {
         OSMTiles,
         MapQuestOSMTiles,
-        MapQuestAerialTiles
+        MapQuestAerialTiles,
+        GoogleSatTiles,
+        GoogleMapTiles
     };
 
 public:
