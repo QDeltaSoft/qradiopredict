@@ -183,6 +183,8 @@ private:
     void restoreMapState();
     void createActions();
     void createTrayIcon();
+    void clearMap();
+    void clearAPRS();
 
     //void closeEvent(QCloseEvent *event);
 

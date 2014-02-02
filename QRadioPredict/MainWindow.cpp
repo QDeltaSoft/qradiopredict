@@ -275,7 +275,7 @@ void MainWindow::showRawAPRSMessages()
     f->show();
 }
 
-void MainWindow::changeAPRSTimeFilter(int hours)
+void MainWindow::clearAPRS()
 {
     QMapIterator<AprsPixmapItem *, AprsIcon> i(_map_aprs);
     while(i.hasNext())
@@ -299,6 +299,11 @@ void MainWindow::changeAPRSTimeFilter(int hours)
         delete _aprs_lines.at(i);
     }
     _aprs_lines.clear();
+}
+
+void MainWindow::changeAPRSTimeFilter(int hours)
+{
+    this->clearAPRS();
 
     int time_now = QDateTime::currentDateTime().toTime_t();
 
@@ -1158,6 +1163,8 @@ void MainWindow::saveGroundStation(GroundStation * g)
                                g->rx_line_losses,g->rx_sensitivity, g->latitude, g->longitude, g->created_on);
 
     //TODO: move antenna position on map if necessary
+    this->clearMap();
+    this->restoreMapState();
     delete g;
 
 }
@@ -1792,6 +1799,42 @@ void MainWindow::clearPlot()
     }
     _plotvalues->clear();
     _plotvalues->resize(0);
+}
+
+void MainWindow::clearMap()
+{
+    {
+        QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_mobiles);
+        while (i.hasNext()) {
+            i.next();
+            _view->_childView->scene()->removeItem(i.key());
+            delete i.key();
+
+        }
+        _map_mobiles.clear();
+    }
+    {
+        QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_ground);
+        while (i.hasNext()) {
+            i.next();
+            _view->_childView->scene()->removeItem(i.key());
+            delete i.key();
+
+        }
+        _map_ground.clear();
+    }
+    {
+        QMapIterator<QGraphicsPixmapItem *, QPointF> i(_map_fppos);
+        while (i.hasNext()) {
+            i.next();
+            _view->_childView->scene()->removeItem(i.key());
+            delete i.key();
+
+        }
+        _map_fppos.clear();
+    }
+    this->clearAPRS();
+
 }
 
 void MainWindow::takeScreenshot()

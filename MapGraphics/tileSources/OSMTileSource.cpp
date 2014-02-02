@@ -97,7 +97,7 @@ QString OSMTileSource::name() const
 
 QString OSMTileSource::tileFileExtension() const
 {
-    if (_tileType == OSMTiles || _tileType == MapQuestOSMTiles || _tileType == GoogleSatTiles)
+    if (_tileType == OSMTiles || _tileType == MapQuestOSMTiles || _tileType == GoogleSatTiles || _tileType == GoogleMapTiles)
         return "png";
     else
         return "jpg";
