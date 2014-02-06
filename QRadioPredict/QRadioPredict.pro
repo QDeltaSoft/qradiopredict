@@ -40,6 +40,7 @@ SOURCES += main.cpp\
     radio/antenna.cxx \
     radio/radiosystem.cxx \
     radio/itm.cpp \
+    radio/itwom3.0.cpp \
     radio/scenerymanager.cpp \
     plotpolygon.cpp \
     plotvalue.cpp \
@@ -96,7 +97,8 @@ HEADERS  += MainWindow.h \
     plotvalue.h \
     savedialog.h \
     loaddialog.h \
-    about.h
+    about.h \
+    radio/itwom3.0.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
