@@ -41,6 +41,8 @@ public:
     QString _srtm_path;
     QString _shapefile_path;
     int _plot_range; // km
+    unsigned _use_ITWOM;
+    unsigned _scale_with_distance;
 };
 
 #endif // FLIGHTGEARPREFS_H

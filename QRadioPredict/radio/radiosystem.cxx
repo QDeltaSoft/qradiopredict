@@ -30,6 +30,7 @@
 #include "itm.cpp"
 
 
+
 FGRadio::FGRadio(DatabaseApi *db) {
 	
 	
@@ -769,7 +770,24 @@ void FGRadio::processSignal(Transmission* transmission) {
     {
         SGGeoc pos_a = SGGeoc::fromGeod(transmission->player_pos);
         double course = transmission->course+SGD_PI/2;
-        double dist = transmission->probe_distance*sin(SGD_PI/180);
+        double step_degree = 1.0;
+        if(_settings->_scale_with_distance == 1)
+        {
+            if(transmission->probe_distance < 5000)
+            {
+                step_degree = 1.0;
+            }
+            if(transmission->probe_distance > 5000 && transmission->probe_distance <= 20000)
+            {
+                step_degree = 0.5;
+            }
+            if(transmission->probe_distance >  20000)
+            {
+                step_degree = 0.2;
+            }
+        }
+
+        double dist = transmission->probe_distance*step_degree*sin(SGD_PI/180);
 
         SGGeoc pos_b = pos_a.advanceRadM(transmission->course, 90.0);
         SGGeoc pos_c = pos_b.advanceRadM(course, dist);
@@ -865,24 +883,32 @@ void FGRadio::attenuationITM(Transmission* transmission) {
         }
 
 	}
-	
+    double h1, h2;
 	if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
 		// the sender and receiver roles are switched
-		ITM::point_to_point(itm_elev.get(), transmission->receiver_height, transmission->transmitter_height,
-			eps_dielect, sgm_conductivity, eno, transmission->freq, radio_climate,
-			pol, conf, rel, dbloss, strmode, p_mode, horizons, errnum);
-        if( _settings->_use_clutter == 1 )
-			attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
-				transmission->receiver_height, transmission->transmitter_height, p_mode, horizons, clutter_loss);
+        h1 = transmission->receiver_height;
+        h2 = transmission->transmitter_height;
 	}
 	else {
-		ITM::point_to_point(itm_elev.get(), transmission->transmitter_height, transmission->receiver_height,
-			eps_dielect, sgm_conductivity, eno, transmission->freq, radio_climate,
-			pol, conf, rel, dbloss, strmode, p_mode, horizons, errnum);
-        if( _settings->_use_clutter == 1 )
-			attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
-				transmission->transmitter_height, transmission->receiver_height, p_mode, horizons, clutter_loss);
+        h2 = transmission->receiver_height;
+        h1 = transmission->transmitter_height;
 	}
+
+    if( _settings->_use_ITWOM == 1 )
+    {
+        ITWOM::point_to_point(itm_elev.get(), h1, h2,
+            eps_dielect, sgm_conductivity, eno, transmission->freq, radio_climate,
+            pol, conf, rel, dbloss, strmode, p_mode, horizons, errnum);
+    }
+    else
+    {
+        ITM::point_to_point(itm_elev.get(), h1, h2,
+            eps_dielect, sgm_conductivity, eno, transmission->freq, radio_climate,
+            pol, conf, rel, dbloss, strmode, p_mode, horizons, errnum);
+    }
+    if( _settings->_use_clutter == 1 )
+        attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
+            h1, h2, p_mode, horizons, clutter_loss);
 	
 	double pol_loss = 0.0;
 	

@@ -2518,9 +2518,9 @@ void point_to_point(double elev[], double tht_m, double rht_m, double eps_dielec
 	/* PRESET VALUES for Basic Version w/o additional inputs active */
 
 	prop.encc = 1000.00;		/*  double enc_ncc_clcref preset  */          	
-	prop.cch = 22.5;   		/* double clutter_height preset to ILLR calibration.;  
+    prop.cch = 22.5;   		/* double clutter_height preset to ILLR calibration.;
 					   use 25.3 for ITU-P1546-2 calibration */	
-	prop.cd = 1.00;                 /* double clutter_density preset */ 
+    prop.cd = 1.00;                 /* double clutter_density preset */
 	int mode_var = 1; 		/* int mode_var set to 1 for FCC compatibility;
 					   normally, SPLAT presets this to 12 */
 	prop.dhd= 0.0;			/* delta_h_diff preset */

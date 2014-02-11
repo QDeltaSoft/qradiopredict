@@ -33,4 +33,6 @@ FlightgearPrefs::FlightgearPrefs()
     _srtm_path = "";
     _shapefile_path = "";
     _plot_range = 30;
+    _use_ITWOM = 0;
+    _scale_with_distance = 0;
 }

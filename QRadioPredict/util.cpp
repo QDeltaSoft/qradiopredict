@@ -157,14 +157,65 @@ QVector<SGGeod*>* Util::drawDisk(const SGGeod &center, const double &radius, con
     g->setLongitudeDeg(center.getLongitudeDeg());
     g->setElevationM(center.getElevationM());
     disk->append(g);
+    float step_degree = static_cast<float>(step_deg);
     SGGeoc center_c = SGGeoc::fromGeod(center);
-    for(int i=0;i<360;i+=step_deg)
+    for(float i=0;i<360.0;i+=step_degree)
     {
         double probe_distance = 0;
         for(int j=0;j<5000;++j) // supposed to limit distance
         {
             probe_distance += step_point;
 
+            SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
+
+            double dist_to_center = SGGeodesy::distanceM(center, probe);
+            if(dist_to_center >= radius)
+            {
+                break;
+            }
+            else
+            {
+                SGGeod *geod = new SGGeod();
+                geod->setLatitudeDeg(probe.getLatitudeDeg());
+                geod->setLongitudeDeg(probe.getLongitudeDeg());
+                geod->setElevationM(probe.getElevationM());
+                disk->append(geod);
+            }
+            ///if(probe_distance >= 5000) break;
+        }
+    }
+    /** TODO:
+    for(float i=0;i<360.0;i+=0.5)
+    {
+        double probe_distance = 5000;
+        for(int j=0;j<5000;++j) // supposed to limit distance
+        {
+            probe_distance += step_point;
+
+            SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
+
+            double dist_to_center = SGGeodesy::distanceM(center, probe);
+            if(dist_to_center >= radius)
+            {
+                break;
+            }
+            else
+            {
+                SGGeod *geod = new SGGeod();
+                geod->setLatitudeDeg(probe.getLatitudeDeg());
+                geod->setLongitudeDeg(probe.getLongitudeDeg());
+                geod->setElevationM(probe.getElevationM());
+                disk->append(geod);
+            }
+            if(probe_distance >= 20000) break;
+        }
+    }
+    for(float i=0;i<360.0;i+=0.2)
+    {
+        double probe_distance = 20000;
+        for(int j=0;j<5000;++j) // supposed to limit distance
+        {
+            probe_distance += step_point;
 
             SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
 
@@ -183,6 +234,7 @@ QVector<SGGeod*>* Util::drawDisk(const SGGeod &center, const double &radius, con
             }
         }
     }
+    */
     return disk;
 }
 

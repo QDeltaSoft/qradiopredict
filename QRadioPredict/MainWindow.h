@@ -97,6 +97,7 @@
 #include <QScrollBar>
 #include <QRegExp>
 
+
 namespace Ui {
 class MainWindow;
 }

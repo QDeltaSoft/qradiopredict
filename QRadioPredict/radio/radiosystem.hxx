@@ -36,6 +36,7 @@
 #include "../mobilestation.h"
 #include "scenerymanager.h"
 #include "../util.h"
+#include "itwom3.0.h"
 
 using std::string;
 
