@@ -8,6 +8,7 @@ QRadioPredict is an experimental software for VHF-UHF propagation prediction and
 - Up to four ground stations and one mobile station
 - Uses public available data
 - Uses OpenStreetMap tiles or public sattelite imagery as background
+- Supports usage of high resolution sattelite and Google Maps data
 - Elevation profiles are taken from NASA 1 degree SRTM 3 arcsec elevation files (*.hgt) obtainable from various sources
 - Predicts radio signal quality on different frequencies simultaneously
 - Can be connected to Flightgear to use its powerful radio capabilities
@@ -43,6 +44,7 @@ Usage
 
 Linux: Run the bash script qradiopredict.
 The first time you start QRadioPredict you should open Edit -> Settings and set your local preferences and paths. 
+You can choose if to use the newer ITWOM prediction model or use ITM. There is now an additional checkbox which if it is ticked, will make the plot more precise at large distances, but will also take longer to generate.
 Then, you might want to add a mobile station on the map, and up to four ground stations. Set the locations for the mobile using the flightplan tab. Each ground station tab has a button which generates 2D plots on the map. Set the opacity of the plot using the slider on the top right side, and the plot distance using the filed just below the opacity slider. Run the program standalone, or connect it to Flightgear by pressing the "Start Flightgear" button and then after it has started, the connect button. Send all data to Flightgear by pressing the third button, which should start your simulation.
 
 
@@ -63,7 +65,7 @@ Use the included clip.py Python script to crop the shapefiles to the required si
 <strong>It is not recommended to tick the clutter checkbox when generating 2D plots.</strong>
 
 - Placing the mobile station on the map: click the top left button, the choose a location on the slippy map and double click on the map. You can't delete the mobile station from the map, but you can reposition it anywhere.
-- Placing a ground station: click on the second button from top left, the choose a map location and doubleclick on the map. You can then proceed to edit the station parameters in the tab on the left. Make sure to fill in the relevant fields, and press the Save button lower left. You can only have maximum four ground stations at a time. For now, antenna type and radiation pattern is not yet implemented.
+- Placing a ground station: click on the second button from top left, the choose a map location and doubleclick on the map. You can then proceed to edit the station parameters in the tab on the left. Make sure to fill in the relevant fields, and press the Save button lower left. You can only have maximum four ground stations at a time. For now, antenna type and radiation pattern is not yet implemented. If you want to reposition a ground station, fill in the coordinates in the bottom left boxes and click Save.
 - Placing a waypoint: click the third button (which looks like a flag), choose a location on the map and doubleclick.
 
 You can delete a waypoint or a ground station by pressing the red X button on the lower left.
