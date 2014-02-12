@@ -149,7 +149,7 @@ void Util::startFlightgear(DatabaseApi *db)
 }
 
 
-QVector<SGGeod*>* Util::drawDisk(const SGGeod &center, const double &radius, const int &step_deg, const double &step_point)
+QVector<SGGeod*>* Util::drawDisk(const SGGeod &center, const double &radius, const int &step_deg, const double &step_point, const bool &distance_precision)
 {
     QVector<SGGeod*> *disk = new QVector<SGGeod*>;
     SGGeod *g = new SGGeod();
@@ -181,60 +181,62 @@ QVector<SGGeod*>* Util::drawDisk(const SGGeod &center, const double &radius, con
                 geod->setElevationM(probe.getElevationM());
                 disk->append(geod);
             }
-            ///if(probe_distance >= 5000) break;
+            if((probe_distance >= 5000) && distance_precision) break;
         }
     }
-    /** TODO:
-    for(float i=0;i<360.0;i+=0.5)
+    if(distance_precision)
     {
-        double probe_distance = 5000;
-        for(int j=0;j<5000;++j) // supposed to limit distance
+        for(float i=0;i<360.0;i+=0.5)
         {
-            probe_distance += step_point;
-
-            SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
-
-            double dist_to_center = SGGeodesy::distanceM(center, probe);
-            if(dist_to_center >= radius)
+            double probe_distance = 5000;
+            for(int j=0;j<5000;++j) // supposed to limit distance
             {
-                break;
-            }
-            else
-            {
-                SGGeod *geod = new SGGeod();
-                geod->setLatitudeDeg(probe.getLatitudeDeg());
-                geod->setLongitudeDeg(probe.getLongitudeDeg());
-                geod->setElevationM(probe.getElevationM());
-                disk->append(geod);
-            }
-            if(probe_distance >= 20000) break;
-        }
-    }
-    for(float i=0;i<360.0;i+=0.2)
-    {
-        double probe_distance = 20000;
-        for(int j=0;j<5000;++j) // supposed to limit distance
-        {
-            probe_distance += step_point;
+                probe_distance += step_point;
 
-            SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
+                SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
 
-            double dist_to_center = SGGeodesy::distanceM(center, probe);
-            if(dist_to_center >= radius)
-            {
-                break;
-            }
-            else
-            {
-                SGGeod *geod = new SGGeod();
-                geod->setLatitudeDeg(probe.getLatitudeDeg());
-                geod->setLongitudeDeg(probe.getLongitudeDeg());
-                geod->setElevationM(probe.getElevationM());
-                disk->append(geod);
+                double dist_to_center = SGGeodesy::distanceM(center, probe);
+                if(dist_to_center >= radius)
+                {
+                    break;
+                }
+                else
+                {
+                    SGGeod *geod = new SGGeod();
+                    geod->setLatitudeDeg(probe.getLatitudeDeg());
+                    geod->setLongitudeDeg(probe.getLongitudeDeg());
+                    geod->setElevationM(probe.getElevationM());
+                    disk->append(geod);
+                }
+                if(probe_distance >= 20000) break;
             }
         }
+        for(float i=0;i<360.0;i+=0.2)
+        {
+            double probe_distance = 20000;
+            for(int j=0;j<5000;++j) // supposed to limit distance
+            {
+                probe_distance += step_point;
+
+                SGGeod probe = SGGeod::fromGeoc(center_c.advanceRadM( i*PI/180, probe_distance));
+
+                double dist_to_center = SGGeodesy::distanceM(center, probe);
+                if(dist_to_center >= radius)
+                {
+                    break;
+                }
+                else
+                {
+                    SGGeod *geod = new SGGeod();
+                    geod->setLatitudeDeg(probe.getLatitudeDeg());
+                    geod->setLongitudeDeg(probe.getLongitudeDeg());
+                    geod->setElevationM(probe.getElevationM());
+                    disk->append(geod);
+                }
+            }
+        }
     }
-    */
+
     return disk;
 }
 

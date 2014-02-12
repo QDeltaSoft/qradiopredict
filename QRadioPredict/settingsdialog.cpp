@@ -58,6 +58,10 @@ void SettingsDialog::fillEmptyFields()
         {
             this->ui->ITWOMCheckBox->setChecked(true);
         }
+        if(p->_scale_with_distance == 1)
+        {
+            this->ui->scaleWithDistanceCheckBox->setChecked(true);
+        }
         if(p->_itm_radio_performance == 1)
         {
             this->ui->ITMCheckBox->setChecked(true);
@@ -105,6 +109,14 @@ void SettingsDialog::saveData()
     else
     {
         p->_use_ITWOM =0;
+    }
+    if(this->ui->scaleWithDistanceCheckBox->isChecked())
+    {
+        p->_scale_with_distance =1;
+    }
+    else
+    {
+        p->_scale_with_distance =0;
     }
     if(this->ui->ITMCheckBox->isChecked())
     {

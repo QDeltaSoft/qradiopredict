@@ -290,6 +290,7 @@ DatabaseApi::select_prefs()
     int shapefile_path_idx = query.record().indexOf("shapefile_path");
     int use_clutter_idx = query.record().indexOf("use_clutter");
     int use_ITWOM_idx = query.record().indexOf("use_ITWOM");
+    int scale_with_distance_idx = query.record().indexOf("scale_with_distance");
     int itm_performance_idx = query.record().indexOf("itm_performance_mode");
     int use_antenna_pattern_idx = query.record().indexOf("use_antenna_pattern");
     int windowX_idx = query.record().indexOf("windowX");
@@ -309,6 +310,7 @@ DatabaseApi::select_prefs()
         p->_shapefile_path = query.value(shapefile_path_idx).toString();
         p->_use_clutter = query.value(use_clutter_idx).toInt();
         p->_use_ITWOM = query.value(use_ITWOM_idx).toInt();
+        p->_scale_with_distance = query.value(scale_with_distance_idx).toInt();
         p->_itm_radio_performance = query.value(itm_performance_idx).toInt();
         p->_use_antenna_pattern = query.value(use_antenna_pattern_idx).toInt();
         p->_windowX = query.value(windowX_idx).toInt();
@@ -331,6 +333,7 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
                   "aircraft=:aircraft, "
                   "airport = :airport, use_clutter= :use_clutter, use_ITWOM= :use_ITWOM, "
                   "itm_performance_mode=:itm_performance, "
+                  "scale_with_distance=:scale_with_distance, "
                   "use_antenna_pattern = :use_antenna_pattern, windowX= :windowX, windowY= :windowY, "
                   "aprs_server= :aprs_server, aprs_filter_range=:aprs_filter_range, plot_range=:plot_range "
                   " WHERE id=1");
@@ -343,6 +346,7 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     query.bindValue(":shapefile_path", p->_shapefile_path);
     query.bindValue(":use_clutter", p->_use_clutter);
     query.bindValue(":use_ITWOM", p->_use_ITWOM);
+    query.bindValue(":scale_with_distance", p->_scale_with_distance);
     query.bindValue(":itm_performance", p->_itm_radio_performance);
     query.bindValue(":use_antenna_pattern", p->_use_antenna_pattern);
     query.bindValue(":windowX", p->_windowX);

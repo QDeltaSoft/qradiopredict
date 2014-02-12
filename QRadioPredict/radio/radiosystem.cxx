@@ -174,7 +174,15 @@ void FGRadio::plot()
     // This would pre-load all tiles around the station on 3+ distance
     //_scenery->preloadTiles(lon,lat);
     SGGeod center = SGGeod::fromDegM(station->longitude, station->latitude, station->elevation_feet * SG_FEET_TO_METER);
-    QVector<SGGeod*> *positions = Util::drawDisk(center,_settings->_plot_range*1000,1,_terrain_sampling_distance);
+    QVector<SGGeod*> *positions;
+    if(_settings->_scale_with_distance == 1)
+    {
+        positions = Util::drawDisk(center,_settings->_plot_range*1000,1,_terrain_sampling_distance,true);
+    }
+    else
+    {
+        positions = Util::drawDisk(center,_settings->_plot_range*1000,1,_terrain_sampling_distance);
+    }
     emit nrOfPos(positions->size());
     for(int i=0;i<positions->size();++i)
     {

@@ -42,7 +42,7 @@ public:
     static QPointF convertToXY(QPointF ll, double zoom);
     static void startFlightgear(DatabaseApi *db);
     static QVector<SGGeod*>* drawDisk(const SGGeod &center, const double &radius,
-                                      const int &step_deg, const double &step_point);
+                                      const int &step_deg, const double &step_point, const bool &distance_precision = false);
     static QColor getScaleColor(double &signal, int &alpha);
 };
 
