@@ -49,7 +49,7 @@
     <item row="12" column="1">
      <widget class="QCheckBox" name="ITMCheckBox">
       <property name="text">
-       <string/>
+       <string>Terrain resolution scaled inversely with distance</string>
       </property>
      </widget>
     </item>
@@ -109,7 +109,7 @@
     <item row="10" column="1">
      <widget class="QCheckBox" name="ITWOMCheckBox">
       <property name="text">
-       <string/>
+       <string>(New alternative to classic ITM model)</string>
       </property>
      </widget>
     </item>
@@ -353,7 +353,7 @@
     <item row="9" column="1">
      <widget class="QCheckBox" name="clutterCheckBox">
       <property name="text">
-       <string/>
+       <string>Not suitable for plot mode</string>
       </property>
      </widget>
     </item>
@@ -373,7 +373,7 @@
     <item row="13" column="1">
      <widget class="QCheckBox" name="scaleWithDistanceCheckBox">
       <property name="text">
-       <string/>
+       <string>(Finer resolution at large distances, takes longer)</string>
       </property>
      </widget>
     </item>
