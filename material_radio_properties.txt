@@ -1,0 +1,26 @@
+Landmass 15.0 0.2
+SomeSort 15.0 0.2
+Island 15.0 0.2
+Default 15.0 0.2
+EvergreenBroadCover 20.0 0.2
+EvergreenForest 20.0 0.2
+DeciduousBroadCover 15.0 0.3
+DeciduousForest 15.0 0.3
+MixedForestCover 20.0 0.25
+MixedForest 15.0 0.25
+RainForest 25.0 0.55
+EvergreenNeedleCover 15.0 0.2
+WoodedTundraCover 5.0 0.15
+DeciduousNeedleCover 5.0 0.2
+ScrubCover 3.0 0.15
+BuiltUpCover 30.0 0.7
+Urban 30.0 0.7
+Construction 25.0 0.7
+Industrial 30.0 0.7
+Port 20.0 0.6
+Town 10.0 0.5
+SubUrban 10.0 0.5
+CropWoodCover 10.0 0.1
+CropWood 10.0 0.1
+AgroForest 10.0 0.1
+
