@@ -3,6 +3,7 @@ QRadioPredict
 
 QRadioPredict is an experimental software for VHF-UHF propagation prediction and radio coverage analysis. Currently it works on Linux and Windows 32 bit (Vista) and has the following features:
 - Uses the Irregular Terrain Model, also known as Longley-Rice
+- Uses the newer ITWOM v3.0 available as GPL now
 - Can be used as a repeater site planing tool
 - Static signal plot coverage, distance configurable
 - Up to four ground stations and one mobile station
@@ -116,6 +117,8 @@ To create the database (which needs to be located in the same directory with the
 <pre>
 $ cat db_structure.sql | sqlite3 propagation.sqlite
 </pre>
+
+Also copy material_radio_properties.txt in the same directory with the executable.
 
 To build in debug mode add "CONFIG+=debug" to the qmake step above. There are also some other qmake options, see the qradiopredict.pro file.
 
