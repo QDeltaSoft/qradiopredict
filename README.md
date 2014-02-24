@@ -112,6 +112,11 @@ $ qmake-qt4 ..
 $ make
 </pre>
 
+To create the database (which needs to be located in the same directory with the executable):
+<pre>
+$ cat db_structure.sql | sqlite3 propagation.sqlite
+</pre>
+
 To build in debug mode add "CONFIG+=debug" to the qmake step above. There are also some other qmake options, see the qradiopredict.pro file.
 
 
