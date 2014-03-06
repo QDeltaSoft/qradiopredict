@@ -263,7 +263,7 @@ double saalos(double d, prop_type &prop, propa_type &propa)
 	double ensa, encca, q, dp, dx, tde, hc, ucrpc, ctip, tip, tic, stic, ctic, sta;	
 	double ttc, cttc, crpc, ssnps, d1a, rsp, tsp, arte, zi, pd, pdk, hone, tvsr;
 	double saalosv=0.0;
-	
+    Q_UNUSED(propa);
 	q=0.0;
 
 	if (d==0.0)
@@ -1765,6 +1765,7 @@ void hzns(double pfl[], prop_type &prop)
 
 void hzns2(double pfl[], prop_type &prop, propa_type &propa)
 {
+    Q_UNUSED(propa);
 	bool wq;
 	int np, rp, i, j;
 	double xi, za, zb, qc, q, sb, sa, dr, dshh;
@@ -2084,6 +2085,7 @@ double d1thx(double pfl[], const double &x1, const double &x2)
 
 double d1thx2(double pfl[], const double &x1, const double &x2, propa_type &propa)
 {
+    Q_UNUSED(propa);
 	int np, ka, kb, n, k, kmx, j;
 	double d1thx2v, sn, xa, xb, xc;
 	double *s;
@@ -2614,7 +2616,7 @@ void point_to_pointMDH_two (double elev[], double tht_m, double rht_m,
 	                          Results are probably invalid.
 *************************************************************************************************/
 {
-
+    Q_UNUSED(mode_var);
   prop_type   prop;
   propv_type  propv;
   propa_type  propa;
@@ -2711,7 +2713,7 @@ void point_to_pointDH (double elev[], double tht_m, double rht_m,
 	                          Results are probably invalid.
 *************************************************************************************************/
 {
-
+  Q_UNUSED(loc);
   char strmode[100];
   prop_type   prop;
   propv_type  propv;
@@ -2790,6 +2792,8 @@ void point_to_pointDH (double elev[], double tht_m, double rht_m,
 void area(long ModVar, double deltaH, double tht_m, double rht_m, double dist_km, int TSiteCriteria, int RSiteCriteria, double eps_dielect, double sgm_conductivity, double eno_ns_surfref, double enc_ncc_clcref, double clutter_height, double clutter_density, double delta_h_diff, double frq_mhz, int radio_climate, int pol, int mode_var,
 double pctTime, double pctLoc, double pctConf, double &dbloss, char *strmode, int &errnum)
 {
+    Q_UNUSED(mode_var);
+    Q_UNUSED(strmode);
 	// pol: 0-Horizontal, 1-Vertical
 	// TSiteCriteria, RSiteCriteria:
 	//		   0 - random, 1 - careful, 2 - very careful

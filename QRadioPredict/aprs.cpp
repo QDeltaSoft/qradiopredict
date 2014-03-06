@@ -53,6 +53,7 @@ void Aprs::connectionSuccess()
 
 void Aprs::connectionFailed(QAbstractSocket::SocketError error)
 {
+    Q_UNUSED(error)
     _status=0;
     qDebug("OOps! Could not connect to APRS. Trying again.");
     _connection_tries++;

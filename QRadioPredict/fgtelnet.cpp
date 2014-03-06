@@ -51,6 +51,7 @@ void FGTelnet::connectionSuccess()
 
 void FGTelnet::connectionFailed(QAbstractSocket::SocketError error)
 {
+    Q_UNUSED(error)
     _status=0;
     qDebug("OOps! Could not connect to FGFS. Trying again.");
     _connection_tries++;

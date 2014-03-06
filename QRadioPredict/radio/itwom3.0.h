@@ -1,6 +1,8 @@
 #ifndef ITWOM3_0_H
 #define ITWOM3_0_H
 
+#include <QtGlobal>
+
 namespace ITWOM {
 void point_to_point(double elev[], double tht_m, double rht_m, double eps_dielect,
                     double sgm_conductivity, double eno_ns_surfref, double frq_mhz,

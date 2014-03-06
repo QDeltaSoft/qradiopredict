@@ -2,6 +2,7 @@
 #define _SG_GEODESY_HXX
 
 #include "SGMath.hxx"
+#include <QtGlobal>
 
 // Compatibility header.
 // Please use the SGGeodesy and SGMath functions directly.
@@ -95,7 +96,7 @@ inline int geo_direct_wgs_84 ( double alt, double lat1,
                         double lon1, double az1, 
 			double s, double *lat2, double *lon2,
                         double *az2 )
-{ return geo_direct_wgs_84(lat1, lon1, az1, s, lat2, lon2, az2); }
+{ Q_UNUSED(alt);return geo_direct_wgs_84(lat1, lon1, az1, s, lat2, lon2, az2); }
 
 /**
  * Given a starting position and an offset radial and distance,
@@ -135,7 +136,7 @@ inline int geo_inverse_wgs_84( double alt, double lat1,
                                double lon1, double lat2,
                                double lon2, double *az1, double *az2,
                                double *s )
-{ return geo_inverse_wgs_84(lat1, lon1, lat2, lon2, az1, az2, s); }
+{ Q_UNUSED(alt);return geo_inverse_wgs_84(lat1, lon1, lat2, lon2, az1, az2, s); }
 
 
 /**
