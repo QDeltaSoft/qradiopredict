@@ -85,7 +85,26 @@ signals:
 
 private:
 	
-	
+    enum TransmissionType
+    {
+        A2G,
+        G2A,
+        A2A,
+        P2G,
+        P2A
+    };
+    enum SignalType
+    {
+        ATC,
+        NAVAID,
+        Beacon
+    };
+    enum Localizer
+    {
+        None,
+        Loc,
+        Glideslope
+    };
 	double _max_computation_time_norm;
 	class Transmission {
 	public:
@@ -126,7 +145,7 @@ private:
 		double localizer_spacing;
 		double glideslope_first_offset;
 		double glideslope_second_offset;
-		unsigned int e_size;			// size of elevations
+        unsigned int e_size;			// size of elevations
 		double course;
 		double reverse_course;
 		SGGeoc center;
@@ -262,6 +281,13 @@ private:
     SceneryManager *_scenery;
     MobileStation *_mobile;
     DatabaseApi *_db;
+    enum PropagationModel
+    {
+        NoModel,
+        RoundEarth,
+        ITMModel,
+        ITWOMModel
+    };
 
 	int _propagation_model; /// 0 none, 1 round Earth, 2 ITM
 	bool _suspended;

@@ -48,7 +48,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
     else
         _settings = 0;
 	
-	_propagation_model = 2; 
+    _propagation_model = ITMModel;
     _scenery = new SceneryManager(db,_settings);
     _db=db;
     _run=1;
@@ -354,7 +354,7 @@ void FGRadio::plot()
         if (_scenery->get_elevation_m( probe, elevation_m, material ))
         {
 
-            if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+            if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
                 transmission->plot_elevations->append(elevation_m);
                 if(!material.empty()) {
                     string* name = new string(material);
@@ -378,7 +378,7 @@ void FGRadio::plot()
             }
         }
         else {
-            if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+            if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
                 transmission->plot_elevations->append(0.0);
                 string* no_material = new string("None");
                 transmission->plot_materials->append(no_material);
@@ -443,7 +443,7 @@ void FGRadio::update()
                 if (_scenery->get_elevation_m( probe, elevation_m, material ))
                 {
 
-                    if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+                    if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
                         transmission->elevations.push_back(elevation_m);
                         if(!material.empty()) {
                             string* name = new string(material);
@@ -467,7 +467,7 @@ void FGRadio::update()
                     }
                 }
                 else {
-                    if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+                    if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
                         transmission->elevations.push_back(0.0);
                         string* no_material = new string("None");
                         transmission->materials.push_back(no_material);
@@ -721,7 +721,7 @@ void FGRadio::processTerrain(Transmission* transmission) {
 
     if(transmission->plot)
     {
-        if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+        if((transmission->transmission_type == P2G ) || (transmission->transmission_type == P2A)) {
             transmission->plot_elevations->prepend(transmission->elevation_under_pilot);
             //if (delta_last > (point_distance / 2) )
                 transmission->plot_elevations->append(transmission->elevation_under_sender);
@@ -742,7 +742,7 @@ void FGRadio::processTerrain(Transmission* transmission) {
     }
     else
     {
-        if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+        if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
             transmission->elevations.push_front(transmission->elevation_under_pilot);
             //if (delta_last > (point_distance / 2) )
                 transmission->elevations.push_back(transmission->elevation_under_sender);
@@ -892,7 +892,7 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 
 	}
     double h1, h2;
-	if((transmission->transmission_type == 3) || (transmission->transmission_type == 4)) {
+    if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
 		// the sender and receiver roles are switched
         h1 = transmission->receiver_height;
         h2 = transmission->transmitter_height;
