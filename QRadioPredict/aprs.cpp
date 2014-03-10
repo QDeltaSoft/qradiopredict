@@ -189,3 +189,25 @@ void Aprs::setFilter(QPointF &pos, int &range)
     _delaytime = QTime::currentTime().addSecs(1);
 
 }
+
+void Aprs::filterCallsign(QString callsign)
+{
+    if ((_status!=1)) return;
+    if( QTime::currentTime() < _delaytime ) return;
+    QString query = "#filter b/"+callsign+"\r\n";
+
+    _socket->write(query.toLatin1());
+    _socket->flush();
+    _delaytime = QTime::currentTime().addSecs(1);
+}
+
+void Aprs::filterPrefix(QString prefix)
+{
+    if ((_status!=1)) return;
+    if( QTime::currentTime() < _delaytime ) return;
+    QString query = "#filter p/"+prefix+"\r\n";
+
+    _socket->write(query.toLatin1());
+    _socket->flush();
+    _delaytime = QTime::currentTime().addSecs(1);
+}

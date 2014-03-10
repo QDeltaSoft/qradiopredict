@@ -46,6 +46,8 @@ public:
     void connectToAPRS();
     void disconnectAPRS();
     void setFilter(QPointF &pos, int &range);
+    void filterCallsign(QString callsign);
+    void filterPrefix(QString prefix);
     
 signals:
     void connectedToAPRS();

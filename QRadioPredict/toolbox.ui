@@ -415,6 +415,38 @@
       <normaloff>:/icons/images/icons/player_play.png</normaloff>:/icons/images/icons/player_play.png</iconset>
     </property>
    </widget>
+   <widget class="QPushButton" name="prevComputedButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>34</x>
+      <y>54</y>
+      <width>21</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="nextComputedButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>76</x>
+      <y>54</y>
+      <width>21</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&gt;</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBoxAPRS">
    <property name="geometry">
@@ -465,6 +497,32 @@
     </property>
     <property name="text">
      <string>Filter (Hours)</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="callsignFilterEdit">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>46</y>
+      <width>69</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Callsign</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="callsignFilterButton">
+    <property name="geometry">
+     <rect>
+      <x>82</x>
+      <y>46</y>
+      <width>55</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Filter</string>
     </property>
    </widget>
   </widget>
