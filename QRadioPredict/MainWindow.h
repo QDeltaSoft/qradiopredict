@@ -142,7 +142,8 @@ private slots:
     void openLoadPlotDialog();
     void openAboutDialog();
     void takeScreenshot();
-
+    void filterPrefixAPRS();
+    void clearFilterPrefixAPRS();
 
 
 public slots:
@@ -224,7 +225,7 @@ private:
     QAction *_restoreAction;
     QAction *_quitAction;
     QSystemTrayIcon *_trayIcon;
-
+    bool _zoom_aprs_filter_distance;
 
 };
 

@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _last_station_id = -1;
     _plot_opacity = 15;
     _plotvalues = new QVector<PlotValue*>;
-
+    _zoom_aprs_filter_distance = true;
 
     //!!!!!!!! connections must always come after setupUi!!!
     QObject::connect(ui->actionConnect_to_Flightgear,SIGNAL(triggered()),this->_telnet,SLOT(connectToFGFS()));
@@ -123,6 +123,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(_tb->ui->aprsTimeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeAPRSTimeFilter(int)));
     QObject::connect(_tb->ui->groupBoxAPRS,SIGNAL(toggled(bool)),this,SLOT(activateAPRS(bool)));
+
+    QObject::connect(_tb->ui->callsignFilterButton,SIGNAL(clicked()),this,SLOT(filterPrefixAPRS()));
+    QObject::connect(_tb->ui->clearCallsignFilterButton,SIGNAL(clicked()),this,SLOT(clearFilterPrefixAPRS()));
 
     _tb->ui->startFlightgearButton->setVisible(true);
     _tb->ui->connectTelnetButton->setVisible(true);
@@ -275,6 +278,107 @@ void MainWindow::showRawAPRSMessages()
     f->show();
 }
 
+void MainWindow::filterPrefixAPRS()
+{
+    if(!_aprs)
+        return;
+    QString prefix = _tb->ui->callsignFilterEdit->text();
+    _zoom_aprs_filter_distance = false;
+    this->clearAPRS();
+    _aprs->filterPrefix(prefix);
+    QVector<AprsStation *> aprs_stations = _db->filter_aprs_station(prefix);
+    for (int i=0;i<aprs_stations.size();++i)
+    {
+        AprsStation *st = aprs_stations.at(i);
+        QString callsign_text;
+        bool mobile = false;
+        QRegExp re(";([^*]+)\\*");
+        //QRegularExpressionMatch match = re.match(st->payload);
+        if(re.indexIn(st->payload)!=-1)
+        {
+            callsign_text = re.cap(1);
+        }
+        else
+        {
+            callsign_text = st->callsign;
+        }
+        if(st->payload.startsWith('=') || st->payload.startsWith('/')
+                || st->payload.startsWith('@') || st->payload.startsWith('!'))
+            mobile= true;
+        QString filename = ":aprs/aprs_icons/slice_";
+        QString icon;
+        QPointF pos = QPointF(st->longitude,st->latitude);
+        int zoom = _view->zoomLevel();
+        QPointF xypos = Util::convertToXY(pos, zoom);
+
+        QVector<AprsStation *> related_stations = _db->similar_stations(st->callsign, st->time_seen);
+        if(related_stations.size()>1 && mobile)
+        {
+            icon = "15_0";
+
+            AprsStation *next = related_stations[1];
+            QPointF next_pos = QPointF(next->longitude,next->latitude);
+
+            QPointF next_xypos = Util::convertToXY(next_pos, zoom);
+            QLineF progress_line(next_xypos,xypos);
+
+            QColor colour(30,169,255,254);
+            QBrush brush(colour);
+
+            QPen pen(brush, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            QGraphicsLineItem *line1 = _view->_childView->scene()->addLine(progress_line,pen);
+            _aprs_lines.push_back(line1);
+            draw_lines lines;
+            lines.push_back(pos);
+            lines.push_back(next_pos);
+            _moving_stations.insertMulti(st->callsign,lines);
+        }
+        else
+        {
+            icon = st->getImage();
+        }
+        //_aprs_lines.insert(st->callsign,lines);
+        //icon = st->getImage();
+        filename.append(icon).append(".png");
+        QPixmap pixmap(filename);
+        pixmap = pixmap.scaled(16,16);
+        AprsPixmapItem *pic = new AprsPixmapItem(pixmap);
+        pic->setAcceptHoverEvents(true);
+
+        _view->_childView->scene()->addItem(pic);
+
+        pic->setMessage(st->callsign,st->via,st->message);
+        pic->setPosition(xypos);
+        pic->setOffset(xypos - QPoint(7,25));
+        AprsIcon ic;
+        ic.position = pos;
+        ic.icon = icon;
+        _map_aprs.insert(pic, ic);
+
+        if(!(related_stations.size()>1) || !mobile)
+        {
+            QGraphicsTextItem * callsign = new QGraphicsTextItem;
+            callsign->setPos(xypos - QPoint(0,16));
+            callsign->setPlainText(callsign_text);
+            _view->_childView->scene()->addItem(callsign);
+            _map_aprs_text.insert(callsign,pos);
+        }
+
+        delete st;
+    }
+    aprs_stations.clear();
+}
+
+void MainWindow::clearFilterPrefixAPRS()
+{
+    if(!_aprs)
+        return;
+    _tb->ui->callsignFilterEdit->clear();
+    _zoom_aprs_filter_distance = true;
+    this->clearAPRS();
+    this->restoreMapState();
+}
+
 void MainWindow::clearAPRS()
 {
     QMapIterator<AprsPixmapItem *, AprsIcon> i(_map_aprs);
@@ -391,12 +495,13 @@ void MainWindow::changeAPRSTimeFilter(int hours)
         }
         delete st;
     }
+    filtered_stations.clear();
 
 }
 
 void MainWindow::newAPRSquery(quint8 zoom)
 {
-    if(!_aprs)
+    if(!_aprs || !_zoom_aprs_filter_distance)
         return;
     QPointF cursor_pos = _view->_childView->mapToScene(_view->_childView->mapFromGlobal(QCursor::pos()));
 

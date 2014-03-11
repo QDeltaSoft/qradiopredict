@@ -502,27 +502,47 @@
    <widget class="QLineEdit" name="callsignFilterEdit">
     <property name="geometry">
      <rect>
-      <x>8</x>
+      <x>6</x>
       <y>46</y>
-      <width>69</width>
+      <width>65</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
      <string>Callsign</string>
     </property>
    </widget>
    <widget class="QPushButton" name="callsignFilterButton">
     <property name="geometry">
      <rect>
-      <x>82</x>
+      <x>74</x>
       <y>46</y>
-      <width>55</width>
+      <width>39</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Filter</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="clearCallsignFilterButton">
+    <property name="geometry">
+     <rect>
+      <x>116</x>
+      <y>46</y>
+      <width>21</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="resources.qrc">
+      <normaloff>:/icons/images/icons/editdelete.png</normaloff>:/icons/images/icons/editdelete.png</iconset>
     </property>
    </widget>
   </widget>

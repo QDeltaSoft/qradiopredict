@@ -51,6 +51,9 @@ public:
     QVector<AprsStation *>
     select_aprs_stations();
 
+    QVector<AprsStation *>
+    filter_aprs_station(QString prefix);
+
     void
     update_aprs_stations(AprsStation * s);
 
