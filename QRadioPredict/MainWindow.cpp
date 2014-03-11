@@ -280,12 +280,12 @@ void MainWindow::showRawAPRSMessages()
 
 void MainWindow::filterPrefixAPRS()
 {
-    if(!_aprs)
-        return;
+
     QString prefix = _tb->ui->callsignFilterEdit->text();
     _zoom_aprs_filter_distance = false;
     this->clearAPRS();
-    _aprs->filterPrefix(prefix);
+    if(_aprs!=NULL)
+        _aprs->filterPrefix(prefix);
     QVector<AprsStation *> aprs_stations = _db->filter_aprs_station(prefix);
     for (int i=0;i<aprs_stations.size();++i)
     {
@@ -371,8 +371,6 @@ void MainWindow::filterPrefixAPRS()
 
 void MainWindow::clearFilterPrefixAPRS()
 {
-    if(!_aprs)
-        return;
     _tb->ui->callsignFilterEdit->clear();
     _zoom_aprs_filter_distance = true;
     this->clearAPRS();
