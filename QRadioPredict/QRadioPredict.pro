@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     plotvalue.cpp \
     savedialog.cpp \
     loaddialog.cpp \
-    about.cpp
+    about.cpp \
+    updatechecker.cpp
 
 HEADERS  += MainWindow.h \
     databaseapi.h \
@@ -98,7 +99,8 @@ HEADERS  += MainWindow.h \
     savedialog.h \
     loaddialog.h \
     about.h \
-    radio/itwom3.0.h
+    radio/itwom3.0.h \
+    updatechecker.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
