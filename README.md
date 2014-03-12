@@ -14,6 +14,7 @@ QRadioPredict is an experimental software for VHF-UHF propagation prediction and
 - Predicts radio signal quality on different frequencies simultaneously
 - Can be connected to Flightgear to use its powerful radio capabilities
 - Displays APRS stations according to a time filter configurable by the user
+- Can display APRS stations filtered by a callsign prefix and/or SSID
 - Has an internal APRS client which can be used to display stations as a landmark
 - Uses a new algorithm for glound clutter attenuation prediction, based on a ray model.Foliage and urban loss over flat or rugged terrain can be calculated on point-to-point links
 - Terrain type data is taken from Corine CLC2006 shapefiles, which gives great accuracy for all of Europe, or from any other land cover data such as VMAP0
