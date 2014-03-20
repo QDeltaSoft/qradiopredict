@@ -5,7 +5,7 @@ UpdateChecker::UpdateChecker(QObject *parent) :
 {
     _socket = new QTcpSocket;
     QObject::connect(_socket,SIGNAL(error(QAbstractSocket::SocketError)),
-                     this,SLOT(connectionError()));
+                     this,SLOT(connectionError(QAbstractSocket::SocketError)));
     QObject::connect(_socket,SIGNAL(connected()),this,
                      SLOT(readyWrite()));
     QObject::connect(_socket,SIGNAL(readyRead()),this,SLOT(processData()));
@@ -18,9 +18,11 @@ UpdateChecker::~UpdateChecker()
     delete _socket;
 }
 
-void UpdateChecker::connectionError()
+void UpdateChecker::connectionError(QAbstractSocket::SocketError error)
 {
-    qDebug() << "Error checking for updates.";
+    if(error == QAbstractSocket::RemoteHostClosedError)
+        return;
+    qDebug() << "Error checking for updates." << error;
     emit updateCheckerError();
 }
 
@@ -33,7 +35,7 @@ void UpdateChecker::connectToServer()
 void UpdateChecker::readyWrite()
 {
     qDebug() << "connected to host";
-    _socket->write("GET /version HTTP/1.0\n\n");
+    _socket->write("GET /version HTTP/1.0\nHost: qradiopredict.sourceforge.net\n\n");
     _socket->flush();
 }
 

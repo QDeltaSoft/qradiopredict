@@ -21,7 +21,7 @@ signals:
 public slots:
 
 private slots:
-    void connectionError();
+    void connectionError(QAbstractSocket::SocketError error);
     void readyWrite();
     void processData();
 
