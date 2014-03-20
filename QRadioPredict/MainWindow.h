@@ -56,6 +56,7 @@
 #include "savedialog.h"
 #include "loaddialog.h"
 #include "about.h"
+#include "updatechecker.h"
 
 #include "Position.h"
 #include "guts/Conversions.h"
@@ -144,6 +145,8 @@ private slots:
     void takeScreenshot();
     void filterPrefixAPRS();
     void clearFilterPrefixAPRS();
+
+    void checkForUpdates();
 
 
 public slots:

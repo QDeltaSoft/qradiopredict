@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QByteArray>
+#include <QStringList>
 
 class UpdateChecker : public QObject
 {
@@ -10,13 +12,18 @@ class UpdateChecker : public QObject
 public:
     explicit UpdateChecker(QObject *parent = 0);
     ~UpdateChecker();
+    void connectToServer();
 signals:
+    void updateCheckerError();
+    void noUpdateAvailable();
+    void updateAvailable(QString version);
     
 public slots:
 
 private slots:
     void connectionError();
     void readyWrite();
+    void processData();
 
 private:
     QTcpSocket *_socket;

@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionLoad_plot,SIGNAL(triggered()),this,SLOT(openLoadPlotDialog()));
     QObject::connect(ui->actionTake_screenshot,SIGNAL(triggered()),this,SLOT(takeScreenshot()));
     QObject::connect(ui->actionAbout,SIGNAL(triggered()),this,SLOT(openAboutDialog()));
+    QObject::connect(ui->actionCheck_for_Updates,SIGNAL(triggered()),this,SLOT(checkForUpdates()));
     QObject::connect(this->_telnet,SIGNAL(connectedToFGFS()),this,SLOT(connectionSuccess()));
     QObject::connect(this->_telnet,SIGNAL(connectionFailure()),this,SLOT(connectionFailure()));
 
@@ -224,6 +225,13 @@ void MainWindow::openAboutDialog()
 {
     About *dailog = new About;
     dailog->show();
+}
+
+void MainWindow::checkForUpdates()
+{
+    UpdateChecker *check = new UpdateChecker;
+    check->connectToServer();
+
 }
 
 void MainWindow::connectToAPRS()
