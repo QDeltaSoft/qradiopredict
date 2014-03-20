@@ -5,6 +5,7 @@
 #include <QTcpSocket>
 #include <QByteArray>
 #include <QStringList>
+#include <QFile>
 
 class UpdateChecker : public QObject
 {

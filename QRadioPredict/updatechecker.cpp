@@ -28,20 +28,18 @@ void UpdateChecker::connectionError(QAbstractSocket::SocketError error)
 
 void UpdateChecker::connectToServer()
 {
-    qDebug() << "connecting...";
     _socket->connectToHost("qradiopredict.sourceforge.net", 80);
 }
 
 void UpdateChecker::readyWrite()
 {
-    qDebug() << "connected to host";
     _socket->write("GET /version HTTP/1.0\nHost: qradiopredict.sourceforge.net\n\n");
     _socket->flush();
 }
 
 void UpdateChecker::processData()
 {
-    qDebug() << "processing message";
+
     QByteArray buf;
     buf.append(_socket->readAll());
 
@@ -82,5 +80,15 @@ void UpdateChecker::processData()
     }
     QString version= parts[1];
     qDebug() << version;
+    QFile file("version");
+    file.open(QIODevice::ReadOnly);
+    QByteArray content = file.readAll();
+    QString ct(content);
+    QStringList vl = ct.split("###",QString::SkipEmptyParts);
+    if(vl.length()!=1)
+    {
+        qDebug() << "No local version found";
+        return;
+    }
 
 }
