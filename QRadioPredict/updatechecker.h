@@ -28,6 +28,9 @@ private slots:
 
 private:
     QTcpSocket *_socket;
+    static const quint8 VERSION_MAJOR = 0;
+    static const quint8 VERSION_MINOR = 8;
+    static const quint8 VERSION_REV = 8;
     
 };
 

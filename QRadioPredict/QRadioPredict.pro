@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     savedialog.cpp \
     loaddialog.cpp \
     about.cpp \
-    updatechecker.cpp
+    updatechecker.cpp \
+    updatecheckdialog.cpp
 
 HEADERS  += MainWindow.h \
     databaseapi.h \
@@ -100,7 +101,8 @@ HEADERS  += MainWindow.h \
     loaddialog.h \
     about.h \
     radio/itwom3.0.h \
-    updatechecker.h
+    updatechecker.h \
+    updatecheckdialog.h
 
 FORMS    += MainWindow.ui \
     toolbox.ui \
@@ -113,7 +115,8 @@ FORMS    += MainWindow.ui \
     rawmessagesform.ui \
     savedialog.ui \
     loaddialog.ui \
-    about.ui
+    about.ui \
+    updatecheckdialog.ui
 
 #Linkage for MapGraphics shared library
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/release/ -lMapGraphics

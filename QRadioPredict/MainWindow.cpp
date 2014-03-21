@@ -229,9 +229,13 @@ void MainWindow::openAboutDialog()
 
 void MainWindow::checkForUpdates()
 {
+    UpdateCheckDialog *d = new UpdateCheckDialog;
     UpdateChecker *check = new UpdateChecker;
-    check->connectToServer();
 
+    QObject::connect(check,SIGNAL(noUpdateAvailable()),d,SLOT(noUpdateAvailable()));
+    QObject::connect(check,SIGNAL(updateCheckerError()),d,SLOT(updateCheckerError()));
+    QObject::connect(check,SIGNAL(updateAvailable(QString)),d,SLOT(updateAvailable(QString)));
+    check->connectToServer();
 }
 
 void MainWindow::connectToAPRS()

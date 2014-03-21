@@ -57,6 +57,7 @@
 #include "loaddialog.h"
 #include "about.h"
 #include "updatechecker.h"
+#include "updatecheckdialog.h"
 
 #include "Position.h"
 #include "guts/Conversions.h"

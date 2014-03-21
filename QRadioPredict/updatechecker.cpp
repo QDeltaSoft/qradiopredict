@@ -80,15 +80,26 @@ void UpdateChecker::processData()
     }
     QString version= parts[1];
     qDebug() << version;
-    QFile file("version");
-    file.open(QIODevice::ReadOnly);
-    QByteArray content = file.readAll();
-    QString ct(content);
-    QStringList vl = ct.split("###",QString::SkipEmptyParts);
-    if(vl.length()!=1)
+    _socket->close();
+    QStringList tokens = version.split(".",QString::SkipEmptyParts);
+    quint8 major_v = tokens[0].toInt();
+    quint8 minor_v = tokens[1].toInt();
+    quint8 rev_v = tokens[2].toInt();
+    if(major_v > VERSION_MAJOR)
     {
-        qDebug() << "No local version found";
+        emit updateAvailable(version);
         return;
     }
+    if(minor_v > VERSION_MINOR)
+    {
+        emit updateAvailable(version);
+        return;
+    }
+    if(rev_v > VERSION_REV)
+    {
+        emit updateAvailable(version);
+        return;
+    }
+    emit noUpdateAvailable();
 
 }
