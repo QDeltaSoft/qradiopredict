@@ -1692,6 +1692,7 @@ void MainWindow::showSignalReading(double lon,double lat,int id_station,QString 
 
 void MainWindow::plotCoverage(GroundStation *g)
 {
+    qDebug() << "Starting plot";
     QMapIterator<QGraphicsPolygonItem *, PlotPolygon*> i(_plot_points);
     while (i.hasNext()) {
         i.next();

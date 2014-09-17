@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>250</width>
-    <height>574</height>
+    <height>554</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,9 +24,24 @@
     <rect>
      <x>0</x>
      <y>40</y>
-     <width>241</width>
-     <height>521</height>
+     <width>251</width>
+     <height>411</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>480</height>
+    </size>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAsNeeded</enum>
    </property>
    <property name="widgetResizable">
     <bool>true</bool>
@@ -36,9 +51,15 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>239</width>
-      <height>519</height>
+      <width>249</width>
+      <height>409</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <widget class="QWidget" name="formLayoutWidget">
      <property name="geometry">
@@ -46,12 +67,12 @@
        <x>0</x>
        <y>0</y>
        <width>231</width>
-       <height>501</height>
+       <height>391</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <property name="sizeConstraint">
-       <enum>QLayout::SetFixedSize</enum>
+       <enum>QLayout::SetNoConstraint</enum>
       </property>
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::FieldsStayAtSizeHint</enum>

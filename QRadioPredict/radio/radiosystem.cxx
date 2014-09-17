@@ -46,7 +46,10 @@ FGRadio::FGRadio(DatabaseApi *db) {
         _settings = prefs[0];
     }
     else
+    {
+        qDebug() << "Could not load settings";
         _settings = 0;
+    }
 	
     _propagation_model = ITMModel;
     _scenery = new SceneryManager(db,_settings);
@@ -151,10 +154,12 @@ void FGRadio::setPlotStation(GroundStation *g)
 
 void FGRadio::plot()
 {
+    qDebug() << "Plotting...";
     while (_plot_station ==NULL) {}
     GroundStation *station = _plot_station;
     if(!station || !(station->enabled == 1))
     {
+        qDebug() << "No station found";
         return;
     }
 
@@ -168,7 +173,8 @@ void FGRadio::plot()
     if( !(lat) || !(lon) || (lat > 90.0) || (lat < -90.0) || (lon > 180.0) || (lon <-180.0))
         return;
 
-    if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
+    if((station->frequency < 26.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
+        qDebug() << "Frequency out of bounds";
         return;
     }
     // This would pre-load all tiles around the station on 3+ distance

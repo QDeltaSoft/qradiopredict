@@ -21,7 +21,7 @@
 #include <QMap>
 #include <QString>
 #include <QDebug>
-#include "ogrsf_frmts.h"
+#include <gdal/ogrsf_frmts.h>
 #include "databaseapi.h"
 #include "flightgearprefs.h"
 
