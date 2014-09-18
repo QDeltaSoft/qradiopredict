@@ -7,3 +7,4 @@ CREATE TABLE mobile_stations (created_on NUMERIC, id INTEGER PRIMARY KEY, id_ses
 CREATE TABLE replays (id INTEGER PRIMARY KEY, id_session NUMERIC, id_replay TEXT, mobile_longitude TEXT, mobile_latitude TEXT, id_station NUMERIC, signal_dbm TEXT, signal NUMERIC, field_strength_uv TEXT, link_budget TEXT, terrain_attenuation TEXT, clutter_attenuation TEXT, prop_mode TEXT);
 CREATE TABLE sessions (id INTEGER PRIMARY KEY, name TEXT, created_on NUMERIC);
 CREATE TABLE signals (id INTEGER PRIMARY KEY, id_session NUMERIC, id_station NUMERIC, signal_dbm TEXT, signal NUMERIC, field_strength_uv TEXT, link_budget TEXT, terrain_attenuation TEXT, clutter_attenuation TEXT, prop_mode TEXT);
+INSERT INTO "fgfs_settings" VALUES ("romania.aprs2.net","768","1024","1","","","ufo","LFPG","","0","1","0","/install/bin/data/srtm-hgt/hgt-files/","/install/bin/data/clc/cropped/","201","10","1","1","1");
