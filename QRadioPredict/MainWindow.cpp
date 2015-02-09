@@ -227,6 +227,13 @@ void MainWindow::openAboutDialog()
     dailog->show();
 }
 
+void MainWindow::displaySubsystemError(QString error_message)
+{
+    ConnectionSuccessDialog *dialog = new ConnectionSuccessDialog;
+    dialog->ui->label->setText(error_message);
+    dialog->show();
+}
+
 void MainWindow::checkForUpdates()
 {
     UpdateCheckDialog *d = new UpdateCheckDialog;
@@ -674,6 +681,7 @@ void MainWindow::connectionSuccess()
     this->_tb->ui->connectTelnetButton->setEnabled(false);
     this->_tb->ui->sendToFlightgearButton->setEnabled(true);
     this->_tb->ui->stopUpdateButton->setEnabled(true);
+    dialog->ui->label->setText("Connection to Flightgear Succeeded!");
     dialog->show();
     this->ui->dockWidget3->toggleViewAction()->setText("&Toolbox (active)");
 }
@@ -1410,6 +1418,7 @@ void MainWindow::startStandalone()
     connect(radiosystem, SIGNAL(finished()), t, SLOT(quit()));
     connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
+    connect(radiosystem, SIGNAL(errorFound(QString)), this, SLOT(displaySubsystemError(QString)));
     _radio_subsystem = radiosystem;
     t->start();
 
@@ -1736,6 +1745,7 @@ void MainWindow::plotCoverage(GroundStation *g)
     connect(radiosystem, SIGNAL(finished()), this, SLOT(plottingFinished()));
     connect(radiosystem, SIGNAL(finished()), radiosystem, SLOT(deleteLater()));
     connect(t, SIGNAL(finished()), t, SLOT(deleteLater()));
+    connect(radiosystem, SIGNAL(errorFound(QString)), this, SLOT(displaySubsystemError(QString)));
     _radio_subsystem = radiosystem;
     t->start();
 

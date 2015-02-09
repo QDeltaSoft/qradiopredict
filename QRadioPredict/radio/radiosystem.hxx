@@ -73,6 +73,7 @@ public slots:
     void plot();
 
 signals:
+    void errorFound(QString error_message);
     void finished();
     void nrOfPos(int nr);
     void haveSignalReading(double longitude,double latitude,int id, QString name, double freq, Signal *s);

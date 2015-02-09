@@ -47,7 +47,7 @@ color: rgb(0, 0, 0);
 </string>
    </property>
    <property name="text">
-    <string>Connection to Flightgear Succeeded!</string>
+    <string/>
    </property>
    <property name="wordWrap">
     <bool>true</bool>

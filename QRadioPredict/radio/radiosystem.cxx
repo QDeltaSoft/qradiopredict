@@ -48,6 +48,7 @@ FGRadio::FGRadio(DatabaseApi *db) {
     else
     {
         qDebug() << "Could not load settings";
+        emit errorFound("Error: Could not load settings");
         _settings = 0;
     }
 	
@@ -102,6 +103,8 @@ void FGRadio::moveMobile()
     //if(!_move_flag) return;
     if(!(_fp_points.size()>0))
     {
+        emit errorFound("Error: No waypoints set");
+        this->stop();
         return;
     }
     if((_start_move.elapsed() < 10*1000) && !_timer_started) return;
@@ -160,6 +163,8 @@ void FGRadio::plot()
     if(!station || !(station->enabled == 1))
     {
         qDebug() << "No station found";
+        emit errorFound("Error: No station found");
+        this->stop();
         return;
     }
 
@@ -175,6 +180,8 @@ void FGRadio::plot()
 
     if((station->frequency < 26.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
         qDebug() << "Frequency out of bounds";
+        emit errorFound("Error: frequency out of bounds");
+        this->stop();
         return;
     }
     // This would pre-load all tiles around the station on 3+ distance
@@ -606,7 +613,8 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 
 	if((transmission->freq < 40.0) || (transmission->freq > 20000.0)) {	// frequency out of recommended range 
         qDebug() << "FGRadio:: received transmission with frequency outside of normal range";
-		delete transmission;
+
+        delete transmission;
 		return;
 	}
 	

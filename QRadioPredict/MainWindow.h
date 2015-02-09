@@ -183,6 +183,7 @@ public slots:
     void setPlotProgressBar(int ticks);
     void showPlotDistance();
     void setPlotDistance();
+    void displaySubsystemError(QString error_message);
 
 
 private:
