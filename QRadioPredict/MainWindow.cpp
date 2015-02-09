@@ -925,21 +925,25 @@ void MainWindow::setMapItems(quint8 zoom)
 void MainWindow::setMobileType()
 {
     _placed_item_type = 1;
+    _last_station_id = -1;
 }
 
 void MainWindow::setGroundType()
 {
     _placed_item_type = 2;
+    _last_station_id = -1;
 }
 
 void MainWindow::setFPType()
 {
     _placed_item_type = 3;
+    _last_station_id = -1;
 }
 
 void MainWindow::setInfoType()
 {
     _placed_item_type = 4;
+    _last_station_id = -1;
 }
 
 
@@ -1477,6 +1481,7 @@ void MainWindow::stopSignalUpdate()
     _tb->ui->startUpdateButton->setStyleSheet("background:yellow;");
     _tb->ui->stopUpdateButton->setEnabled(false);
     _tb->ui->stopUpdateButton->setStyleSheet("background:rgb(220,220,220);");
+    _last_station_id = -1;
 }
 
 void MainWindow::setReceived(QString data)
