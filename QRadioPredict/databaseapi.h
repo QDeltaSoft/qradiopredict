@@ -149,7 +149,7 @@ public:
 
 
     void
-    update_flightplan_position(const double &altitude, const unsigned &id_session, const unsigned &id);
+    update_flightplan_position(const double &latitude, const double &longitude, const double &altitude, const unsigned &id_session, const unsigned &id);
 
 
 

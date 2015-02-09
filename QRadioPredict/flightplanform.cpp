@@ -37,7 +37,8 @@ void FlightplanForm::saveFP()
     FlightPlanPoints *fp = new FlightPlanPoints;
     fp->id = ui->idLineEdit->text().toInt();
     fp->id_session = 0;
-
+    fp->latitude = ui->latLineEdit->text().toDouble();
+    fp->longitude = ui->lonLineEdit->text().toDouble();
     fp->altitude = ui->altitudeLineEdit->text().toDouble();
 
     emit haveData(fp);

@@ -1291,7 +1291,9 @@ void MainWindow::saveGroundStation(GroundStation * g)
 
 void MainWindow::saveFlightplan(FlightPlanPoints * fp)
 {
-    _db->update_flightplan_position(fp->altitude,0,fp->id);
+    _db->update_flightplan_position(fp->latitude, fp->longitude, fp->altitude,0,fp->id);
+    this->clearMap();
+    this->restoreMapState();
     delete fp;
 
 }

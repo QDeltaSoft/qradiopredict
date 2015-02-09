@@ -881,11 +881,13 @@ DatabaseApi::update_mobile_position(const unsigned &id_session, const double &lo
 
 
 void
-DatabaseApi::update_flightplan_position(const double &altitude, const unsigned &id_session, const unsigned &id)
+DatabaseApi::update_flightplan_position(const double &latitude, const double &longitude, const double &altitude, const unsigned &id_session, const unsigned &id)
 {
     QSqlQuery query(_db);
-    query.prepare("UPDATE flightplan_positions SET altitude=:altitude WHERE "
+    query.prepare("UPDATE flightplan_positions SET altitude=:altitude, latitude=:latitude, longitude=:longitude WHERE "
                   " id_session=:id_session AND id=:id");
+    query.bindValue(":latitude", latitude);
+    query.bindValue(":longitude", longitude);
     query.bindValue(":altitude", altitude);
     query.bindValue(":id_session", id_session);
     query.bindValue(":id", id);
