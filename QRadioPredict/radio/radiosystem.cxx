@@ -710,13 +710,13 @@ void FGRadio::setupTransmission(Transmission* transmission) {
 	
 
 	
-
+#if 0
 	if ((transmission->distance_m > 300000) || (own_alt > 8000)) {
 		attenuationLOS(transmission);
 		processSignal(transmission);
 		return;
 	}
-		
+#endif
 	
 	transmission->e_size = (deque<unsigned>::size_type)max_points;
 	
