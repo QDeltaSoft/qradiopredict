@@ -50,6 +50,37 @@ ShpReader::ShpReader(DatabaseApi *db)
     _terrain_types.insert(new QString("CropWood"), new QString("c243"));
     _terrain_types.insert(new QString("AgroForest"), new QString("c243"));
 
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("Urban"));
+    _corine_raster_terrain_types.push_back(QString("Town"));
+    _corine_raster_terrain_types.push_back(QString("Industrial"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("Industrial"));
+    _corine_raster_terrain_types.push_back(QString("Industrial"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("Construction"));
+    _corine_raster_terrain_types.push_back(QString("DeciduousForest"));
+    _corine_raster_terrain_types.push_back(QString("ShrubCover"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("ScrubCover"));
+    _corine_raster_terrain_types.push_back(QString("CropWoodCover"));
+    _corine_raster_terrain_types.push_back(QString("CropWoodCover"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("CropWood"));
+    _corine_raster_terrain_types.push_back(QString("CropWood"));
+    _corine_raster_terrain_types.push_back(QString("DeciduousForest"));
+    _corine_raster_terrain_types.push_back(QString("EvergreenForest"));
+    _corine_raster_terrain_types.push_back(QString("MixedForest"));
+    _corine_raster_terrain_types.push_back(QString("none"));
+    _corine_raster_terrain_types.push_back(QString("ScrubCover"));
+    _corine_raster_terrain_types.push_back(QString("ShrubCover"));
+    _corine_raster_terrain_types.push_back(QString("ShrubCover"));
+
 }
 
 ShpReader::~ShpReader()
@@ -87,6 +118,12 @@ QString ShpReader::getTerrainTypeFromRaster()
         return QString("none");
     }
 
+    GDALRasterBand *rasterband = dataset->GetRasterBand(1);
+    GDALDataType type = rasterband->GetRasterDataType();
+    GDALColorInterp interp = rasterband->GetColorInterpretation();
+    Q_UNUSED(interp);
+    GDALColorTable *color_table = rasterband->GetColorTable();
+
     OGRSpatialReference *geoSRS = new OGRSpatialReference();
     geoSRS->importFromEPSG( 4326 ); // WGS84
 
@@ -101,26 +138,31 @@ QString ShpReader::getTerrainTypeFromRaster()
     double px = ((x - transform[0]) / transform[1]);
     double py = ((y - transform[3]) / transform[5]);
 
-    qDebug() << _longitude << " " << _latitude <<  " X: " << px << " Y: " << py;
-    GDALRasterBand *rasterband = dataset->GetRasterBand(1);
+
     char *data = (char *) CPLMalloc(sizeof(char));
-    GDALDataType type = rasterband->GetRasterDataType();
-    GDALColorInterp interp = rasterband->GetColorInterpretation();
-    Q_UNUSED(interp);
-    GDALColorTable *color_table = rasterband->GetColorTable();
+
 
 
     rasterband->RasterIO(GF_Read, px, py, 1, 1, data, 1, 1, type , 0, 0);
     // data is a pointer holding the colour index
     const GDALColorEntry *color = color_table->GetColorEntry(*data);
-
-    qDebug() << color->c1 << " " << color->c2 << " " << color->c3 << " " << color->c4;
+    Q_UNUSED(color);
+    quint8 index = *data;
+    QString terrain_type;
+    if (index > _corine_raster_terrain_types.size()-1)
+    {
+        terrain_type ="none";
+    }
+    else
+    {
+        terrain_type = _corine_raster_terrain_types.at(index);
+    }
     delete geoSRS;
     delete dataSRS;
     delete coordinate_transform;
     CPLFree(data);
     GDALClose(dataset);
-    return QString("none");
+    return terrain_type;
 }
 
 QString ShpReader::getTerrainType()

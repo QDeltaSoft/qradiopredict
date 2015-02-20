@@ -44,12 +44,29 @@ public:
 
 private:
     QMap<QString*, QString*> _terrain_types;
+    QVector<QString> _corine_raster_terrain_types;
     bool pointInPoly(int polySize, double XPoints[], double YPoints[], double x, double y);
     QString openShapefile(QString &name, QString &terrain_type);
     QString getFilename();
     FlightgearPrefs *_settings;
     double _latitude;
     double _longitude;
+    struct TerrainType
+    {
+        quint8 a;
+        quint8 b;
+        quint8 c;
+        QString mat_name;
+        TerrainType(quint8 x, quint8 y, quint8 z, QString value)
+            :
+              a(x),
+              b(y),
+              c(z),
+              mat_name(value)
+        {
+
+        }
+    };
     
 };
 
