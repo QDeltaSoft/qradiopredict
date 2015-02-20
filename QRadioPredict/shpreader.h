@@ -22,6 +22,7 @@
 #include <QString>
 #include <QDebug>
 #include <gdal/ogrsf_frmts.h>
+#include <gdal/gdal_priv.h>
 #include "databaseapi.h"
 #include "flightgearprefs.h"
 
@@ -39,6 +40,7 @@ public:
     ~ShpReader();
     void setCoordinates(double lat, double lon);
     QString getTerrainType();
+    QString getTerrainTypeFromRaster();
 
 private:
     QMap<QString*, QString*> _terrain_types;

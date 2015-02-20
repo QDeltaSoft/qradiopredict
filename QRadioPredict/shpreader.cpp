@@ -71,6 +71,58 @@ void ShpReader::setCoordinates(double lat, double lon)
     _longitude = lon;
 }
 
+QString ShpReader::getTerrainTypeFromRaster()
+{
+    GDALAllRegister();
+    QString shp_dir = _settings->_shapefile_path;
+    shp_dir.append(QDir::separator()).append("g100_06.tif");
+    GDALDataset *dataset = reinterpret_cast<GDALDataset*>(GDALOpen(shp_dir.toStdString().c_str(), GA_ReadOnly));
+    double transform[6];
+
+    CPLErr error = dataset->GetGeoTransform(transform);
+    if (error == CE_Failure)
+    {
+        qDebug() << "Failed to open landcover dataset: " << shp_dir;
+        GDALClose(dataset);
+        return QString("none");
+    }
+
+    OGRSpatialReference *geoSRS = new OGRSpatialReference();
+    geoSRS->importFromEPSG( 4326 ); // WGS84
+
+    const char *proj = dataset->GetProjectionRef();
+    OGRSpatialReference *dataSRS = new OGRSpatialReference( proj );
+    OGRCoordinateTransformation *coordinate_transform;
+    coordinate_transform = OGRCreateCoordinateTransformation( geoSRS, dataSRS );
+
+    double x = _longitude;
+    double y = _latitude;
+    coordinate_transform->Transform( 1, &x, &y );
+    double px = ((x - transform[0]) / transform[1]);
+    double py = ((y - transform[3]) / transform[5]);
+
+    qDebug() << _longitude << " " << _latitude <<  " X: " << px << " Y: " << py;
+    GDALRasterBand *rasterband = dataset->GetRasterBand(1);
+    char *data = (char *) CPLMalloc(sizeof(char));
+    GDALDataType type = rasterband->GetRasterDataType();
+    GDALColorInterp interp = rasterband->GetColorInterpretation();
+    Q_UNUSED(interp);
+    GDALColorTable *color_table = rasterband->GetColorTable();
+
+
+    rasterband->RasterIO(GF_Read, px, py, 1, 1, data, 1, 1, type , 0, 0);
+    // data is a pointer holding the colour index
+    const GDALColorEntry *color = color_table->GetColorEntry(*data);
+
+    qDebug() << color->c1 << " " << color->c2 << " " << color->c3 << " " << color->c4;
+    delete geoSRS;
+    delete dataSRS;
+    delete coordinate_transform;
+    CPLFree(data);
+    GDALClose(dataset);
+    return QString("none");
+}
+
 QString ShpReader::getTerrainType()
 {
     QString type;

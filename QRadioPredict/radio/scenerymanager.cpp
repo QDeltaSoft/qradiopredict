@@ -33,7 +33,7 @@ bool SceneryManager::get_elevation_m(const SGGeod &probe, double &elevation_m, s
     if(_settings->_use_clutter == 1)
     {
         _shpreader->setCoordinates(probe.getLatitudeDeg(),probe.getLongitudeDeg());
-        QString mat = _shpreader->getTerrainType();
+        QString mat = _shpreader->getTerrainTypeFromRaster();
         material = mat.toStdString();
     }
     else
