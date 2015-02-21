@@ -217,9 +217,9 @@ void FGRadio::plot()
 
         transmission->transmitter_power =  watt_to_dbm(station->tx_power_watt);
 
-        transmission->tx_antenna_height = 2.0 + station->tx_antenna_height;
+        transmission->tx_antenna_height = station->tx_antenna_height;
 
-        transmission->rx_antenna_height = 2.0 + station->rx_antenna_height;
+        transmission->rx_antenna_height = station->rx_antenna_height;
 
         transmission->rx_antenna_gain = station->rx_antenna_gain;
         transmission->tx_antenna_gain = station->tx_antenna_gain;
@@ -545,7 +545,7 @@ void FGRadio::receive(QVector<GroundStation *> gs) {
 
 
 
-        if((station->frequency < 40.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
+        if((station->frequency < 26.0) || (station->frequency > 20000.0)) {	// frequency out of recommended range
             continue;
         }
 
@@ -569,9 +569,9 @@ void FGRadio::receive(QVector<GroundStation *> gs) {
 
         transmission->transmitter_power =  watt_to_dbm(station->tx_power_watt);
 
-        transmission->tx_antenna_height = 2.0 + station->tx_antenna_height;
+        transmission->tx_antenna_height = station->tx_antenna_height;
 
-        transmission->rx_antenna_height = 2.0 + station->rx_antenna_height;
+        transmission->rx_antenna_height = station->rx_antenna_height;
 
 
         transmission->rx_antenna_gain = station->rx_antenna_gain;
@@ -905,6 +905,7 @@ void FGRadio::attenuationITM(Transmission* transmission) {
         }
 
 	}
+
     double h1, h2;
     if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
 		// the sender and receiver roles are switched
@@ -929,11 +930,15 @@ void FGRadio::attenuationITM(Transmission* transmission) {
             pol, conf, rel, dbloss, strmode, p_mode, horizons, errnum);
     }
     if( _settings->_use_clutter == 1 )
-        attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
-            h1, h2, p_mode, horizons, clutter_loss);
+    {
+
+            attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
+                h1, h2, p_mode, horizons, clutter_loss);
+
+    }
 	
 	double pol_loss = 0.0;
-	
+
 	pol_loss = polarization_loss(transmission->polarization);
 	
 
@@ -967,9 +972,11 @@ void FGRadio::attenuationITM(Transmission* transmission) {
     s->tx_pattern_gain = transmission->tx_pattern_gain;
     s->rx_pattern_gain = transmission->rx_pattern_gain;
 
-	for (unsigned i =0; i < transmission->materials.size(); i++) {
-		delete transmission->materials[i];
-	}
+
+    for (unsigned i =0; i < transmission->materials.size(); i++) {
+        delete transmission->materials[i];
+    }
+
 	
 	
 	transmission->signal = signal;
@@ -1034,7 +1041,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 			double clutter_height = 0.0;	// mean clutter height for a certain terrain type
 			double clutter_density = 0.0;	// percent of reflected wave
 			if((unsigned)mat >= mat_size) {	//this tends to happen when the model interferes with the antenna (obstructs)
-				//cerr << "Array index out of bounds 0-0: " << mat << " size: " << mat_size << endl;
+                cerr << "Array index out of bounds 0-0: " << mat << " size: " << mat_size << endl;
 				break;
 			}
 			get_material_properties(materials[mat], clutter_height, clutter_density);
@@ -1043,7 +1050,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 			// First Fresnel radius
 			double frs_rad = 548 * sqrt( (j * itm_elev[1] * (itm_elev[0] - j) * itm_elev[1] / 1000000) / (  distance_m * freq / 1000) );
 			if (frs_rad <= 0.0) {	//this tends to happen when the model interferes with the antenna (obstructs)
-				//cerr << "Frs rad 0-0: " << frs_rad << endl;
+                cerr << "Frs rad 0-0: " << frs_rad << endl;
 				continue;
 			}
 			//double earth_h = distance_m * (distance_m - j * itm_elev[1]) / ( 1000000 * 12.75 * 1.33 );	// K=4/3
@@ -1093,7 +1100,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double clutter_density = 0.0;	// percent of reflected wave
 				
 				if((unsigned)mat >= mat_size) {		
-					//cerr << "Array index out of bounds 1-1: " << mat << " size: " << mat_size << endl;
+                    cerr << "Array index out of bounds 1-1: " << mat << " size: " << mat_size << endl;
 					break;
 				}
 				get_material_properties(materials[mat], clutter_height, clutter_density);
@@ -1103,7 +1110,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double frs_rad = 548 * sqrt( (j * itm_elev[1] * (num_points_1st - j) * itm_elev[1] / 1000000) / 
 					( num_points_1st * itm_elev[1] * freq / 1000) );
 				if (frs_rad <= 0.0) {	
-					//cerr << "Frs rad 1-1: " << frs_rad << endl;
+                    cerr << "Frs rad 1-1: " << frs_rad << endl;
 					continue;
 				}
 				//double earth_h = distance_m * (distance_m - j * itm_elev[1]) / ( 1000000 * 12.75 * 1.33 );	// K=4/3
@@ -1146,7 +1153,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double clutter_density = 0.0;	// percent of reflected wave
 				
 				if((unsigned)mat >= mat_size) {		
-					//cerr << "Array index out of bounds 1-2: " << mat << " size: " << mat_size << endl;
+                    cerr << "Array index out of bounds 1-2: " << mat << " size: " << mat_size << endl;
 					break;
 				}
 				get_material_properties(materials[mat], clutter_height, clutter_density);
@@ -1156,7 +1163,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double frs_rad = 548 * sqrt( (j * itm_elev[1] * (num_points_2nd - j) * itm_elev[1] / 1000000) / 
 					(  num_points_2nd * itm_elev[1] * freq / 1000) );
 				if (frs_rad <= 0.0) {	
-					//cerr << "Frs rad 1-2: " << frs_rad << " numpoints2 " << num_points_2nd << " j: " << j << endl;
+                    cerr << "Frs rad 1-2: " << frs_rad << " numpoints2 " << num_points_2nd << " j: " << j << endl;
 					continue;
 				}
 				//double earth_h = distance_m * (distance_m - j * itm_elev[1]) / ( 1000000 * 12.75 * 1.33 );	// K=4/3
@@ -1206,7 +1213,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double clutter_height = 0.0;	// mean clutter height for a certain terrain type
 				double clutter_density = 0.0;	// percent of reflected wave
 				if((unsigned)mat >= mat_size) {		
-					//cerr << "Array index out of bounds 2-1: " << mat << " size: " << mat_size << endl;
+                    cerr << "Array index out of bounds 2-1: " << mat << " size: " << mat_size << endl;
 					break;
 				}
 				get_material_properties(materials[mat], clutter_height, clutter_density);
@@ -1216,7 +1223,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double frs_rad = 548 * sqrt( (j * itm_elev[1] * (num_points_1st - j) * itm_elev[1] / 1000000) / 
 					(  num_points_1st * itm_elev[1] * freq / 1000) );
 				if (frs_rad <= 0.0) {		
-					//cerr << "Frs rad 2-1: " << frs_rad << " numpoints1 " << num_points_1st << " j: " << j << endl;
+                    cerr << "Frs rad 2-1: " << frs_rad << " numpoints1 " << num_points_1st << " j: " << j << endl;
 					continue;
 				}
 				//double earth_h = distance_m * (distance_m - j * itm_elev[1]) / ( 1000000 * 12.75 * 1.33 );	// K=4/3
@@ -1258,7 +1265,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double clutter_height = 0.0;	// mean clutter height for a certain terrain type
 				double clutter_density = 0.0;	// percent of reflected wave
 				if((unsigned)mat >= mat_size) {		
-					//cerr << "Array index out of bounds 2-2: " << mat << " size: " << mat_size << endl;
+                    cerr << "Array index out of bounds 2-2: " << mat << " size: " << mat_size << endl;
 					break;
 				}
 				get_material_properties(materials[mat], clutter_height, clutter_density);
@@ -1268,7 +1275,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double frs_rad = 548 * sqrt( (j * itm_elev[1] * (num_points_2nd - j) * itm_elev[1] / 1000000) / 
 					(  num_points_2nd * itm_elev[1] * freq / 1000) );
 				if (frs_rad <= 0.0) {	
-					//cerr << "Frs rad 2-2: " << frs_rad << " numpoints2 " << num_points_2nd << " j: " << j << endl;
+                    cerr << "Frs rad 2-2: " << frs_rad << " numpoints2 " << num_points_2nd << " j: " << j << endl;
 					continue;
 				}
 				//double earth_h = distance_m * (distance_m - j * itm_elev[1]) / ( 1000000 * 12.75 * 1.33 );	// K=4/3
@@ -1310,7 +1317,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double clutter_height = 0.0;	// mean clutter height for a certain terrain type
 				double clutter_density = 0.0;	// percent of reflected wave
 				if((unsigned)mat >= mat_size) {		
-					//cerr << "Array index out of bounds 2-3: " << mat << " size: " << mat_size << endl;
+                    cerr << "Array index out of bounds 2-3: " << mat << " size: " << mat_size << endl;
 					break;
 				}
 				get_material_properties(materials[mat], clutter_height, clutter_density);
@@ -1320,7 +1327,7 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				double frs_rad = 548 * sqrt( (j * itm_elev[1] * (num_points_3rd - j) * itm_elev[1] / 1000000) / 
 					(  num_points_3rd * itm_elev[1] * freq / 1000) );
 				if (frs_rad <= 0.0) {		
-					//cerr << "Frs rad 2-3: " << frs_rad << " numpoints3 " << num_points_3rd << " j: " << j << endl;
+                    cerr << "Frs rad 2-3: " << frs_rad << " numpoints3 " << num_points_3rd << " j: " << j << endl;
 					continue;
 				}
 				

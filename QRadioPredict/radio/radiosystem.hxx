@@ -138,7 +138,7 @@ private:
         QVector<double> *plot_elevations;
         QVector<string*> *plot_materials;
 		std::deque<double> elevations;
-		std::deque<string*> materials;
+        std::deque<string*> materials;
 		double own_heading;				// player heading
 		double rx_antenna_pitch;		// player pitch
 		double sender_heading;			// the other station heading

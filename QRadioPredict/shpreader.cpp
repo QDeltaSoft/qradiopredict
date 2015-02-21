@@ -110,13 +110,17 @@ void ShpReader::initGDALraster()
     QString shp_dir = _settings->_shapefile_path;
     shp_dir.append(QDir::separator()).append("g100_06.tif");
     _dataset = reinterpret_cast<GDALDataset*>(GDALOpen(shp_dir.toStdString().c_str(), GA_ReadOnly));
-    if (!_dataset) return;
+    if (!_dataset)
+    {
+        qDebug() << "Failed to open landcover dataset: " << shp_dir;
+        return;
+    }
     _dataset_available = true;
     double t[6];
     CPLErr error = _dataset->GetGeoTransform(t);
     if (error == CE_Failure)
     {
-        qDebug() << "Failed to open landcover dataset: " << shp_dir;
+        qDebug() << "Failed to fetch geotransform: " << shp_dir;
     }
 
     _rasterband = _dataset->GetRasterBand(1);
