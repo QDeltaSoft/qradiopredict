@@ -81,11 +81,16 @@ ShpReader::ShpReader(DatabaseApi *db)
     _corine_raster_terrain_types.push_back(QString("ShrubCover"));
     _corine_raster_terrain_types.push_back(QString("ShrubCover"));
 
+    this->initGDALraster();
+
 }
 
 ShpReader::~ShpReader()
 {
-
+    delete _geoSRS;
+    delete _dataSRS;
+    delete _coordinate_transform;
+    GDALClose(_dataset);
     QMapIterator<QString*,QString*> it(_terrain_types);
     while(it.hasNext())
     {
@@ -96,6 +101,34 @@ ShpReader::~ShpReader()
     _terrain_types.clear();
 }
 
+void ShpReader::initGDALraster()
+{
+    GDALAllRegister();
+    QString shp_dir = _settings->_shapefile_path;
+    shp_dir.append(QDir::separator()).append("g100_06.tif");
+    _dataset = reinterpret_cast<GDALDataset*>(GDALOpen(shp_dir.toStdString().c_str(), GA_ReadOnly));
+    double t[6];
+    CPLErr error = _dataset->GetGeoTransform(t);
+    if (error == CE_Failure)
+    {
+        qDebug() << "Failed to open landcover dataset: " << shp_dir;
+    }
+
+    _rasterband = _dataset->GetRasterBand(1);
+    _data_type = _rasterband->GetRasterDataType();
+    GDALColorInterp interp = _rasterband->GetColorInterpretation();
+    Q_UNUSED(interp);
+    _color_table = _rasterband->GetColorTable();
+
+    _geoSRS = new OGRSpatialReference();
+    _geoSRS->importFromEPSG( 4326 ); // WGS84
+
+    const char *proj = _dataset->GetProjectionRef();
+    _dataSRS = new OGRSpatialReference( proj );
+
+    _coordinate_transform = OGRCreateCoordinateTransformation( _geoSRS, _dataSRS );
+}
+
 void ShpReader::setCoordinates(double lat, double lon)
 {
     _latitude = lat;
@@ -104,48 +137,18 @@ void ShpReader::setCoordinates(double lat, double lon)
 
 QString ShpReader::getTerrainTypeFromRaster()
 {
-    GDALAllRegister();
-    QString shp_dir = _settings->_shapefile_path;
-    shp_dir.append(QDir::separator()).append("g100_06.tif");
-    GDALDataset *dataset = reinterpret_cast<GDALDataset*>(GDALOpen(shp_dir.toStdString().c_str(), GA_ReadOnly));
     double transform[6];
-
-    CPLErr error = dataset->GetGeoTransform(transform);
-    if (error == CE_Failure)
-    {
-        qDebug() << "Failed to open landcover dataset: " << shp_dir;
-        GDALClose(dataset);
-        return QString("none");
-    }
-
-    GDALRasterBand *rasterband = dataset->GetRasterBand(1);
-    GDALDataType type = rasterband->GetRasterDataType();
-    GDALColorInterp interp = rasterband->GetColorInterpretation();
-    Q_UNUSED(interp);
-    GDALColorTable *color_table = rasterband->GetColorTable();
-
-    OGRSpatialReference *geoSRS = new OGRSpatialReference();
-    geoSRS->importFromEPSG( 4326 ); // WGS84
-
-    const char *proj = dataset->GetProjectionRef();
-    OGRSpatialReference *dataSRS = new OGRSpatialReference( proj );
-    OGRCoordinateTransformation *coordinate_transform;
-    coordinate_transform = OGRCreateCoordinateTransformation( geoSRS, dataSRS );
-
+    _dataset->GetGeoTransform(transform);
     double x = _longitude;
     double y = _latitude;
-    coordinate_transform->Transform( 1, &x, &y );
+    _coordinate_transform->Transform( 1, &x, &y );
     double px = ((x - transform[0]) / transform[1]);
     double py = ((y - transform[3]) / transform[5]);
-
-
     char *data = (char *) CPLMalloc(sizeof(char));
 
-
-
-    rasterband->RasterIO(GF_Read, px, py, 1, 1, data, 1, 1, type , 0, 0);
+    _rasterband->RasterIO(GF_Read, px, py, 1, 1, data, 1, 1, _data_type , 0, 0);
     // data is a pointer holding the colour index
-    const GDALColorEntry *color = color_table->GetColorEntry(*data);
+    const GDALColorEntry *color = _color_table->GetColorEntry(*data);
     Q_UNUSED(color);
     quint8 index = *data;
     QString terrain_type;
@@ -157,11 +160,10 @@ QString ShpReader::getTerrainTypeFromRaster()
     {
         terrain_type = _corine_raster_terrain_types.at(index);
     }
-    delete geoSRS;
-    delete dataSRS;
-    delete coordinate_transform;
+
+
     CPLFree(data);
-    GDALClose(dataset);
+
     return terrain_type;
 }
 

@@ -48,6 +48,14 @@ private:
     bool pointInPoly(int polySize, double XPoints[], double YPoints[], double x, double y);
     QString openShapefile(QString &name, QString &terrain_type);
     QString getFilename();
+    void initGDALraster();
+    GDALDataset *_dataset;
+    GDALRasterBand *_rasterband;
+    GDALDataType _data_type;
+    OGRCoordinateTransformation *_coordinate_transform;
+    OGRSpatialReference *_geoSRS;
+    OGRSpatialReference *_dataSRS;
+    GDALColorTable *_color_table;
     FlightgearPrefs *_settings;
     double _latitude;
     double _longitude;

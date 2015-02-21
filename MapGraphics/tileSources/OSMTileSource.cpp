@@ -119,8 +119,10 @@ void OSMTileSource::fetchTile(quint32 x, quint32 y, quint8 z)
     }
     else if (_tileType == MapQuestOSMTiles)
     {
-        host = "http://otile1.mqcdn.com";
-        url = "/tiles/1.0.0/osm/%1/%2/%3.jpg";
+        //host = "http://otile1.mqcdn.com";
+        //url = "/tiles/1.0.0/osm/%1/%2/%3.jpg";
+        host = "http://b.tile.openstreetmap.org";
+        url = "/%1/%2/%3.png";
     }
     else if (_tileType == GoogleSatTiles)
     {
@@ -137,8 +139,10 @@ void OSMTileSource::fetchTile(quint32 x, quint32 y, quint8 z)
     }
     else
     {
-        host = "http://otile1.mqcdn.com";
-        url = "/tiles/1.0.0/sat/%1/%2/%3.jpg";
+        //host = "http://otile1.mqcdn.com";
+        //url = "/tiles/1.0.0/sat/%1/%2/%3.jpg";
+        host = "http://b.tile.openstreetmap.org";
+        url = "/%1/%2/%3.png";
     }
 
 
