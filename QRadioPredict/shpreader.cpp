@@ -80,17 +80,20 @@ ShpReader::ShpReader(DatabaseApi *db)
     _corine_raster_terrain_types.push_back(QString("ScrubCover"));
     _corine_raster_terrain_types.push_back(QString("ShrubCover"));
     _corine_raster_terrain_types.push_back(QString("ShrubCover"));
-
+    _dataset_available = false;
     this->initGDALraster();
 
 }
 
 ShpReader::~ShpReader()
 {
-    delete _geoSRS;
-    delete _dataSRS;
-    delete _coordinate_transform;
-    GDALClose(_dataset);
+    if(_dataset_available)
+    {
+        delete _geoSRS;
+        delete _dataSRS;
+        delete _coordinate_transform;
+        GDALClose(_dataset);
+    }
     QMapIterator<QString*,QString*> it(_terrain_types);
     while(it.hasNext())
     {
@@ -107,6 +110,8 @@ void ShpReader::initGDALraster()
     QString shp_dir = _settings->_shapefile_path;
     shp_dir.append(QDir::separator()).append("g100_06.tif");
     _dataset = reinterpret_cast<GDALDataset*>(GDALOpen(shp_dir.toStdString().c_str(), GA_ReadOnly));
+    if (!_dataset) return;
+    _dataset_available = true;
     double t[6];
     CPLErr error = _dataset->GetGeoTransform(t);
     if (error == CE_Failure)
@@ -137,6 +142,7 @@ void ShpReader::setCoordinates(double lat, double lon)
 
 QString ShpReader::getTerrainTypeFromRaster()
 {
+    if(!_dataset_available) return QString("none");
     double transform[6];
     _dataset->GetGeoTransform(transform);
     double x = _longitude;

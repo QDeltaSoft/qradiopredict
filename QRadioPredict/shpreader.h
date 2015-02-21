@@ -59,6 +59,7 @@ private:
     FlightgearPrefs *_settings;
     double _latitude;
     double _longitude;
+    bool _dataset_available;
     struct TerrainType
     {
         quint8 a;
