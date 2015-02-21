@@ -4,14 +4,21 @@
 SceneryManager::SceneryManager(DatabaseApi *db, FlightgearPrefs *settings)
 {
     _srtmreader = new SRTMReader(db);
-    _shpreader = new ShpReader(db);
+
     _settings = settings;
+    if(_settings->_use_clutter == 1)
+    {
+        _shpreader = new ShpReader(db);
+    }
 }
 
 SceneryManager::~SceneryManager()
 {
     delete _srtmreader;
-    delete _shpreader;
+    if(_settings->_use_clutter == 1)
+    {
+        delete _shpreader;
+    }
 }
 
 void SceneryManager::preloadTiles(double lon, double lat)
