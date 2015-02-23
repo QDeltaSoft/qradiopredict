@@ -136,7 +136,7 @@ private:
 		bool process_terrain;
         bool plot;
         QVector<double> *plot_elevations;
-        QVector<string*> *plot_materials;
+        std::deque<string*> plot_materials;
 		std::deque<double> elevations;
         std::deque<string*> materials;
 		double own_heading;				// player heading
@@ -185,7 +185,6 @@ private:
 			process_terrain(true),
             plot(false),
             plot_elevations(new QVector<double>),
-            plot_materials(new QVector<string*>),
 			own_heading(0),
 			rx_antenna_pitch(0),
 			sender_heading(0),
@@ -234,7 +233,7 @@ private:
 			process_terrain(t->process_terrain),
             plot(t->plot),
             plot_elevations(new QVector<double>(*t->plot_elevations)),
-            plot_materials(new QVector<string*>(*t->plot_materials)),
+            plot_materials(t->plot_materials),
 			elevations(t->elevations),
 			materials(t->materials),
 			own_heading(t->own_heading),

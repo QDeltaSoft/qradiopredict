@@ -344,16 +344,12 @@ void FGRadio::plot()
 
             Transmission * t = new Transmission(transmission);
 
-            //delete transmission->radiosignal;
-            for(int l =0;l<transmission->plot_materials->size();++l)
-            {
-                delete transmission->plot_materials->at(l);
-            }
+
             transmission->plot_elevations->clear();
-            transmission->plot_materials->clear();
+
 
             delete transmission->plot_elevations;
-            delete transmission->plot_materials;
+
             delete transmission;
             _plot_transmissions->pop_front();
             processTerrain(t);
@@ -371,22 +367,22 @@ void FGRadio::plot()
                 transmission->plot_elevations->append(elevation_m);
                 if(!material.empty()) {
                     string* name = new string(material);
-                    transmission->plot_materials->append(name);
+                    transmission->plot_materials.push_back(name);
                 }
                 else {
                     string* no_material = new string("None");
-                    transmission->plot_materials->append(no_material);
+                    transmission->plot_materials.push_back(no_material);
                 }
             }
             else {
                  transmission->plot_elevations->prepend(elevation_m);
                  if(!material.empty()) {
                      string* name = new string(material);
-                     transmission->plot_materials->prepend(name);
+                     transmission->plot_materials.push_front(name);
                 }
                 else {
                     string* no_material = new string("None");
-                    transmission->plot_materials->prepend(no_material);
+                    transmission->plot_materials.push_front(no_material);
                 }
             }
         }
@@ -394,12 +390,12 @@ void FGRadio::plot()
             if((transmission->transmission_type == P2G) || (transmission->transmission_type == P2A)) {
                 transmission->plot_elevations->append(0.0);
                 string* no_material = new string("None");
-                transmission->plot_materials->append(no_material);
+                transmission->plot_materials.push_back(no_material);
             }
             else {
                 string* no_material = new string("None");
                 transmission->plot_elevations->prepend(0.0);
-                transmission->plot_materials->prepend(no_material);
+                transmission->plot_materials.push_front(no_material);
             }
         }
     }
@@ -825,17 +821,10 @@ void FGRadio::processSignal(Transmission* transmission) {
                            pos3.getLongitudeDeg(),pos3.getLatitudeDeg(),
                            transmission->probe_distance, signal);
         transmission->plot_elevations->clear();
+        transmission->plot_materials.clear();
         delete transmission->radiosignal;
 
-        /*
-        for(int i=0;i<transmission->plot_materials->size();++i)
-        {
-            delete transmission->plot_materials->at(i);
-        }
-        */
-        transmission->plot_materials->clear();
         delete transmission->plot_elevations;
-        delete transmission->plot_materials;
 
     }
     else
@@ -931,7 +920,10 @@ void FGRadio::attenuationITM(Transmission* transmission) {
     }
     if( _settings->_use_clutter == 1 )
     {
-
+        if(transmission->plot)
+            attenuationClutter(transmission->freq, itm_elev.get(), transmission->plot_materials,
+                h1, h2, p_mode, horizons, clutter_loss);
+        else
             attenuationClutter(transmission->freq, itm_elev.get(), transmission->materials,
                 h1, h2, p_mode, horizons, clutter_loss);
 
@@ -975,6 +967,9 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 
     for (unsigned i =0; i < transmission->materials.size(); i++) {
         delete transmission->materials[i];
+    }
+    for (unsigned i =0; i < transmission->plot_materials.size(); i++) {
+        delete transmission->plot_materials[i];
     }
 
 	
