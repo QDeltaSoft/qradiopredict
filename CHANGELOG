@@ -1,0 +1,7 @@
+0.8.9
+-----
+* Removed support for Corine shapefiles, now replaced with raster data
+* Calculation speed greatly improved when using Corine landcover
+* MapGraphics is now linked statically
+* Fixed various other bugs in the standalone signal computations
+* Fixed usability bugs in the interface
