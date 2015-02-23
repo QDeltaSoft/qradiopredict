@@ -121,10 +121,9 @@ FORMS    += MainWindow.ui \
 #Linkage for MapGraphics shared library
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/release/ -lMapGraphics
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../MapGraphics/debug/ -lMapGraphics
-else:unix:!symbian: LIBS += -L$$OUT_PWD/../MapGraphics/ -lMapGraphics
+else:unix:!symbian: LIBS += $$OUT_PWD/../MapGraphics/libMapGraphics.a
 INCLUDEPATH += $$PWD/../MapGraphics
-INCLUDEPATH += /home/adrian/c++/gdal/include/
-DEPENDPATH += $$PWD/../MapGraphics
+#DEPENDPATH += $$PWD/../MapGraphics
 unix:!symbian: LIBS += -lgdal
 
 RESOURCES += \
