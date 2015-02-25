@@ -340,6 +340,7 @@ private:
 	MaterialsRadioProps _radio_props;
 	
 	void load_material_radio_properties();
+    double attenuate_function(double clutter_density, double intrusion, double frs_rad, double freq, double point_distance);
 	
 	
     void receive(QVector<GroundStation *> gs);

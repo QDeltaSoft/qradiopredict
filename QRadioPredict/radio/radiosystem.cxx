@@ -853,8 +853,8 @@ void FGRadio::attenuationITM(Transmission* transmission) {
 		
 	int radio_climate = 5;		// continental temperate
 	int pol= transmission->polarization;	
-	double conf = 0.90;	// 90% of situations and time, take into account speed
-	double rel = 0.90;	
+    double conf = 0.90;	// 90% of situations and time, take into account speed
+    double rel = 0.90;
 	double dbloss;
 	char strmode[150];
 	int p_mode = 0; // propagation mode selector: 0 LOS, 1 diffraction dominant, 2 troposcatter
@@ -1063,12 +1063,12 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 			if (clearance >= 0) {
 				// no losses
 			}
-			else if (clearance < 0 && (intrusion < clutter_height)) {
+            else if (clearance < 0 && (intrusion < (frs_rad * 2))) {
 				
-				clutter_loss += clutter_density * (intrusion / (frs_rad * 2) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                clutter_loss += attenuate_function(clutter_density, intrusion, frs_rad, freq, itm_elev[1]);
 			}
-			else if (clearance < 0 && (intrusion > clutter_height)) {
-				clutter_loss += clutter_density * (clutter_height / (frs_rad * 2 ) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+            else if (clearance < 0 && (intrusion > (frs_rad * 2))) {
+                clutter_loss += attenuate_function(clutter_density, clutter_height, frs_rad, freq, itm_elev[1]);
 			}
 			else {
 				// no losses
@@ -1123,12 +1123,12 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				if (clearance >= 0) {
 					// no losses
 				}
-				else if (clearance < 0 && (intrusion < clutter_height)) {
+                else if (clearance < 0 && (intrusion < (frs_rad * 2))) {
 					
-					clutter_loss += clutter_density * (intrusion / (frs_rad * 2) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                    clutter_loss += attenuate_function(clutter_density, intrusion, frs_rad, freq, itm_elev[1]);
 				}
-				else if (clearance < 0 && (intrusion > clutter_height)) {
-					clutter_loss += clutter_density * (clutter_height / (frs_rad * 2 ) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                else if (clearance < 0 && (intrusion > (frs_rad * 2))) {
+                    clutter_loss += attenuate_function(clutter_density, clutter_height, frs_rad, freq, itm_elev[1]);
 				}
 				else {
 					// no losses
@@ -1176,12 +1176,12 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				if (clearance >= 0) {
 					// no losses
 				}
-				else if (clearance < 0 && (intrusion < clutter_height)) {
+                else if (clearance < 0 && (intrusion < (frs_rad * 2))) {
 					
-					clutter_loss += clutter_density * (intrusion / (frs_rad * 2) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                    clutter_loss += attenuate_function(clutter_density, intrusion, frs_rad, freq, itm_elev[1]);
 				}
-				else if (clearance < 0 && (intrusion > clutter_height)) {
-					clutter_loss += clutter_density * (clutter_height / (frs_rad * 2 ) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                else if (clearance < 0 && (intrusion > (frs_rad * 2))) {
+                    clutter_loss += attenuate_function(clutter_density, clutter_height, frs_rad, freq, itm_elev[1]);
 				}
 				else {
 					// no losses
@@ -1236,12 +1236,12 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				if (clearance >= 0) {
 					// no losses
 				}
-				else if (clearance < 0 && (intrusion < clutter_height)) {
+                else if (clearance < 0 && (intrusion < (frs_rad * 2))) {
 					
-					clutter_loss += clutter_density * (intrusion / (frs_rad * 2) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                    clutter_loss += attenuate_function(clutter_density, intrusion, frs_rad, freq, itm_elev[1]);
 				}
-				else if (clearance < 0 && (intrusion > clutter_height)) {
-					clutter_loss += clutter_density * (clutter_height / (frs_rad * 2 ) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                else if (clearance < 0 && (intrusion > (frs_rad * 2))) {
+                    clutter_loss += attenuate_function(clutter_density, clutter_height, frs_rad, freq, itm_elev[1]);
 				}
 				else {
 					// no losses
@@ -1288,12 +1288,12 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				if (clearance >= 0) {
 					// no losses
 				}
-				else if (clearance < 0 && (intrusion < clutter_height)) {
+                else if (clearance < 0 && (intrusion < (frs_rad * 2))) {
 					
-					clutter_loss += clutter_density * (intrusion / (frs_rad * 2) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                    clutter_loss += attenuate_function(clutter_density, intrusion, frs_rad, freq, itm_elev[1]);
 				}
-				else if (clearance < 0 && (intrusion > clutter_height)) {
-					clutter_loss += clutter_density * (clutter_height / (frs_rad * 2 ) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
+                else if (clearance < 0 && (intrusion > (frs_rad * 2))) {
+                    clutter_loss += attenuate_function(clutter_density, clutter_height, frs_rad, freq, itm_elev[1]);
 				}
 				else {
 					// no losses
@@ -1341,13 +1341,15 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 				if (clearance >= 0) {
 					// no losses
 				}
-				else if (clearance < 0 && (intrusion < clutter_height)) {
+                else if (clearance < 0 && (intrusion < (frs_rad * 2))) {
 					
-					clutter_loss += clutter_density * (intrusion / (frs_rad * 2) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
-				}
-				else if (clearance < 0 && (intrusion > clutter_height)) {
-					clutter_loss += clutter_density * (clutter_height / (frs_rad * 2 ) ) * pow(2.0, freq/1000.0) * (itm_elev[1]/100);
-				}
+                    //clutter_loss += clutter_density * (intrusion / (frs_rad * 2) ) * pow(freq, 0.39) * (itm_elev[1]/100);
+                    clutter_loss += attenuate_function(clutter_density, intrusion, frs_rad, freq, itm_elev[1]);
+                }
+                else if (clearance < 0 && (intrusion > (frs_rad * 2))) {
+                    //clutter_loss += clutter_density * SGMiscd::min(1,(clutter_height / (frs_rad * 2 ) )) * pow(freq, 0.39) * (itm_elev[1]/100);
+                    clutter_loss += attenuate_function(clutter_density, clutter_height, frs_rad, freq, itm_elev[1]);
+                }
 				else {
 					// no losses
 				}
@@ -1364,7 +1366,13 @@ void FGRadio::attenuationClutter(double freq, double itm_elev[], deque<string*> 
 	
 }
 
-
+double FGRadio::attenuate_function(double clutter_density, double intrusion, double frs_rad,
+                                   double freq, double point_distance)
+{
+    double loss = clutter_density * SGMiscd::min(1,(intrusion / (frs_rad * 2 ) )) * pow(freq, 0.39) * (point_distance/100);
+    assert(loss >= 0);
+    return loss;
+}
 
 void FGRadio::load_material_radio_properties() {
 	
@@ -1435,7 +1443,7 @@ void FGRadio::get_material_properties_static(string* mat_name, double &height, d
 	}
 	else if(*mat_name == "EvergreenBroadCover") {
 		height = 20.0;
-		density = 0.2;
+        density = 0.25;
 	}
 	else if(*mat_name == "EvergreenForest") {
 		height = 20.0;
@@ -1451,15 +1459,15 @@ void FGRadio::get_material_properties_static(string* mat_name, double &height, d
 	}
 	else if(*mat_name == "MixedForestCover") {
 		height = 20.0;
-		density = 0.25;
+        density = 0.25;
 	}
 	else if(*mat_name == "MixedForest") {
 		height = 15.0;
-		density = 0.25;
+        density = 0.25;
 	}
 	else if(*mat_name == "RainForest") {
 		height = 25.0;
-		density = 0.55;
+        density = 0.75;
 	}
 	else if(*mat_name == "EvergreenNeedleCover") {
 		height = 15.0;
@@ -1467,7 +1475,7 @@ void FGRadio::get_material_properties_static(string* mat_name, double &height, d
 	}
 	else if(*mat_name == "WoodedTundraCover") {
 		height = 5.0;
-		density = 0.15;
+        density = 0.2;
 	}
 	else if(*mat_name == "DeciduousNeedleCover") {
 		height = 5.0;
@@ -1475,47 +1483,47 @@ void FGRadio::get_material_properties_static(string* mat_name, double &height, d
 	}
 	else if(*mat_name == "ScrubCover") {
 		height = 3.0;
-		density = 0.15;
+        density = 0.15;
 	}
 	else if(*mat_name == "BuiltUpCover") {
 		height = 30.0;
-		density = 0.7;
+        density = 0.7;
 	}
 	else if(*mat_name == "Urban") {
-		height = 30.0;
-		density = 0.7;
+        height = 20.0;
+        density = 0.7;
 	}
 	else if(*mat_name == "Construction") {
-		height = 30.0;
-		density = 0.7;
+        height = 20.0;
+        density = 0.65;
 	}
 	else if(*mat_name == "Industrial") {
-		height = 30.0;
-		density = 0.7;
+        height = 20.0;
+        density = 0.7;
 	}
 	else if(*mat_name == "Port") {
-		height = 30.0;
-		density = 0.7;
+        height = 20.0;
+        density = 0.6;
 	}
 	else if(*mat_name == "Town") {
 		height = 10.0;
-		density = 0.5;
+        density = 0.5;
 	}
 	else if(*mat_name == "SubUrban") {
 		height = 10.0;
-		density = 0.5;
+        density = 0.5;
 	}
 	else if(*mat_name == "CropWoodCover") {
 		height = 10.0;
-		density = 0.1;
+        density = 0.2;
 	}
 	else if(*mat_name == "CropWood") {
 		height = 10.0;
-		density = 0.1;
+        density = 0.2;
 	}
 	else if(*mat_name == "AgroForest") {
 		height = 10.0;
-		density = 0.1;
+        density = 0.2;
 	}
 	else {
 		height = 0.0;
