@@ -191,8 +191,8 @@ QString SRTMReader::getFilename()
     else filename.append("S");
     unsigned lat_deg = (unsigned) floor(fabs(_latitude));
     unsigned lon_deg = (unsigned) floor(fabs(_longitude));
-    _latitude_secs = _latitude - lat_deg;
-    _longitude_secs = _longitude - lon_deg;
+    _latitude_secs = fabs(_latitude) - lat_deg;
+    _longitude_secs = fabs(_longitude) - lon_deg;
     QString lat = QString::number(lat_deg);
     if (lat.length() < 2) filename.append("0");
     filename.append(QString::number(lat_deg));
