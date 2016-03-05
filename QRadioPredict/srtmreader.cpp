@@ -187,12 +187,30 @@ double SRTMReader::readHeight()
 QString SRTMReader::getFilename()
 {
     QString filename;
+    unsigned lat_deg, lon_deg;
     if(_latitude >=0) filename.append("N");
     else filename.append("S");
-    unsigned lat_deg = (unsigned) floor(fabs(_latitude));
-    unsigned lon_deg = (unsigned) floor(fabs(_longitude));
-    _latitude_secs = fabs(_latitude) - lat_deg;
-    _longitude_secs = fabs(_longitude) - lon_deg;
+    if(_latitude >=0)
+    {
+        lat_deg = (unsigned) floor(fabs(_latitude));
+        _latitude_secs = _latitude - lat_deg;
+    }
+    else
+    {
+        lat_deg = (unsigned) ceil(fabs(_latitude));
+        _latitude_secs = lat_deg - fabs(_latitude);
+    }
+    if(_longitude >=0)
+    {
+        lon_deg = (unsigned) floor(fabs(_longitude));
+        _longitude_secs = _longitude - lon_deg;
+    }
+    else
+    {
+        lon_deg = (unsigned) ceil(fabs(_longitude));
+        _longitude_secs = lon_deg - fabs(_longitude);
+    }
+
     QString lat = QString::number(lat_deg);
     if (lat.length() < 2) filename.append("0");
     filename.append(QString::number(lat_deg));
