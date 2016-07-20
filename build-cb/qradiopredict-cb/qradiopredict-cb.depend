@@ -1,0 +1,1780 @@
+# depslib dependency file v1.0
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/CircleObject.cpp
+	"CircleObject.h"
+	<QtDebug>
+	<QKeyEvent>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/CircleObject.h
+	"MapGraphics_global.h"
+	"MapGraphicsObject.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/MapGraphics_global.h
+	<QtCore/qglobal.h>
+
+1432731229 /usr/qt4/include/QtCore/qglobal.h
+	<stddef.h>
+	<QtCore/qconfig.h>
+	<algorithm>
+	<AvailabilityMacros.h>
+	<utility>
+	<e32def.h>
+	<QtCore/qfeatures.h>
+
+1432731425 /usr/qt4/include/QtCore/qconfig.h
+
+1379086312 /usr/qt4/include/QtCore/qfeatures.h
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/MapGraphicsObject.h
+	<QObject>
+	<QPointF>
+	<QRectF>
+	<QPainter>
+	<QStyleOptionGraphicsItem>
+	<QGraphicsSceneContextMenuEvent>
+	<QGraphicsItem>
+	"MapGraphics_global.h"
+
+1379086312 /usr/qt4/include/QtCore/QObject
+	"qobject.h"
+
+1379086312 /usr/qt4/include/QtCore/qobject.h
+	<QtCore/qobjectdefs.h>
+	<QtCore/qstring.h>
+	<QtCore/qbytearray.h>
+	<QtCore/qlist.h>
+	<QtCore/qcoreevent.h>
+	<QtCore/qscopedpointer.h>
+
+1379086312 /usr/qt4/include/QtCore/qobjectdefs.h
+	<QtCore/qnamespace.h>
+
+1379086312 /usr/qt4/include/QtCore/qnamespace.h
+	<QtCore/qglobal.h>
+
+1379086312 /usr/qt4/include/QtCore/qstring.h
+	<QtCore/qchar.h>
+	<QtCore/qbytearray.h>
+	<QtCore/qatomic.h>
+	<QtCore/qnamespace.h>
+	<Qt3Support/q3cstring.h>
+	<string>
+	<stdarg.h>
+	<QtCore/qstringbuilder.h>
+
+1379086312 /usr/qt4/include/QtCore/qchar.h
+	<QtCore/qglobal.h>
+
+1379086312 /usr/qt4/include/QtCore/qbytearray.h
+	<QtCore/qatomic.h>
+	<QtCore/qnamespace.h>
+	<string.h>
+	<stdarg.h>
+	<QtCore/qstring.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic.h
+	<QtCore/qglobal.h>
+	<QtCore/qbasicatomic.h>
+
+1379086312 /usr/qt4/include/QtCore/qbasicatomic.h
+	<QtCore/qglobal.h>
+	<QtCore/qatomic_bootstrap.h>
+	<QtCore/qatomic_arch.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_bootstrap.h
+
+1432731229 /usr/qt4/include/QtCore/qatomic_arch.h
+	"QtCore/qglobal.h"
+	"QtCore/qatomic_integrity.h"
+	"QtCore/qatomic_vxworks.h"
+	"QtCore/qatomic_alpha.h"
+	"QtCore/qatomic_arm.h"
+	"QtCore/qatomic_armv6.h"
+	"QtCore/qatomic_avr32.h"
+	"QtCore/qatomic_bfin.h"
+	"QtCore/qatomic_generic.h"
+	"QtCore/qatomic_i386.h"
+	"QtCore/qatomic_ia64.h"
+	"QtCore/qatomic_m68k.h"
+	"QtCore/qatomic_macosx.h"
+	"QtCore/qatomic_mips.h"
+	"QtCore/qatomic_parisc.h"
+	"QtCore/qatomic_powerpc.h"
+	"QtCore/qatomic_s390.h"
+	"QtCore/qatomic_sparc.h"
+	"QtCore/qatomic_windows.h"
+	"QtCore/qatomic_windowsce.h"
+	"QtCore/qatomic_x86_64.h"
+	"QtCore/qatomic_symbian.h"
+	"QtCore/qatomic_sh.h"
+	"QtCore/qatomic_sh4a.h"
+	"QtCore/qatomic_generic.h"
+	"QtCore/qatomic_aarch64.h"
+
+1379086312 /usr/qt4/include/QtCore/qatomic_integrity.h
+	<INTEGRITY.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_vxworks.h
+	<QtCore/qatomic_powerpc.h>
+	<vxWorksCommon.h>
+	<taskLib.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_powerpc.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_alpha.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_arm.h
+	"QtCore/qatomic_armv7.h"
+	"QtCore/qatomic_armv6.h"
+	"QtCore/qatomic_armv5.h"
+
+1379086312 /usr/qt4/include/QtCore/qatomic_armv7.h
+	"QtCore/qatomic_armv6.h"
+
+1379086312 /usr/qt4/include/QtCore/qatomic_armv6.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_armv5.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_avr32.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_bfin.h
+	<asm/fixed_code.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_generic.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_i386.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_ia64.h
+	<ia64intrin.h>
+	<ia64/sys/inline.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_m68k.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_macosx.h
+	<QtCore/qatomic_x86_64.h>
+	<QtCore/qatomic_i386.h>
+	<QtCore/qatomic_powerpc.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_x86_64.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_mips.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_parisc.h
+
+1432731229 /usr/qt4/include/QtCore/qatomic_s390.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_sparc.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_windows.h
+	"QtCore/qatomic_i386.h"
+	"QtCore/qatomic_x86_64.h"
+	<winbase.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_windowsce.h
+	<QtCore/qglobal.h>
+	"QtCore/qatomic_windows.h"
+
+1379086312 /usr/qt4/include/QtCore/qatomic_symbian.h
+	<QtCore/qglobal.h>
+	<e32std.h>
+
+1379086312 /usr/qt4/include/QtCore/qatomic_sh.h
+
+1379086312 /usr/qt4/include/QtCore/qatomic_sh4a.h
+
+1432731229 /usr/qt4/include/QtCore/qatomic_aarch64.h
+
+1379086313 /usr/qt4/include/Qt3Support/q3cstring.h
+	<QtCore/qbytearray.h>
+
+1379086312 /usr/qt4/include/QtCore/qstringbuilder.h
+	<QtCore/qstring.h>
+	<QtCore/qbytearray.h>
+	<QtCore/qmap.h>
+	<string.h>
+
+1379086312 /usr/qt4/include/QtCore/qmap.h
+	<QtCore/qatomic.h>
+	<QtCore/qiterator.h>
+	<QtCore/qlist.h>
+	<map>
+	<new>
+
+1379086312 /usr/qt4/include/QtCore/qiterator.h
+	<QtCore/qglobal.h>
+	<new>
+
+1379086312 /usr/qt4/include/QtCore/qlist.h
+	<QtCore/qiterator.h>
+	<QtCore/qatomic.h>
+	<QtCore/qalgorithms.h>
+	<iterator>
+	<list>
+	<iterator>
+	<initializer_list>
+	<new>
+	<limits.h>
+	<string.h>
+
+1379086312 /usr/qt4/include/QtCore/qalgorithms.h
+	<QtCore/qglobal.h>
+
+1379086312 /usr/qt4/include/QtCore/qcoreevent.h
+	<QtCore/qnamespace.h>
+	<QtCore/qbytearray.h>
+	<QtCore/qobjectdefs.h>
+
+1379086312 /usr/qt4/include/QtCore/qscopedpointer.h
+	<QtCore/qglobal.h>
+
+1379086312 /usr/qt4/include/QtCore/QPointF
+	"qpoint.h"
+
+1379086312 /usr/qt4/include/QtCore/qpoint.h
+	<QtCore/qnamespace.h>
+
+1379086312 /usr/qt4/include/QtCore/QRectF
+	"qrect.h"
+
+1379086312 /usr/qt4/include/QtCore/qrect.h
+	<QtCore/qsize.h>
+	<QtCore/qpoint.h>
+
+1379086312 /usr/qt4/include/QtCore/qsize.h
+	<QtCore/qnamespace.h>
+
+1379086312 /usr/qt4/include/QtGui/QPainter
+	"qpainter.h"
+
+1379086312 /usr/qt4/include/QtGui/qpainter.h
+	<QtCore/qnamespace.h>
+	<QtCore/qrect.h>
+	<QtCore/qpoint.h>
+	<QtCore/qscopedpointer.h>
+	<QtGui/qpixmap.h>
+	<QtGui/qimage.h>
+	<QtGui/qtextoption.h>
+	<QtGui/qdrawutil.h>
+	<QtGui/qpolygon.h>
+	<QtGui/qpen.h>
+	<QtGui/qbrush.h>
+	<QtGui/qmatrix.h>
+	<QtGui/qtransform.h>
+	<QtGui/qfontinfo.h>
+	<QtGui/qfontmetrics.h>
+
+1379086312 /usr/qt4/include/QtGui/qpixmap.h
+	<QtGui/qpaintdevice.h>
+	<QtGui/qcolor.h>
+	<QtCore/qnamespace.h>
+	<QtCore/qstring.h>
+	<QtCore/qsharedpointer.h>
+	<QtGui/qimage.h>
+	<QtGui/qtransform.h>
+
+1379086312 /usr/qt4/include/QtGui/qpaintdevice.h
+	<QtGui/qwindowdefs.h>
+	<QtCore/qrect.h>
+
+1379086312 /usr/qt4/include/QtGui/qwindowdefs.h
+	<QtCore/qobjectdefs.h>
+	<QtCore/qnamespace.h>
+	<QtGui/qmacdefines_mac.h>
+	<QtGui/qwindowdefs_win.h>
+
+1379086312 /usr/qt4/include/QtGui/qmacdefines_mac.h
+	<QtCore/qglobal.h>
+	<Cocoa/Cocoa.h>
+
+1379086312 /usr/qt4/include/QtGui/qwindowdefs_win.h
+	<QtCore/qglobal.h>
+
+1379086312 /usr/qt4/include/QtGui/qcolor.h
+	<QtGui/qrgb.h>
+	<QtCore/qnamespace.h>
+	<QtCore/qstringlist.h>
+
+1379086312 /usr/qt4/include/QtGui/qrgb.h
+	<QtCore/qglobal.h>
+
+1379086312 /usr/qt4/include/QtCore/qstringlist.h
+	<QtCore/qalgorithms.h>
+	<QtCore/qdatastream.h>
+	<QtCore/qlist.h>
+	<QtCore/qregexp.h>
+	<QtCore/qstring.h>
+	<QtCore/qstringmatcher.h>
+	<Qt3Support/q3valuelist.h>
+
+1379086312 /usr/qt4/include/QtCore/qdatastream.h
+	<QtCore/qscopedpointer.h>
+	<QtCore/qiodevice.h>
+	<QtCore/qglobal.h>
+
+1379086312 /usr/qt4/include/QtCore/qiodevice.h
+	<QtCore/qobject.h>
+	<QtCore/qobjectdefs.h>
+	<QtCore/qscopedpointer.h>
+	<QtCore/qstring.h>
+
+1379086312 /usr/qt4/include/QtCore/qregexp.h
+	<QtCore/qstring.h>
+	<new>
+
+1379086312 /usr/qt4/include/QtCore/qstringmatcher.h
+	<QtCore/qstring.h>
+
+1379086313 /usr/qt4/include/Qt3Support/q3valuelist.h
+	<QtCore/qalgorithms.h>
+	<QtCore/qdatastream.h>
+	<QtCore/qlinkedlist.h>
+	<QtCore/qlist.h>
+	<iterator>
+	<list>
+
+1379086312 /usr/qt4/include/QtCore/qlinkedlist.h
+	<QtCore/qiterator.h>
+	<QtCore/qatomic.h>
+	<iterator>
+	<list>
+
+1379086312 /usr/qt4/include/QtCore/qsharedpointer.h
+	<QtCore/qglobal.h>
+	<QtCore/qatomic.h>
+	<QtCore/qshareddata.h>
+	<QtCore/qsharedpointer_impl.h>
+
+1379086312 /usr/qt4/include/QtCore/qshareddata.h
+	<QtCore/qglobal.h>
+	<QtCore/qatomic.h>
+
+1379086312 /usr/qt4/include/QtCore/qsharedpointer_impl.h
+	<new>
+	<QtCore/qatomic.h>
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtGui/qimage.h
+	<QtGui/qtransform.h>
+	<QtGui/qpaintdevice.h>
+	<QtGui/qrgb.h>
+	<QtCore/qbytearray.h>
+	<QtCore/qrect.h>
+	<QtCore/qstring.h>
+
+1379086312 /usr/qt4/include/QtGui/qtransform.h
+	<QtGui/qmatrix.h>
+	<QtGui/qpainterpath.h>
+	<QtGui/qpolygon.h>
+	<QtGui/qregion.h>
+	<QtGui/qwindowdefs.h>
+	<QtCore/qline.h>
+	<QtCore/qpoint.h>
+	<QtCore/qrect.h>
+
+1379086312 /usr/qt4/include/QtGui/qmatrix.h
+	<QtGui/qpolygon.h>
+	<QtGui/qregion.h>
+	<QtGui/qwindowdefs.h>
+	<QtCore/qline.h>
+	<QtCore/qpoint.h>
+	<QtCore/qrect.h>
+	<QtGui/qwmatrix.h>
+
+1379086312 /usr/qt4/include/QtGui/qpolygon.h
+	<QtCore/qvector.h>
+	<QtCore/qpoint.h>
+	<QtCore/qrect.h>
+
+1379086312 /usr/qt4/include/QtCore/qvector.h
+	<QtCore/qiterator.h>
+	<QtCore/qatomic.h>
+	<QtCore/qalgorithms.h>
+	<QtCore/qlist.h>
+	<iterator>
+	<vector>
+	<stdlib.h>
+	<string.h>
+	<initializer_list>
+	<QtCore/QPointF>
+	<QtCore/QPoint>
+
+1379086312 /usr/qt4/include/QtCore/QPoint
+	"qpoint.h"
+
+1379086312 /usr/qt4/include/QtGui/qregion.h
+	<QtCore/qatomic.h>
+	<QtCore/qrect.h>
+	<QtGui/qwindowdefs.h>
+	<QtCore/qdatastream.h>
+
+1379086312 /usr/qt4/include/QtCore/qline.h
+	<QtCore/qpoint.h>
+
+1379086312 /usr/qt4/include/QtGui/qwmatrix.h
+	<QtGui/qmatrix.h>
+
+1379086312 /usr/qt4/include/QtGui/qpainterpath.h
+	<QtGui/qmatrix.h>
+	<QtCore/qglobal.h>
+	<QtCore/qrect.h>
+	<QtCore/qline.h>
+	<QtCore/qvector.h>
+	<QtCore/qscopedpointer.h>
+
+1379086312 /usr/qt4/include/QtGui/qtextoption.h
+	<QtCore/qnamespace.h>
+	<QtCore/qchar.h>
+	<QtCore/qmetatype.h>
+
+1379086312 /usr/qt4/include/QtCore/qmetatype.h
+	<QtCore/qglobal.h>
+	<QtCore/qatomic.h>
+	<QtCore/qdatastream.h>
+
+1379086312 /usr/qt4/include/QtGui/qdrawutil.h
+	<QtCore/qnamespace.h>
+	<QtCore/qstring.h>
+	<QtCore/qmargins.h>
+	<QtGui/qpixmap.h>
+
+1379086312 /usr/qt4/include/QtCore/qmargins.h
+	<QtCore/qnamespace.h>
+
+1379086312 /usr/qt4/include/QtGui/qpen.h
+	<QtGui/qcolor.h>
+	<QtGui/qbrush.h>
+
+1379086312 /usr/qt4/include/QtGui/qbrush.h
+	<QtCore/qpair.h>
+	<QtCore/qpoint.h>
+	<QtCore/qvector.h>
+	<QtCore/qscopedpointer.h>
+	<QtGui/qcolor.h>
+	<QtGui/qmatrix.h>
+	<QtGui/qtransform.h>
+	<QtGui/qimage.h>
+	<QtGui/qpixmap.h>
+
+1379086312 /usr/qt4/include/QtCore/qpair.h
+	<QtCore/qdatastream.h>
+
+1379086312 /usr/qt4/include/QtGui/qfontinfo.h
+	<QtGui/qfont.h>
+	<QtCore/qsharedpointer.h>
+
+1379086312 /usr/qt4/include/QtGui/qfont.h
+	<QtGui/qwindowdefs.h>
+	<QtCore/qstring.h>
+	<QtCore/qsharedpointer.h>
+
+1379086312 /usr/qt4/include/QtGui/qfontmetrics.h
+	<QtGui/qfont.h>
+	<QtCore/qsharedpointer.h>
+	<QtCore/qrect.h>
+
+1379086312 /usr/qt4/include/QtGui/QStyleOptionGraphicsItem
+	"qstyleoption.h"
+
+1379086312 /usr/qt4/include/QtGui/qstyleoption.h
+	<QtCore/qvariant.h>
+	<QtGui/qabstractspinbox.h>
+	<QtGui/qicon.h>
+	<QtGui/qmatrix.h>
+	<QtGui/qslider.h>
+	<QtGui/qstyle.h>
+	<QtGui/qtabbar.h>
+	<QtGui/qtabwidget.h>
+	<QtGui/qrubberband.h>
+	<QtGui/qframe.h>
+	<QtCore/qabstractitemmodel.h>
+
+1379086312 /usr/qt4/include/QtCore/qvariant.h
+	<QtCore/qatomic.h>
+	<QtCore/qbytearray.h>
+	<QtCore/qlist.h>
+	<QtCore/qmetatype.h>
+	<QtCore/qmap.h>
+	<QtCore/qhash.h>
+	<QtCore/qstring.h>
+
+1432731229 /usr/qt4/include/QtCore/qhash.h
+	<QtCore/qatomic.h>
+	<QtCore/qchar.h>
+	<QtCore/qiterator.h>
+	<QtCore/qlist.h>
+	<QtCore/qpair.h>
+
+1379086312 /usr/qt4/include/QtGui/qabstractspinbox.h
+	<QtGui/qwidget.h>
+	<QtGui/qvalidator.h>
+
+1379086312 /usr/qt4/include/QtGui/qwidget.h
+	<QtCore/qconfig.h>
+	<QtGui/qwindowdefs.h>
+	<QtCore/qobject.h>
+	<QtCore/qmargins.h>
+	<QtGui/qpaintdevice.h>
+	<QtGui/qpalette.h>
+	<QtGui/qfont.h>
+	<QtGui/qfontmetrics.h>
+	<QtGui/qfontinfo.h>
+	<QtGui/qsizepolicy.h>
+	<QtGui/qregion.h>
+	<QtGui/qbrush.h>
+	<QtGui/qcursor.h>
+	<QtGui/qkeysequence.h>
+	<QtGui/qplatformwindowformat_qpa.h>
+	<QtGui/qevent.h>
+
+1379086312 /usr/qt4/include/QtGui/qpalette.h
+	<QtGui/qwindowdefs.h>
+	<QtGui/qcolor.h>
+	<QtGui/qbrush.h>
+
+1379086312 /usr/qt4/include/QtGui/qsizepolicy.h
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtGui/qcursor.h
+	<QtCore/qpoint.h>
+	<QtGui/qwindowdefs.h>
+
+1379086312 /usr/qt4/include/QtGui/qkeysequence.h
+	<QtCore/qnamespace.h>
+	<QtCore/qstring.h>
+
+1379086312 /usr/qt4/include/QtGui/qplatformwindowformat_qpa.h
+	<QtGui/QPlatformWindow>
+
+1379086312 /usr/qt4/include/QtGui/QPlatformWindow
+	"qplatformwindow_qpa.h"
+
+1379086312 /usr/qt4/include/QtGui/qplatformwindow_qpa.h
+	<QtCore/qscopedpointer.h>
+	<QtCore/qrect.h>
+	<QtCore/qstring.h>
+	<QtGui/qwindowdefs.h>
+
+1432731229 /usr/qt4/include/QtGui/qevent.h
+	<QtGui/qwindowdefs.h>
+	<QtCore/qobject.h>
+	<QtGui/qregion.h>
+	<QtCore/qnamespace.h>
+	<QtCore/qstring.h>
+	<QtGui/qkeysequence.h>
+	<QtCore/qcoreevent.h>
+	<QtGui/qmime.h>
+	<QtGui/qdrag.h>
+	<QtCore/qvariant.h>
+	<QtCore/qmap.h>
+	<QtCore/qset.h>
+	<QtCore/qfile.h>
+
+1379086312 /usr/qt4/include/QtGui/qmime.h
+	<QtCore/qmimedata.h>
+	<QtCore/qvariant.h>
+
+1379086312 /usr/qt4/include/QtCore/qmimedata.h
+	<QtCore/qvariant.h>
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtGui/qdrag.h
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtCore/qset.h
+	<QtCore/qhash.h>
+
+1379086312 /usr/qt4/include/QtCore/qfile.h
+	<QtCore/qiodevice.h>
+	<QtCore/qstring.h>
+	<stdio.h>
+	<f32file.h>
+
+1379086312 /usr/qt4/include/QtGui/qvalidator.h
+	<QtCore/qobject.h>
+	<QtCore/qstring.h>
+	<QtCore/qregexp.h>
+	<QtCore/qlocale.h>
+
+1379086312 /usr/qt4/include/QtCore/qlocale.h
+	<QtCore/qvariant.h>
+	<QtCore/qstring.h>
+	<QtCore/qobjectdefs.h>
+
+1379086312 /usr/qt4/include/QtGui/qicon.h
+	<QtCore/qglobal.h>
+	<QtCore/qsize.h>
+	<QtCore/qlist.h>
+	<QtGui/qpixmap.h>
+
+1379086312 /usr/qt4/include/QtGui/qslider.h
+	<QtGui/qabstractslider.h>
+
+1379086312 /usr/qt4/include/QtGui/qabstractslider.h
+	<QtGui/qwidget.h>
+
+1379086312 /usr/qt4/include/QtGui/qstyle.h
+	<QtCore/qobject.h>
+	<QtCore/qrect.h>
+	<QtCore/qsize.h>
+	<QtGui/qicon.h>
+	<QtGui/qpixmap.h>
+	<QtGui/qpalette.h>
+	<QtGui/qsizepolicy.h>
+
+1379086312 /usr/qt4/include/QtGui/qtabbar.h
+	<QtGui/qwidget.h>
+
+1379086312 /usr/qt4/include/QtGui/qtabwidget.h
+	<QtGui/qwidget.h>
+	<QtGui/qicon.h>
+
+1379086312 /usr/qt4/include/QtGui/qrubberband.h
+	<QtGui/qwidget.h>
+
+1379086312 /usr/qt4/include/QtGui/qframe.h
+	<QtGui/qwidget.h>
+
+1379086312 /usr/qt4/include/QtCore/qabstractitemmodel.h
+	<QtCore/qvariant.h>
+	<QtCore/qobject.h>
+	<QtCore/qhash.h>
+
+1379086312 /usr/qt4/include/QtGui/QGraphicsSceneContextMenuEvent
+	"qgraphicssceneevent.h"
+
+1379086312 /usr/qt4/include/QtGui/qgraphicssceneevent.h
+	<QtCore/qcoreevent.h>
+	<QtCore/qpoint.h>
+	<QtCore/qscopedpointer.h>
+	<QtCore/qrect.h>
+	<QtGui/qpolygon.h>
+	<QtCore/qset.h>
+	<QtCore/qhash.h>
+
+1379086312 /usr/qt4/include/QtGui/QGraphicsItem
+	"qgraphicsitem.h"
+
+1379086312 /usr/qt4/include/QtGui/qgraphicsitem.h
+	<QtCore/qglobal.h>
+	<QtCore/qobject.h>
+	<QtCore/qvariant.h>
+	<QtCore/qrect.h>
+	<QtCore/qscopedpointer.h>
+	<QtGui/qpainterpath.h>
+	<QtGui/qpixmap.h>
+
+1379086312 /usr/qt4/include/QtCore/QtDebug
+	"qdebug.h"
+
+1379086312 /usr/qt4/include/QtCore/qdebug.h
+	<QtCore/qalgorithms.h>
+	<QtCore/qhash.h>
+	<QtCore/qlist.h>
+	<QtCore/qmap.h>
+	<QtCore/qpair.h>
+	<QtCore/qtextstream.h>
+	<QtCore/qstring.h>
+	<QtCore/qvector.h>
+	<QtCore/qset.h>
+	<QtCore/qcontiguouscache.h>
+
+1379086312 /usr/qt4/include/QtCore/qtextstream.h
+	<QtCore/qiodevice.h>
+	<QtCore/qstring.h>
+	<QtCore/qchar.h>
+	<QtCore/qlocale.h>
+	<QtCore/qscopedpointer.h>
+	<QtCore/qtextcodec.h>
+	<stdio.h>
+
+1379086312 /usr/qt4/include/QtCore/qtextcodec.h
+	<QtCore/qstring.h>
+	<QtCore/qlist.h>
+
+1379086312 /usr/qt4/include/QtCore/qcontiguouscache.h
+	<QtCore/qatomic.h>
+	<limits.h>
+	<new>
+
+1432731229 /usr/qt4/include/QtGui/QKeyEvent
+	"qevent.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/CompositeTileSourceConfigurationWidget.cpp
+	"CompositeTileSourceConfigurationWidget.h"
+	"ui_CompositeTileSourceConfigurationWidget.h"
+	"MapTileLayerListModel.h"
+	"MapTileSourceDelegate.h"
+	"tileSources/OSMTileSource.h"
+	<QtDebug>
+	<QMenu>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/CompositeTileSourceConfigurationWidget.h
+	<QWidget>
+	<QWeakPointer>
+	<QListView>
+	"MapGraphics_global.h"
+	"tileSources/CompositeTileSource.h"
+
+1379086312 /usr/qt4/include/QtGui/QWidget
+	"qwidget.h"
+
+1379086312 /usr/qt4/include/QtCore/QWeakPointer
+	"qsharedpointer.h"
+
+1379086312 /usr/qt4/include/QtGui/QListView
+	"qlistview.h"
+
+1379086312 /usr/qt4/include/QtGui/qlistview.h
+	<QtGui/qabstractitemview.h>
+
+1379086312 /usr/qt4/include/QtGui/qabstractitemview.h
+	<QtGui/qabstractscrollarea.h>
+	<QtCore/qabstractitemmodel.h>
+	<QtGui/qitemselectionmodel.h>
+	<QtGui/qabstractitemdelegate.h>
+
+1379086312 /usr/qt4/include/QtGui/qabstractscrollarea.h
+	<QtGui/qframe.h>
+
+1379086312 /usr/qt4/include/QtGui/qitemselectionmodel.h
+	<QtCore/qset.h>
+	<QtCore/qvector.h>
+	<QtCore/qlist.h>
+	<QtCore/qabstractitemmodel.h>
+
+1379086312 /usr/qt4/include/QtGui/qabstractitemdelegate.h
+	<QtCore/qobject.h>
+	<QtGui/qstyleoption.h>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/tileSources/CompositeTileSource.h
+	"MapTileSource.h"
+	"MapGraphics_global.h"
+	<QList>
+	<QHash>
+	<QMap>
+	<QSharedPointer>
+	<QMutex>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/MapTileSource.h
+	<QObject>
+	<QPoint>
+	<QPointF>
+	<QImage>
+	<QCache>
+	<QMutex>
+	<QDateTime>
+	<QDir>
+	<QFile>
+	<QHash>
+	"MapGraphics_global.h"
+
+1379086312 /usr/qt4/include/QtGui/QImage
+	"qimage.h"
+
+1379086312 /usr/qt4/include/QtCore/QCache
+	"qcache.h"
+
+1379086312 /usr/qt4/include/QtCore/qcache.h
+	<QtCore/qhash.h>
+
+1379086312 /usr/qt4/include/QtCore/QMutex
+	"qmutex.h"
+
+1379086312 /usr/qt4/include/QtCore/qmutex.h
+	<QtCore/qglobal.h>
+	<QtCore/qatomic.h>
+	<new>
+
+1379086312 /usr/qt4/include/QtCore/QDateTime
+	"qdatetime.h"
+
+1379086312 /usr/qt4/include/QtCore/qdatetime.h
+	<QtCore/qstring.h>
+	<QtCore/qnamespace.h>
+	<QtCore/qsharedpointer.h>
+
+1379086312 /usr/qt4/include/QtCore/QDir
+	"qdir.h"
+
+1379086312 /usr/qt4/include/QtCore/qdir.h
+	<QtCore/qstring.h>
+	<QtCore/qfileinfo.h>
+	<QtCore/qstringlist.h>
+	<QtCore/qshareddata.h>
+
+1379086312 /usr/qt4/include/QtCore/qfileinfo.h
+	<QtCore/qfile.h>
+	<QtCore/qlist.h>
+	<QtCore/qshareddata.h>
+
+1379086312 /usr/qt4/include/QtCore/QFile
+	"qfile.h"
+
+1432731229 /usr/qt4/include/QtCore/QHash
+	"qhash.h"
+
+1379086312 /usr/qt4/include/QtCore/QList
+	"qlist.h"
+
+1379086312 /usr/qt4/include/QtCore/QMap
+	"qmap.h"
+
+1379086312 /usr/qt4/include/QtCore/QSharedPointer
+	"qsharedpointer.h"
+
+1468977095 /home/rpipkin/rad/src/qradiopredict/build-cb/qradiopredict-cb/ui_CompositeTileSourceConfigurationWidget.h
+	<QtCore/QVariant>
+	<QtGui/QAction>
+	<QtGui/QApplication>
+	<QtGui/QButtonGroup>
+	<QtGui/QHBoxLayout>
+	<QtGui/QHeaderView>
+	<QtGui/QListView>
+	<QtGui/QSlider>
+	<QtGui/QSpacerItem>
+	<QtGui/QToolButton>
+	<QtGui/QVBoxLayout>
+	<QtGui/QWidget>
+
+1379086312 /usr/qt4/include/QtCore/QVariant
+	"qvariant.h"
+
+1379086312 /usr/qt4/include/QtGui/QAction
+	"qaction.h"
+
+1379086312 /usr/qt4/include/QtGui/qaction.h
+	<QtGui/qkeysequence.h>
+	<QtCore/qstring.h>
+	<QtGui/qwidget.h>
+	<QtCore/qvariant.h>
+	<QtGui/qicon.h>
+	<QtGui/qactiongroup.h>
+
+1379086312 /usr/qt4/include/QtGui/qactiongroup.h
+	<QtGui/qaction.h>
+
+1379086312 /usr/qt4/include/QtGui/QApplication
+	"qapplication.h"
+
+1379086312 /usr/qt4/include/QtGui/qapplication.h
+	<QtCore/qcoreapplication.h>
+	<QtGui/qwindowdefs.h>
+	<QtCore/qpoint.h>
+	<QtCore/qsize.h>
+	<QtGui/qcursor.h>
+	<QtGui/qdesktopwidget.h>
+	<QtGui/qwidget.h>
+	<QtGui/qpalette.h>
+	<QtGui/qrgb.h>
+	<QtGui/qtransportauth_qws.h>
+
+1379086312 /usr/qt4/include/QtCore/qcoreapplication.h
+	<QtCore/qobject.h>
+	<QtCore/qcoreevent.h>
+	<QtCore/qeventloop.h>
+	<QtCore/qstringlist.h>
+
+1379086312 /usr/qt4/include/QtCore/qeventloop.h
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtGui/qdesktopwidget.h
+	<QtGui/qwidget.h>
+
+1379086312 /usr/qt4/include/QtGui/qtransportauth_qws.h
+	<QtCore/qglobal.h>
+	<QtCore/qobject.h>
+	<QtCore/qhash.h>
+	<QtCore/qstring.h>
+	<QtCore/qbuffer.h>
+	<QtCore/qpointer.h>
+	<sys/types.h>
+
+1379086312 /usr/qt4/include/QtCore/qbuffer.h
+	<QtCore/qiodevice.h>
+	<QtCore/qbytearray.h>
+
+1379086312 /usr/qt4/include/QtCore/qpointer.h
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtGui/QButtonGroup
+	"qbuttongroup.h"
+
+1379086312 /usr/qt4/include/QtGui/qbuttongroup.h
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtGui/QHBoxLayout
+	"qboxlayout.h"
+
+1379086312 /usr/qt4/include/QtGui/qboxlayout.h
+	<QtGui/qlayout.h>
+	<QtGui/qwidget.h>
+	<limits.h>
+
+1379086312 /usr/qt4/include/QtGui/qlayout.h
+	<QtCore/qobject.h>
+	<QtGui/qlayoutitem.h>
+	<QtGui/qsizepolicy.h>
+	<QtCore/qrect.h>
+	<QtCore/qmargins.h>
+	<limits.h>
+	<QtGui/qboxlayout.h>
+	<QtGui/qgridlayout.h>
+
+1379086312 /usr/qt4/include/QtGui/qlayoutitem.h
+	<QtGui/qsizepolicy.h>
+	<QtCore/qrect.h>
+	<limits.h>
+
+1379086312 /usr/qt4/include/QtGui/qgridlayout.h
+	<QtGui/qlayout.h>
+	<QtGui/qwidget.h>
+	<limits.h>
+
+1379086312 /usr/qt4/include/QtGui/QHeaderView
+	"qheaderview.h"
+
+1379086312 /usr/qt4/include/QtGui/qheaderview.h
+	<QtGui/qabstractitemview.h>
+
+1379086312 /usr/qt4/include/QtGui/QSlider
+	"qslider.h"
+
+1379086312 /usr/qt4/include/QtGui/QSpacerItem
+	"qlayoutitem.h"
+
+1379086312 /usr/qt4/include/QtGui/QToolButton
+	"qtoolbutton.h"
+
+1379086312 /usr/qt4/include/QtGui/qtoolbutton.h
+	<QtGui/qabstractbutton.h>
+
+1379086312 /usr/qt4/include/QtGui/qabstractbutton.h
+	<QtGui/qicon.h>
+	<QtGui/qkeysequence.h>
+	<QtGui/qwidget.h>
+
+1379086312 /usr/qt4/include/QtGui/QVBoxLayout
+	"qboxlayout.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapTileLayerListModel.h
+	<QAbstractListModel>
+	<QWeakPointer>
+	"tileSources/CompositeTileSource.h"
+
+1379086312 /usr/qt4/include/QtCore/QAbstractListModel
+	"qabstractitemmodel.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapTileSourceDelegate.h
+	<QStyledItemDelegate>
+	<QWeakPointer>
+	"tileSources/CompositeTileSource.h"
+
+1379086312 /usr/qt4/include/QtGui/QStyledItemDelegate
+	"qstyleditemdelegate.h"
+
+1379086312 /usr/qt4/include/QtGui/qstyleditemdelegate.h
+	<QtGui/qabstractitemdelegate.h>
+	<QtCore/qstring.h>
+	<QtGui/qpixmap.h>
+	<QtCore/qvariant.h>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/tileSources/OSMTileSource.h
+	"MapTileSource.h"
+	"MapGraphics_global.h"
+	<QSet>
+	<QHash>
+
+1379086312 /usr/qt4/include/QtCore/QSet
+	"qset.h"
+
+1379086312 /usr/qt4/include/QtGui/QMenu
+	"qmenu.h"
+
+1379086312 /usr/qt4/include/QtGui/qmenu.h
+	<QtGui/qwidget.h>
+	<QtCore/qstring.h>
+	<QtGui/qicon.h>
+	<QtGui/qaction.h>
+	<QtGui/qpixmap.h>
+	<windef.h>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/CompositeTileSourceConfigurationWidget.ui
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/Conversions.cpp
+	"Conversions.h"
+	<cmath>
+	<QtDebug>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/Conversions.h
+	<QTransform>
+	<QVector3D>
+	<QPointF>
+	"MapGraphics_global.h"
+	"Position.h"
+
+1379086312 /usr/qt4/include/QtGui/QTransform
+	"qtransform.h"
+
+1379086312 /usr/qt4/include/QtGui/QVector3D
+	"qvector3d.h"
+
+1379086312 /usr/qt4/include/QtGui/qvector3d.h
+	<QtCore/qpoint.h>
+	<QtCore/qmetatype.h>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/Position.h
+	<QPointF>
+	<QtDebug>
+	<QVector3D>
+	<QVector2D>
+	"MapGraphics_global.h"
+
+1379086312 /usr/qt4/include/QtGui/QVector2D
+	"qvector2d.h"
+
+1379086312 /usr/qt4/include/QtGui/qvector2d.h
+	<QtCore/qpoint.h>
+	<QtCore/qmetatype.h>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapGraphicsNetwork.cpp
+	"MapGraphicsNetwork.h"
+	<QNetworkRequest>
+	<QThread>
+	<QtDebug>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapGraphicsNetwork.h
+	<QNetworkAccessManager>
+	<QHash>
+
+1379086312 /usr/qt4/include/QtNetwork/QNetworkAccessManager
+	"qnetworkaccessmanager.h"
+
+1379086312 /usr/qt4/include/QtNetwork/qnetworkaccessmanager.h
+	<QtCore/QObject>
+
+1379086312 /usr/qt4/include/QtNetwork/QNetworkRequest
+	"qnetworkrequest.h"
+
+1379086312 /usr/qt4/include/QtNetwork/qnetworkrequest.h
+	<QtCore/QSharedDataPointer>
+	<QtCore/QString>
+	<QtCore/QUrl>
+	<QtCore/QVariant>
+
+1379086312 /usr/qt4/include/QtCore/QSharedDataPointer
+	"qshareddata.h"
+
+1379086312 /usr/qt4/include/QtCore/QString
+	"qstring.h"
+
+1379086312 /usr/qt4/include/QtCore/QUrl
+	"qurl.h"
+
+1379086312 /usr/qt4/include/QtCore/qurl.h
+	<QtCore/qbytearray.h>
+	<QtCore/qobjectdefs.h>
+	<QtCore/qpair.h>
+	<QtCore/qstring.h>
+	<QtCore/qhash.h>
+
+1379086312 /usr/qt4/include/QtCore/QThread
+	"qthread.h"
+
+1379086312 /usr/qt4/include/QtCore/qthread.h
+	<QtCore/qobject.h>
+	<limits.h>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapTileGraphicsObject.cpp
+	"MapTileGraphicsObject.h"
+	<QPainter>
+	<QtDebug>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapTileGraphicsObject.h
+	<QGraphicsObject>
+	<QPointer>
+	"MapTileSource.h"
+
+1379086312 /usr/qt4/include/QtGui/QGraphicsObject
+	"qgraphicsitem.h"
+
+1379086312 /usr/qt4/include/QtCore/QPointer
+	"qpointer.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapTileLayerListModel.cpp
+	"MapTileLayerListModel.h"
+	<QModelIndex>
+	<QtDebug>
+
+1379086312 /usr/qt4/include/QtCore/QModelIndex
+	"qabstractitemmodel.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/MapTileSourceDelegate.cpp
+	"MapTileSourceDelegate.h"
+	<QPainter>
+	<QtDebug>
+	<QPushButton>
+	<QStringBuilder>
+
+1379086312 /usr/qt4/include/QtGui/QPushButton
+	"qpushbutton.h"
+
+1379086312 /usr/qt4/include/QtGui/qpushbutton.h
+	<QtGui/qabstractbutton.h>
+
+1379086312 /usr/qt4/include/QtCore/QStringBuilder
+	"qstringbuilder.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsInfoSource.cpp
+	"PrivateQGraphicsInfoSource.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsInfoSource.h
+	<QSharedPointer>
+	"MapTileSource.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsObject.cpp
+	"PrivateQGraphicsObject.h"
+	<QtDebug>
+	<QKeyEvent>
+	"guts/Conversions.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsObject.h
+	<QGraphicsObject>
+	<QPointer>
+	<QHash>
+	"MapGraphicsObject.h"
+	"guts/PrivateQGraphicsInfoSource.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsScene.cpp
+	"PrivateQGraphicsScene.h"
+	<QtDebug>
+	<QSet>
+	"MapGraphicsScene.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsScene.h
+	<QGraphicsScene>
+	<QHash>
+	<QPointer>
+	<QWeakPointer>
+	"MapGraphicsScene.h"
+	"MapGraphicsObject.h"
+	"PrivateQGraphicsObject.h"
+	"guts/PrivateQGraphicsInfoSource.h"
+
+1379086312 /usr/qt4/include/QtGui/QGraphicsScene
+	"qgraphicsscene.h"
+
+1379086312 /usr/qt4/include/QtGui/qgraphicsscene.h
+	<QtCore/qobject.h>
+	<QtCore/qpoint.h>
+	<QtCore/qrect.h>
+	<QtGui/qbrush.h>
+	<QtGui/qfont.h>
+	<QtGui/qtransform.h>
+	<QtGui/qmatrix.h>
+	<QtGui/qpen.h>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/MapGraphicsScene.h
+	"MapGraphics_global.h"
+	"MapGraphicsObject.h"
+	<QObject>
+	<QList>
+	<QSet>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsView.cpp
+	"PrivateQGraphicsView.h"
+	<QWheelEvent>
+	<QContextMenuEvent>
+	<QtDebug>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/guts/PrivateQGraphicsView.h
+	<QGraphicsView>
+
+1379086312 /usr/qt4/include/QtGui/QGraphicsView
+	"qgraphicsview.h"
+
+1379086312 /usr/qt4/include/QtGui/qgraphicsview.h
+	<QtCore/qmetatype.h>
+	<QtGui/qpainter.h>
+	<QtGui/qscrollarea.h>
+	<QtGui/qgraphicsscene.h>
+
+1379086312 /usr/qt4/include/QtGui/qscrollarea.h
+	<QtGui/qabstractscrollarea.h>
+
+1432731229 /usr/qt4/include/QtGui/QWheelEvent
+	"qevent.h"
+
+1432731229 /usr/qt4/include/QtGui/QContextMenuEvent
+	"qevent.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/LineObject.cpp
+	"LineObject.h"
+	"guts/Conversions.h"
+	<QtGlobal>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/LineObject.h
+	"MapGraphics_global.h"
+	"Position.h"
+	"MapGraphicsObject.h"
+
+1432731229 /usr/qt4/include/QtCore/QtGlobal
+	"qglobal.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/MapGraphicsObject.cpp
+	"MapGraphicsObject.h"
+	<QtDebug>
+	<QKeyEvent>
+	<QTimer>
+
+1379086312 /usr/qt4/include/QtCore/QTimer
+	"qtimer.h"
+
+1379086312 /usr/qt4/include/QtCore/qtimer.h
+	<QtCore/qbasictimer.h>
+	<QtCore/qobject.h>
+
+1379086312 /usr/qt4/include/QtCore/qbasictimer.h
+	<QtCore/qglobal.h>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/MapGraphicsScene.cpp
+	"MapGraphicsScene.h"
+	<QtDebug>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/MapGraphicsView.cpp
+	"MapGraphicsView.h"
+	<QVBoxLayout>
+	<QTimer>
+	<QtDebug>
+	<cmath>
+	<QQueue>
+	<QSet>
+	<QWheelEvent>
+	<QCoreApplication>
+	<QThread>
+	<QMenu>
+	"guts/PrivateQGraphicsScene.h"
+	"guts/PrivateQGraphicsView.h"
+	"guts/Conversions.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/MapGraphicsView.h
+	<QWidget>
+	<QPointer>
+	<QSharedPointer>
+	<QGraphicsView>
+	<QGraphicsScene>
+	<QList>
+	<QContextMenuEvent>
+	<QVector3D>
+	<QStringBuilder>
+	<QHash>
+	"MapGraphicsScene.h"
+	"MapGraphicsObject.h"
+	"MapTileSource.h"
+	"MapGraphics_global.h"
+	"guts/MapTileGraphicsObject.h"
+	"guts/PrivateQGraphicsInfoSource.h"
+
+1379086312 /usr/qt4/include/QtCore/QQueue
+	"qqueue.h"
+
+1379086312 /usr/qt4/include/QtCore/qqueue.h
+	<QtCore/qlist.h>
+
+1379086312 /usr/qt4/include/QtCore/QCoreApplication
+	"qcoreapplication.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/MapTileSource.cpp
+	"MapTileSource.h"
+	<QStringBuilder>
+	<QMutexLocker>
+	<QtDebug>
+	<QStringList>
+	<QDataStream>
+
+1379086312 /usr/qt4/include/QtCore/QMutexLocker
+	"qmutex.h"
+
+1379086312 /usr/qt4/include/QtCore/QStringList
+	"qstringlist.h"
+
+1379086312 /usr/qt4/include/QtCore/QDataStream
+	"qdatastream.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/PolygonObject.cpp
+	"PolygonObject.h"
+	"guts/Conversions.h"
+	"CircleObject.h"
+	<QtDebug>
+	<QKeyEvent>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/PolygonObject.h
+	<QPolygonF>
+	<QList>
+	"MapGraphicsObject.h"
+	"MapGraphics_global.h"
+
+1379086312 /usr/qt4/include/QtGui/QPolygonF
+	"qpolygon.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/Position.cpp
+	"Position.h"
+	"guts/Conversions.h"
+	<QtGlobal>
+	<cmath>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/tileSources/CompositeTileSource.cpp
+	"CompositeTileSource.h"
+	<QtDebug>
+	<QPainter>
+	<QMutexLocker>
+	<QThread>
+	<QPointer>
+	<QTimer>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/tileSources/GridTileSource.cpp
+	"GridTileSource.h"
+	<cmath>
+	<QPainter>
+	<QStringBuilder>
+	<QtDebug>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/tileSources/GridTileSource.h
+	"MapTileSource.h"
+	"MapGraphics_global.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/tileSources/OSMTileSource.cpp
+	"OSMTileSource.h"
+	"guts/MapGraphicsNetwork.h"
+	<cmath>
+	<QPainter>
+	<QStringBuilder>
+	<QtDebug>
+	<QNetworkReply>
+
+1379086312 /usr/qt4/include/QtNetwork/QNetworkReply
+	"qnetworkreply.h"
+
+1379086312 /usr/qt4/include/QtNetwork/qnetworkreply.h
+	<QtCore/QIODevice>
+	<QtCore/QString>
+	<QtCore/QVariant>
+	<QtNetwork/QNetworkRequest>
+	<QtNetwork/QNetworkAccessManager>
+
+1379086312 /usr/qt4/include/QtCore/QIODevice
+	"qiodevice.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/WeatherImageObject.cpp
+	"WeatherImageObject.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/WeatherImageObject.h
+	"MapGraphicsObject.h"
+	<QImage>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/MapGraphics/WeatherManager.cpp
+	"WeatherManager.h"
+	<QNetworkRequest>
+	<QNetworkReply>
+	<QtDebug>
+	<QRegExp>
+	<QTimer>
+	"guts/Conversions.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/MapGraphics/WeatherManager.h
+	<QObject>
+	<QPointer>
+	<QNetworkAccessManager>
+	<QSet>
+	<QPair>
+	<QVector2D>
+	<QPointF>
+	"MapGraphicsScene.h"
+	"WeatherImageObject.h"
+
+1379086312 /usr/qt4/include/QtCore/QPair
+	"qpair.h"
+
+1379086312 /usr/qt4/include/QtCore/QRegExp
+	"qregexp.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/about.ui
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/about.cpp
+	"about.h"
+	"ui_about.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/about.h
+	<QDialog>
+
+1379086312 /usr/qt4/include/QtGui/QDialog
+	"qdialog.h"
+
+1379086312 /usr/qt4/include/QtGui/qdialog.h
+	<QtGui/qwidget.h>
+
+1468977703 /home/rpipkin/rad/src/qradiopredict/build-cb/qradiopredict-cb/ui_about.h
+	<QtCore/QVariant>
+	<QtGui/QAction>
+	<QtGui/QApplication>
+	<QtGui/QButtonGroup>
+	<QtGui/QDialog>
+	<QtGui/QGroupBox>
+	<QtGui/QHeaderView>
+	<QtGui/QPushButton>
+	<QtGui/QTabWidget>
+	<QtGui/QTextEdit>
+	<QtGui/QWidget>
+
+1379086312 /usr/qt4/include/QtGui/QGroupBox
+	"qgroupbox.h"
+
+1379086312 /usr/qt4/include/QtGui/qgroupbox.h
+	<QtGui/qframe.h>
+
+1379086312 /usr/qt4/include/QtGui/QTabWidget
+	"qtabwidget.h"
+
+1379086312 /usr/qt4/include/QtGui/QTextEdit
+	"qtextedit.h"
+
+1379086312 /usr/qt4/include/QtGui/qtextedit.h
+	<QtGui/qabstractscrollarea.h>
+	<QtGui/qtextdocument.h>
+	<QtGui/qtextoption.h>
+	<QtGui/qtextcursor.h>
+	<QtGui/qtextformat.h>
+	<QtGui/qtextobject.h>
+	<QtGui/qtextlayout.h>
+
+1379086312 /usr/qt4/include/QtGui/qtextdocument.h
+	<QtCore/qobject.h>
+	<QtCore/qsize.h>
+	<QtCore/qrect.h>
+	<QtGui/qfont.h>
+
+1379086312 /usr/qt4/include/QtGui/qtextcursor.h
+	<QtCore/qstring.h>
+	<QtCore/qshareddata.h>
+	<QtGui/qtextformat.h>
+
+1379086312 /usr/qt4/include/QtGui/qtextformat.h
+	<QtGui/qcolor.h>
+	<QtGui/qfont.h>
+	<QtCore/qshareddata.h>
+	<QtCore/qvector.h>
+	<QtCore/qvariant.h>
+	<QtGui/qpen.h>
+	<QtGui/qbrush.h>
+	<QtGui/qtextoption.h>
+
+1379086312 /usr/qt4/include/QtGui/qtextobject.h
+	<QtCore/qobject.h>
+	<QtGui/qtextformat.h>
+	<QtGui/qglyphrun.h>
+
+1379086312 /usr/qt4/include/QtGui/qglyphrun.h
+	<QtCore/qsharedpointer.h>
+	<QtCore/qvector.h>
+	<QtCore/qpoint.h>
+	<QtGui/qrawfont.h>
+
+1379086312 /usr/qt4/include/QtGui/qrawfont.h
+	<QtCore/qstring.h>
+	<QtCore/qiodevice.h>
+	<QtCore/qglobal.h>
+	<QtCore/qobject.h>
+	<QtCore/qpoint.h>
+	<QtGui/qfont.h>
+	<QtGui/qtransform.h>
+	<QtGui/qfontdatabase.h>
+
+1379086312 /usr/qt4/include/QtGui/qfontdatabase.h
+	<QtGui/qwindowdefs.h>
+	<QtCore/qstring.h>
+	<QtGui/qfont.h>
+	<QtCore/qstringlist.h>
+	<QtCore/qlist.h>
+
+1379086312 /usr/qt4/include/QtGui/qtextlayout.h
+	<QtCore/qstring.h>
+	<QtCore/qnamespace.h>
+	<QtCore/qrect.h>
+	<QtCore/qvector.h>
+	<QtGui/qcolor.h>
+	<QtCore/qobject.h>
+	<QtGui/qevent.h>
+	<QtGui/qtextformat.h>
+	<QtGui/qglyphrun.h>
+	<QtGui/qtextcursor.h>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprs.cpp
+	"aprs.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprs.h
+	<QObject>
+	<QTcpSocket>
+	<QPointF>
+	<QString>
+	<QStringList>
+	<QRegExp>
+	"aprsstation.h"
+	<QTime>
+	<QDateTime>
+
+1379086313 /usr/qt4/include/QtNetwork/QTcpSocket
+	"qtcpsocket.h"
+
+1379086313 /usr/qt4/include/QtNetwork/qtcpsocket.h
+	<QtNetwork/qabstractsocket.h>
+	<QtCore/qvariant.h>
+
+1379086313 /usr/qt4/include/QtNetwork/qabstractsocket.h
+	<QtCore/qiodevice.h>
+	<QtCore/qobject.h>
+	<QtCore/qdebug.h>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprsstation.h
+	<QString>
+
+1379086312 /usr/qt4/include/QtCore/QTime
+	"qdatetime.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprsicon.cpp
+	"aprsicon.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprsicon.h
+	<QString>
+	<QPointF>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprspixmapitem.cpp
+	"aprspixmapitem.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprspixmapitem.h
+	<QGraphicsPixmapItem>
+	<QGraphicsSceneHoverEvent>
+	<QDebug>
+	<QPixmap>
+	<QString>
+	<QGraphicsScene>
+	<QPointF>
+
+1379086312 /usr/qt4/include/QtGui/QGraphicsPixmapItem
+	"qgraphicsitem.h"
+
+1379086312 /usr/qt4/include/QtGui/QGraphicsSceneHoverEvent
+	"qgraphicssceneevent.h"
+
+1379086312 /usr/qt4/include/QtCore/QDebug
+	"qdebug.h"
+
+1379086312 /usr/qt4/include/QtGui/QPixmap
+	"qpixmap.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/aprsstation.cpp
+	"aprsstation.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/connectionsuccessdialog.ui
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/connectionsuccessdialog.cpp
+	"connectionsuccessdialog.h"
+	"ui_connectionsuccessdialog.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/connectionsuccessdialog.h
+	<QDialog>
+	<QObject>
+
+1468977818 /home/rpipkin/rad/src/qradiopredict/build-cb/qradiopredict-cb/ui_connectionsuccessdialog.h
+	<QtCore/QVariant>
+	<QtGui/QAction>
+	<QtGui/QApplication>
+	<QtGui/QButtonGroup>
+	<QtGui/QDialog>
+	<QtGui/QHeaderView>
+	<QtGui/QLabel>
+	<QtGui/QPushButton>
+
+1379086312 /usr/qt4/include/QtGui/QLabel
+	"qlabel.h"
+
+1379086312 /usr/qt4/include/QtGui/qlabel.h
+	<QtGui/qframe.h>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/flightplanform.ui
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/groundstationform.ui
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/loaddialog.ui
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/databaseapi.cpp
+	"databaseapi.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/databaseapi.h
+	<QtSql>
+	<QVector>
+	<QString>
+	<math.h>
+	"mobilestation.h"
+	"groundstation.h"
+	"flightplanpoints.h"
+	"aprsstation.h"
+	"signal.h"
+	"flightgearprefs.h"
+
+1458451331 /usr/qt4/include/QtSql
+
+1379086312 /usr/qt4/include/QtCore/QVector
+	"qvector.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/mobilestation.h
+	<QString>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/groundstation.h
+	<QString>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/flightplanpoints.h
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/signal.h
+	<QString>
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/flightgearprefs.h
+	<QString>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/fgremote.cpp
+	"fgremote.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/fgremote.h
+	<QPointF>
+	<QObject>
+	<QThread>
+	<QTime>
+	"fgtelnet.h"
+	"databaseapi.h"
+	<QVector>
+	"groundstation.h"
+	"flightplanpoints.h"
+	"mobilestation.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/fgtelnet.h
+	<QTcpSocket>
+	<QObject>
+	<QString>
+	<QStringList>
+	<QTime>
+	<QCoreApplication>
+	<QLatin1String>
+
+1379086312 /usr/qt4/include/QtCore/QLatin1String
+	"qstring.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/fgtelnet.cpp
+	"fgtelnet.h"
+	<exception>
+	<iostream>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/flightgearprefs.cpp
+	"flightgearprefs.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/flightplanform.cpp
+	"flightplanform.h"
+	"ui_flightplanform.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/flightplanform.h
+	<QWidget>
+	"flightplanpoints.h"
+
+1468977850 /home/rpipkin/rad/src/qradiopredict/build-cb/qradiopredict-cb/ui_flightplanform.h
+	<QtCore/QVariant>
+	<QtGui/QAction>
+	<QtGui/QApplication>
+	<QtGui/QButtonGroup>
+	<QtGui/QFormLayout>
+	<QtGui/QHeaderView>
+	<QtGui/QLabel>
+	<QtGui/QLineEdit>
+	<QtGui/QPushButton>
+	<QtGui/QScrollArea>
+	<QtGui/QWidget>
+
+1379086312 /usr/qt4/include/QtGui/QFormLayout
+	"qformlayout.h"
+
+1379086312 /usr/qt4/include/QtGui/qformlayout.h
+	<QtGui/QLayout>
+
+1379086312 /usr/qt4/include/QtGui/QLayout
+	"qlayout.h"
+
+1379086312 /usr/qt4/include/QtGui/QLineEdit
+	"qlineedit.h"
+
+1379086312 /usr/qt4/include/QtGui/qlineedit.h
+	<QtGui/qframe.h>
+	<QtGui/qtextcursor.h>
+	<QtCore/qstring.h>
+	<QtCore/qmargins.h>
+
+1379086312 /usr/qt4/include/QtGui/QScrollArea
+	"qscrollarea.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/flightplanpoints.cpp
+	"flightplanpoints.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/groundstation.cpp
+	"groundstation.h"
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/groundstationform.cpp
+	"groundstationform.h"
+	"ui_groundstationform.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/groundstationform.h
+	<QWidget>
+	<QObject>
+	"groundstation.h"
+
+1468977850 /home/rpipkin/rad/src/qradiopredict/build-cb/qradiopredict-cb/ui_groundstationform.h
+	<QtCore/QVariant>
+	<QtGui/QAction>
+	<QtGui/QApplication>
+	<QtGui/QButtonGroup>
+	<QtGui/QFormLayout>
+	<QtGui/QHeaderView>
+	<QtGui/QLabel>
+	<QtGui/QLineEdit>
+	<QtGui/QPushButton>
+	<QtGui/QScrollArea>
+	<QtGui/QWidget>
+
+1468738679 source:/home/rpipkin/rad/src/qradiopredict/QRadioPredict/loaddialog.cpp
+	"loaddialog.h"
+	"ui_loaddialog.h"
+
+1468738679 /home/rpipkin/rad/src/qradiopredict/QRadioPredict/loaddialog.h
+	<QDialog>
+	<QString>
+	<QFileDialog>
+	<QObject>
+
+1379086312 /usr/qt4/include/QtGui/QFileDialog
+	"qfiledialog.h"
+
+1379086312 /usr/qt4/include/QtGui/qfiledialog.h
+	<QtCore/qdir.h>
+	<QtCore/qstring.h>
+	<QtGui/qdialog.h>
+
+1468977850 /home/rpipkin/rad/src/qradiopredict/build-cb/qradiopredict-cb/ui_loaddialog.h
+	<QtCore/QVariant>
+	<QtGui/QAction>
+	<QtGui/QApplication>
+	<QtGui/QButtonGroup>
+	<QtGui/QDialog>
+	<QtGui/QDialogButtonBox>
+	<QtGui/QHeaderView>
+	<QtGui/QLineEdit>
+	<QtGui/QPushButton>
+
+1379086312 /usr/qt4/include/QtGui/QDialogButtonBox
+	"qdialogbuttonbox.h"
+
+1379086312 /usr/qt4/include/QtGui/qdialogbuttonbox.h
+	<QtGui/qwidget.h>
+
