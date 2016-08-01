@@ -146,7 +146,9 @@ void Aprs::processData()
             QString lon_degrees;
             lat_degrees.append(lat[0]).append(lat[1]);
             lon_degrees.append(lon[0]).append(lon[1]).append(lon[2]);
+            QString ns = lat.right(1);
             lat.chop(1);
+            QString ew = lon.right(1);
             lon.chop(1);
             lat.remove(0,2);
             lon.remove(0,3);
@@ -155,7 +157,13 @@ void Aprs::processData()
             double latitude = lat_degrees.toDouble();
             double longitude = lon_degrees.toDouble();
             latitude = latitude + lat_minutes / 60;
+            if ( ns.contains("S") ) {
+                latitude *= -1;
+            }
             longitude = longitude + lon_minutes / 60;
+            if ( ew.contains("W") ) {
+                longitude *= -1;
+            }
             AprsStation *st = new AprsStation;
             st->adressee=to;
             st->callsign = from;
