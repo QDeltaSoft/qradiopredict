@@ -142,7 +142,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->restoreMapState();
     view->setZoomLevel(4);
-    view->centerOn(24.658752, 46.255456);
+    view->centerOn(-103.734, 34.0733);
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
     this->showPlotDistance();
 }

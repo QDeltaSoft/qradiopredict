@@ -463,6 +463,9 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <widget class="QSpinBox" name="aprsTimeSpinBox">
     <property name="geometry">
      <rect>

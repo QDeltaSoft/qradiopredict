@@ -86,7 +86,7 @@ void Aprs::disconnectAPRS()
 
 void Aprs::authenticate()
 {
-    _socket->write("user XASTIR pass -1 filter r/46.00/26.00/200\r\n");
+    _socket->write("user W5CXP-TS pass -1 vers qradiopredict 0.8.8 filter r/34.07/-103.73/400\r\n");
     _socket->flush();
     qDebug() << "Sent APRS login";
 
