@@ -787,7 +787,7 @@ void MainWindow::mapClick(QPointF pos)
         _tb->ui->label_lon->setText(lon.setNum(newpos.ry()));
 
         r.setCoordinates(newpos.ry(),newpos.rx());
-        height = r.readHeight();
+        height = r.readHeightCache();
         _tb->ui->labelAltitude->setText(QString::number(height));
         break;
 
