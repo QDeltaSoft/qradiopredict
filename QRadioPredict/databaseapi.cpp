@@ -334,8 +334,11 @@ DatabaseApi::select_prefs()
     int windowX_idx = query.record().indexOf("windowX");
     int windowY_idx = query.record().indexOf("windowY");
     int aprs_server_idx = query.record().indexOf("aprs_server");
+    int aprs_setngs_idx = query.record().indexOf("aprs_settings");
     int aprs_filter_range_idx = query.record().indexOf("aprs_filter_range");
     int plot_range_idx = query.record().indexOf("plot_range");
+    int init_latitude_idx = query.record().indexOf("init_lat");
+    int init_longitude_idx = query.record().indexOf("init_long");
     while(query.next())
     {
         FlightgearPrefs *p = new FlightgearPrefs;
@@ -354,8 +357,11 @@ DatabaseApi::select_prefs()
         p->_windowX = query.value(windowX_idx).toInt();
         p->_windowY = query.value(windowY_idx).toInt();
         p->_aprs_server = query.value(aprs_server_idx).toString();
+        p->_aprs_settings = query.value(aprs_setngs_idx).toString();
         p->_aprs_filter_range = query.value(aprs_filter_range_idx).toInt();
         p->_plot_range = query.value(plot_range_idx).toInt();
+        p->_init_latitude = query.value(init_latitude_idx).toDouble();
+        p->_init_longitude = query.value(init_longitude_idx).toDouble();
         prefs.push_back(p);
     }
     return prefs;
@@ -373,7 +379,8 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
                   "itm_performance_mode=:itm_performance, "
                   "scale_with_distance=:scale_with_distance, "
                   "use_antenna_pattern = :use_antenna_pattern, windowX= :windowX, windowY= :windowY, "
-                  "aprs_server= :aprs_server, aprs_filter_range=:aprs_filter_range, plot_range=:plot_range "
+                  "aprs_server= :aprs_server, aprs_settings= :aprs_settings, aprs_filter_range=:aprs_filter_range, "
+                  "plot_range=:plot_range, init_lat=:init_lat, init_long=:init_long "
                   " WHERE id=1");
     query.bindValue(":fgfs_binary", p->_fgfs_bin);
     query.bindValue(":fgdata_path", p->_fgdata_path);
@@ -390,8 +397,11 @@ DatabaseApi::savePrefs(FlightgearPrefs *p)
     query.bindValue(":windowX", p->_windowX);
     query.bindValue(":windowY", p->_windowY);
     query.bindValue(":aprs_server", p->_aprs_server);
+    query.bindValue(":aprs_settings", p->_aprs_settings);
     query.bindValue(":aprs_filter_range", p->_aprs_filter_range);
     query.bindValue(":plot_range", p->_plot_range);
+    query.bindValue(":init_lat", p->_init_latitude);
+    query.bindValue(":init_long", p->_init_longitude);
     query.exec();
 }
 

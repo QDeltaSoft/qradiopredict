@@ -37,12 +37,15 @@ public:
     unsigned _windowX;
     unsigned _windowY;
     QString _aprs_server;
+    QString _aprs_settings;
     int _aprs_filter_range;
     QString _srtm_path;
     QString _shapefile_path;
     int _plot_range; // km
     unsigned _use_ITWOM;
     unsigned _scale_with_distance;
+    double _init_latitude;
+    double _init_longitude;
 };
 
 #endif // FLIGHTGEARPREFS_H

@@ -28,6 +28,7 @@
 #include "aprsstation.h"
 #include <QTime>
 #include <QDateTime>
+#include "databaseapi.h"
 
 /**
  * @brief APRS connection interface
@@ -41,7 +42,7 @@ class Aprs : public QObject
 {
     Q_OBJECT
 public:
-    explicit Aprs( QString aprs_server);
+    explicit Aprs( DatabaseApi *db);
     ~Aprs();
     void connectToAPRS();
     void disconnectAPRS();
@@ -63,12 +64,16 @@ public slots:
 private:
     void authenticate();
     QString _hostname;
+    QString _aprs_settings;
+    double _init_latitude;
+    double _init_longitude;
+    int _plot_range;
     QTcpSocket *_socket;
     quint8 _connection_tries;
     unsigned _status;
     unsigned _authenticated;
     QTime _delaytime;
-    
+    DatabaseApi *_db;
 };
 
 #endif // APRS_H

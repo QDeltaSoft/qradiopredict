@@ -16,16 +16,37 @@
 
 #include "aprs.h"
 
-Aprs::Aprs(QString aprs_server)
+Aprs::Aprs(DatabaseApi *db)
 {
     _socket = new QTcpSocket;
     QObject::connect(_socket,SIGNAL(error(QAbstractSocket::SocketError )),this,SLOT(connectionFailed(QAbstractSocket::SocketError)));
     QObject::connect(_socket,SIGNAL(connected()),this,SLOT(connectionSuccess()));
     QObject::connect(_socket,SIGNAL(readyRead()),this,SLOT(processData()));
+    _db = db;
     _connection_tries=0;
     _status=0;
     _authenticated = 0;
-    _hostname = aprs_server;
+    QVector<FlightgearPrefs *> prefs = _db->select_prefs();
+    FlightgearPrefs *p;
+    QString aprs_server;
+    if(prefs.size()>0)
+    {
+         p = prefs[0];
+         _hostname = p->_aprs_server;
+         _aprs_settings = p->_aprs_settings;
+         _init_latitude = p->_init_latitude;
+         _init_longitude = p->_init_longitude;
+         _plot_range = p->_plot_range;
+         delete p;
+    }
+    else
+    {
+         _aprs_settings = "XASTIR";
+         _init_latitude = 46.0;
+         _init_longitude = 26.0;
+         _plot_range = 200;
+        _hostname = "rotate.aprs.net";
+    }
     _delaytime = QTime::currentTime();
     this->connectToAPRS();
 }
@@ -86,9 +107,21 @@ void Aprs::disconnectAPRS()
 
 void Aprs::authenticate()
 {
-    _socket->write("user W5CXP-TS pass -1 vers qradiopredict 0.8.8 filter r/34.07/-103.73/400\r\n");
+    QString _login_text;
+    _login_text.append("user ");
+    _login_text.append( _aprs_settings );
+    _login_text.append(" pass -1 vers qradiopredict 0.8.8 filter r/");
+    _login_text.append( QString::number(_init_latitude, 'f', 2) );
+    _login_text.append("/");
+    _login_text.append(QString::number(_init_longitude, 'f', 2) );
+    _login_text.append("/0");
+    _login_text.append(QString::number(_plot_range) );
+    _login_text.append("\r\n");
+
+    _socket->write(_login_text.toLatin1());
     _socket->flush();
     qDebug() << "Sent APRS login";
+    qDebug() << _login_text;
 
 }
 

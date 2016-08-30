@@ -140,9 +140,32 @@ MainWindow::MainWindow(QWidget *parent) :
     //this->createTrayIcon();
 
 
+    QVector<FlightgearPrefs *> prefs = _db->select_prefs();
+    FlightgearPrefs *p;
+
+    double _latitude;
+    double _longitude;
+
+    if(prefs.size()>0)
+    {
+
+        p = prefs[0];
+        _latitude = p->_init_latitude;
+        _longitude = p->_init_longitude;
+        delete p;
+    }
+    else
+    {
+        _latitude = 46.0;
+        _longitude = 26.0;
+    }
+
+
+
     this->restoreMapState();
     view->setZoomLevel(4);
-    view->centerOn(-103.734, 34.0733);
+//    view->centerOn(24.658752, 46.255456);
+    view->centerOn( _longitude, _latitude );
     view->_childView->viewport()->setCursor(Qt::ArrowCursor);
     this->showPlotDistance();
 }
@@ -247,25 +270,10 @@ void MainWindow::checkForUpdates()
 
 void MainWindow::connectToAPRS()
 {
-    QVector<FlightgearPrefs *> prefs = _db->select_prefs();
-    FlightgearPrefs *p;
-    QString aprs_server;
-    if(prefs.size()>0)
-    {
-         p = prefs[0];
-         aprs_server = p->_aprs_server;
-         delete p;
-    }
-    else
-    {
-        aprs_server = "rotate.aprs.net";
-    }
-    _aprs = new Aprs(aprs_server);
+    _aprs = new Aprs(_db);
     QObject::connect(_aprs,SIGNAL(aprsData(AprsStation*)),this,SLOT(processAPRSData(AprsStation*)));
     QObject::connect(_aprs,SIGNAL(rawAprsData(QString)),this,SLOT(processRawAPRSData(QString)));
     QObject::connect(ui->actionRaw_APRS_messages,SIGNAL(triggered()),this,SLOT(showRawAPRSMessages()));
-
-    prefs.clear();
 }
 
 void MainWindow::activateAPRS(bool active)
