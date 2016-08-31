@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>610</width>
-    <height>616</height>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>568</y>
+     <y>620</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -41,12 +41,12 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>551</width>
-     <height>503</height>
+     <width>580</width>
+     <height>557</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="12" column="1">
+    <item row="12" column="2">
      <widget class="QCheckBox" name="ITMCheckBox">
       <property name="text">
        <string>Terrain resolution scaled inversely with distance</string>
@@ -106,19 +106,25 @@
       </property>
      </widget>
     </item>
-    <item row="10" column="1">
+    <item row="10" column="2">
      <widget class="QCheckBox" name="ITWOMCheckBox">
       <property name="text">
        <string>(New alternative to classic ITM model)</string>
       </property>
      </widget>
     </item>
-    <item row="9" column="2">
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="fgdataEdit"/>
+    </item>
+    <item row="9" column="3">
      <widget class="QLabel" name="label_7">
       <property name="text">
        <string/>
       </property>
      </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="aircraftEdit"/>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_2">
@@ -133,11 +139,11 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="fgdataEdit"/>
+    <item row="8" column="2">
+     <widget class="QLineEdit" name="windowYEdit"/>
     </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="aircraftEdit"/>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="fgfsEdit"/>
     </item>
     <item row="17" column="0">
      <widget class="QLabel" name="label_17">
@@ -164,11 +170,8 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="1">
-     <widget class="QLineEdit" name="windowYEdit"/>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="fgfsEdit"/>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="airportEdit"/>
     </item>
     <item row="7" column="0">
      <widget class="QLabel" name="label_10">
@@ -183,8 +186,8 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="airportEdit"/>
+    <item row="14" column="2">
+     <widget class="QLineEdit" name="plotRangeEdit"/>
     </item>
     <item row="12" column="0">
      <widget class="QLabel" name="label_14">
@@ -198,9 +201,6 @@
        <string>ITM Performance</string>
       </property>
      </widget>
-    </item>
-    <item row="14" column="1">
-     <widget class="QLineEdit" name="plotRangeEdit"/>
     </item>
     <item row="9" column="0">
      <widget class="QLabel" name="label_6">
@@ -217,6 +217,9 @@
        <bool>true</bool>
       </property>
      </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="sceneryEdit"/>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="label_5">
@@ -244,8 +247,12 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="sceneryEdit"/>
+    <item row="11" column="2">
+     <widget class="QCheckBox" name="antennaCheckBox">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
     <item row="11" column="0">
      <widget class="QLabel" name="label_8">
@@ -276,13 +283,6 @@
       </property>
      </widget>
     </item>
-    <item row="11" column="1">
-     <widget class="QCheckBox" name="antennaCheckBox">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="5" column="0">
      <widget class="QLabel" name="label_15">
       <property name="font">
@@ -293,32 +293,6 @@
       </property>
       <property name="text">
        <string>SRTM path</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0">
-     <widget class="QLabel" name="label_11">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Window Y size</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Default airport</string>
       </property>
      </widget>
     </item>
@@ -335,22 +309,48 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_11">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Window Y size</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
      <widget class="QLineEdit" name="srtmPathLineEdit"/>
     </item>
-    <item row="17" column="1">
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Default airport</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="2">
      <widget class="QLineEdit" name="aprsRangeEdit"/>
     </item>
-    <item row="16" column="1">
-     <widget class="QLineEdit" name="aprsServerEdit"/>
-    </item>
-    <item row="6" column="1">
+    <item row="6" column="2">
      <widget class="QLineEdit" name="shapePathLineEdit"/>
     </item>
-    <item row="7" column="1">
+    <item row="16" column="2">
+     <widget class="QLineEdit" name="aprsServerEdit"/>
+    </item>
+    <item row="7" column="2">
      <widget class="QLineEdit" name="windowXEdit"/>
     </item>
-    <item row="9" column="1">
+    <item row="9" column="2">
      <widget class="QCheckBox" name="clutterCheckBox">
       <property name="text">
        <string/>
@@ -370,12 +370,71 @@
       </property>
      </widget>
     </item>
-    <item row="13" column="1">
+    <item row="13" column="2">
      <widget class="QCheckBox" name="scaleWithDistanceCheckBox">
       <property name="text">
        <string>(Finer resolution at large distances, takes longer)</string>
       </property>
      </widget>
+    </item>
+    <item row="15" column="2">
+     <widget class="QLineEdit" name="aprsSettingsEdit"/>
+    </item>
+    <item row="19" column="0">
+     <widget class="QLabel" name="label_21">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Initial Latitude</string>
+      </property>
+     </widget>
+    </item>
+    <item row="19" column="2">
+     <widget class="QLineEdit" name="initialLatEdit"/>
+    </item>
+    <item row="20" column="0">
+     <widget class="QLabel" name="label_22">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Initial Longitude</string>
+      </property>
+     </widget>
+    </item>
+    <item row="20" column="2">
+     <widget class="QLineEdit" name="initialLongEdit"/>
     </item>
    </layout>
   </widget>

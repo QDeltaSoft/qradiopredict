@@ -35,7 +35,7 @@ bool SceneryManager::get_elevation_m(const SGGeod &probe, double &elevation_m, s
 {
 
     _srtmreader->setCoordinates(probe.getLatitudeDeg(),probe.getLongitudeDeg());
-    elevation_m = _srtmreader->readHeight();
+    elevation_m = _srtmreader->readHeightCache();
 
     if(_settings->_use_clutter == 1)
     {

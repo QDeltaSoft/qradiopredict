@@ -41,7 +41,7 @@ SRTMReader::~SRTMReader()
 }
 
 void SRTMReader::loadTiles(double lon, double lat)
-{
+{ // No need to preload tiles if they can be done on demand
 
     int lat_deg = (int) floor(fabs(lat));
     int lon_deg = (int) floor(fabs(lon));
@@ -107,7 +107,7 @@ void SRTMReader::setCoordinates(double lat, double lon)
 }
 
 // would be memory storage read
-double SRTMReader::readHeight2()
+double SRTMReader::readHeightCache()
 {
     QString filename = this->getFilename();
     unsigned temp_row  = (unsigned) round(_latitude_secs *3600/3);
@@ -116,13 +116,34 @@ double SRTMReader::readHeight2()
     // SRTM 3 is 1201x1201, 2 bytes per sample, we have to read from lower left
     unsigned pos = (row * 1201 + (temp_column - 1)) * 2;
     char *buffer = _tiles->value(filename,NULL);
+
     if(!buffer)
-        return 0.0;
+    {   //... If we don't have the buffer in memory grab it.
+        QString srtm_dir = _settings->_srtm_path;
+        srtm_dir.append(QDir::separator());
+        srtm_dir.append(filename);
+
+        buffer = new char[2884802];
+        ifstream file;
+        file.open (srtm_dir.toStdString().c_str(), ifstream::binary);
+        if(file.is_open())
+        {
+            file.read(buffer,2884802);
+        }
+        else
+        {
+            qDebug() << "SRTM path: " << srtm_dir << " unable to open";
+            return 0.0;
+        }
+
+        _tiles->insert(filename,buffer);
+    }
     union {
         unsigned char height_buf[2];
         short height;
     } conv;
 
+    // TODO: this is not portable across archs, due to the little/big endian issue
     conv.height_buf[0]=buffer[pos+1];
     conv.height_buf[1]=buffer[pos];
 

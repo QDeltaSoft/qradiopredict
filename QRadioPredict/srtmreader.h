@@ -44,7 +44,7 @@ public:
     ~SRTMReader();
     void setCoordinates(double lat, double lon);
     double readHeight();
-    double readHeight2();
+    double readHeightCache();
     void loadTiles(double lon, double lat);
     void unloadTiles();
 

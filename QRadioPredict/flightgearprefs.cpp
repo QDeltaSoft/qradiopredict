@@ -29,10 +29,13 @@ FlightgearPrefs::FlightgearPrefs()
     _windowX = 1024;
     _windowY = 768;
     _aprs_server = "euro.aprs2.net";
+    _aprs_settings = "XASTIR";
     _aprs_filter_range = 200;
     _srtm_path = "";
     _shapefile_path = "";
     _plot_range = 30;
     _use_ITWOM = 0;
     _scale_with_distance = 0;
+    _init_latitude = 24.658752;
+    _init_longitude = 46.255456;
 }

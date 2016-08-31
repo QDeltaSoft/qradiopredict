@@ -234,7 +234,7 @@
       <x>10</x>
       <y>30</y>
       <width>177</width>
-      <height>31</height>
+      <height>32</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -462,6 +462,9 @@
    </property>
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
    </property>
    <widget class="QSpinBox" name="aprsTimeSpinBox">
     <property name="geometry">
