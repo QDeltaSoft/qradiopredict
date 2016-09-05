@@ -81,6 +81,7 @@ void SRTMReader::loadTiles(double lon, double lat)
             else
             {
                 qDebug() << "SRTM path: " << srtm_dir << " unable to open";
+                delete[] buffer;
                 continue;
             }
 
@@ -133,6 +134,7 @@ double SRTMReader::readHeightCache()
         else
         {
             qDebug() << "SRTM path: " << srtm_dir << " unable to open";
+            delete[] buffer;
             return 0.0;
         }
 
