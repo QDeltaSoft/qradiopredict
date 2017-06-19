@@ -19,6 +19,7 @@
 
 #include <QDialog>
 #include <QObject>
+#include <QFileDialog>
 #include "databaseapi.h"
 
 namespace Ui {
@@ -35,6 +36,20 @@ public:
 
 private slots:
     void saveData();
+    void chooseDirectory(QString desc, QLineEdit *field);
+    void chooseFile(QString desc,QLineEdit *field);
+
+    //buttons for PATH dialog
+    void on_fgDataDirDialog_clicked();
+    void on_sceneryEditDialog_clicked();
+    void on_srtmPathLineEditDialog_clicked();
+    void on_shapePathLineEditDialog_clicked();
+
+    //buttons for FILE dialog
+    void on_fgfsEditDialog_clicked();
+    void on_AircraftEditDialog_clicked();
+    void on_airportEditDialog_clicked();
+    void on_buttonBox_accepted();
 
 signals:
     void updatePlotDistance();
