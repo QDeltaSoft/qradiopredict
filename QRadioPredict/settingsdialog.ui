@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>610</width>
-    <height>661</height>
+    <width>630</width>
+    <height>886</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,8 +23,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>620</y>
+     <x>260</x>
+     <y>830</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -33,7 +33,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+   </property>
+   <property name="centerButtons">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QWidget" name="gridLayoutWidget">
@@ -41,11 +44,63 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>580</width>
-     <height>557</height>
+     <width>581</width>
+     <height>754</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="3">
+     <widget class="QPushButton" name="fgDataDirDialog">
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3">
+     <widget class="QPushButton" name="srtmPathLineEditDialog">
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QPushButton" name="AircraftEditDialog">
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="airportEditDialog">
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="2">
+     <widget class="QLineEdit" name="aprsServerEdit"/>
+    </item>
+    <item row="15" column="0">
+     <widget class="QLabel" name="label_13">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>APRS Settings</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="fgfsEditDialog">
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
     <item row="12" column="2">
      <widget class="QCheckBox" name="ITMCheckBox">
       <property name="text">
@@ -79,20 +134,6 @@
       </property>
      </widget>
     </item>
-    <item row="15" column="0">
-     <widget class="QLabel" name="label_13">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>true</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>APRS Settings</string>
-      </property>
-     </widget>
-    </item>
     <item row="10" column="0">
      <widget class="QLabel" name="label_19">
       <property name="font">
@@ -106,6 +147,9 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="fgdataEdit"/>
+    </item>
     <item row="10" column="2">
      <widget class="QCheckBox" name="ITWOMCheckBox">
       <property name="text">
@@ -113,8 +157,12 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QLineEdit" name="fgdataEdit"/>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="aircraftEdit">
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+     </widget>
     </item>
     <item row="9" column="3">
      <widget class="QLabel" name="label_7">
@@ -123,8 +171,8 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="aircraftEdit"/>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="fgfsEdit"/>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_2">
@@ -139,13 +187,10 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="2">
-     <widget class="QLineEdit" name="windowYEdit"/>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="airportEdit"/>
     </item>
-    <item row="1" column="2">
-     <widget class="QLineEdit" name="fgfsEdit"/>
-    </item>
-    <item row="17" column="0">
+    <item row="18" column="0">
      <widget class="QLabel" name="label_17">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -170,9 +215,6 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="2">
-     <widget class="QLineEdit" name="airportEdit"/>
-    </item>
     <item row="7" column="0">
      <widget class="QLabel" name="label_10">
       <property name="font">
@@ -186,8 +228,8 @@
       </property>
      </widget>
     </item>
-    <item row="14" column="2">
-     <widget class="QLineEdit" name="plotRangeEdit"/>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="sceneryEdit"/>
     </item>
     <item row="12" column="0">
      <widget class="QLabel" name="label_14">
@@ -218,8 +260,12 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="2">
-     <widget class="QLineEdit" name="sceneryEdit"/>
+    <item row="11" column="2">
+     <widget class="QCheckBox" name="antennaCheckBox">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="label_5">
@@ -244,13 +290,6 @@
       </property>
       <property name="text">
        <string>Flightgear executable</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="2">
-     <widget class="QCheckBox" name="antennaCheckBox">
-      <property name="text">
-       <string/>
       </property>
      </widget>
     </item>
@@ -296,7 +335,10 @@
       </property>
      </widget>
     </item>
-    <item row="16" column="0">
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="srtmPathLineEdit"/>
+    </item>
+    <item row="17" column="0">
      <widget class="QLabel" name="label_12">
       <property name="font">
        <font>
@@ -322,9 +364,6 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
-     <widget class="QLineEdit" name="srtmPathLineEdit"/>
-    </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4">
       <property name="font">
@@ -338,17 +377,8 @@
       </property>
      </widget>
     </item>
-    <item row="17" column="2">
-     <widget class="QLineEdit" name="aprsRangeEdit"/>
-    </item>
     <item row="6" column="2">
      <widget class="QLineEdit" name="shapePathLineEdit"/>
-    </item>
-    <item row="16" column="2">
-     <widget class="QLineEdit" name="aprsServerEdit"/>
-    </item>
-    <item row="7" column="2">
-     <widget class="QLineEdit" name="windowXEdit"/>
     </item>
     <item row="9" column="2">
      <widget class="QCheckBox" name="clutterCheckBox">
@@ -356,6 +386,9 @@
        <string/>
       </property>
      </widget>
+    </item>
+    <item row="15" column="2">
+     <widget class="QLineEdit" name="aprsSettingsEdit"/>
     </item>
     <item row="13" column="0">
      <widget class="QLabel" name="label_20">
@@ -377,10 +410,10 @@
       </property>
      </widget>
     </item>
-    <item row="15" column="2">
-     <widget class="QLineEdit" name="aprsSettingsEdit"/>
+    <item row="20" column="2">
+     <widget class="QLineEdit" name="initialLatEdit"/>
     </item>
-    <item row="19" column="0">
+    <item row="20" column="0">
      <widget class="QLabel" name="label_21">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -405,10 +438,10 @@
       </property>
      </widget>
     </item>
-    <item row="19" column="2">
-     <widget class="QLineEdit" name="initialLatEdit"/>
+    <item row="21" column="2">
+     <widget class="QLineEdit" name="initialLongEdit"/>
     </item>
-    <item row="20" column="0">
+    <item row="21" column="0">
      <widget class="QLabel" name="label_22">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -433,8 +466,47 @@
       </property>
      </widget>
     </item>
-    <item row="20" column="2">
-     <widget class="QLineEdit" name="initialLongEdit"/>
+    <item row="6" column="3">
+     <widget class="QPushButton" name="shapePathLineEditDialog">
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QPushButton" name="sceneryEditDialog">
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2">
+     <widget class="QSpinBox" name="windowYEdit">
+      <property name="maximum">
+       <number>10000</number>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="2">
+     <widget class="QSpinBox" name="plotRangeEdit">
+      <property name="maximum">
+       <number>200</number>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QSpinBox" name="windowXEdit">
+      <property name="maximum">
+       <number>10000</number>
+      </property>
+     </widget>
+    </item>
+    <item row="18" column="2">
+     <widget class="QSpinBox" name="aprsRangeEdit">
+      <property name="maximum">
+       <number>200</number>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

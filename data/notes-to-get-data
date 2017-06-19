@@ -1,3 +1,0 @@
-wget http://dds.cr.usgs.gov/srtm/version2_1/SRTM3/North_America/N33W104.hgt.zip; unzip *.zip; rm *.zip
-
-

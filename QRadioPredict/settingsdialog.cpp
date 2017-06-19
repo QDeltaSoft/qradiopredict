@@ -66,12 +66,12 @@ void SettingsDialog::fillEmptyFields()
         {
             this->ui->ITMCheckBox->setChecked(true);
         }
-        this->ui->windowXEdit->setText(QString::number(p->_windowX));
-        this->ui->windowYEdit->setText(QString::number(p->_windowY));
+        this->ui->windowXEdit->setValue(p->_windowX);
+        this->ui->windowYEdit->setValue(p->_windowY);
         this->ui->aprsServerEdit->setText(p->_aprs_server);
         this->ui->aprsSettingsEdit->setText(p->_aprs_settings);
-        this->ui->aprsRangeEdit->setText(QString::number(p->_aprs_filter_range));
-        this->ui->plotRangeEdit->setText(QString::number(p->_plot_range));
+        this->ui->aprsRangeEdit->setValue(p->_aprs_filter_range);
+        this->ui->plotRangeEdit->setValue(p->_plot_range);
         this->ui->initialLatEdit->setText(QString::number(p->_init_latitude));
         this->ui->initialLongEdit->setText(QString::number(p->_init_longitude));
         delete p;
@@ -81,6 +81,8 @@ void SettingsDialog::fillEmptyFields()
 
 void SettingsDialog::saveData()
 {
+    qDebug( "Saving Settings" );
+
     FlightgearPrefs *p = new FlightgearPrefs;
     p->_fgfs_bin = this->ui->fgfsEdit->text();
     p->_fgdata_path= this->ui->fgdataEdit->text();
@@ -129,15 +131,60 @@ void SettingsDialog::saveData()
     {
         p->_itm_radio_performance =0;
     }
-    p->_windowX = this->ui->windowXEdit->text().toInt();
-    p->_windowY = this->ui->windowYEdit->text().toInt();
+    p->_windowX = this->ui->windowXEdit->value();
+    p->_windowY = this->ui->windowYEdit->value();
     p->_aprs_server = this->ui->aprsServerEdit->text();
     p->_aprs_settings = this->ui->aprsSettingsEdit->text();
-    p->_aprs_filter_range = this->ui->aprsRangeEdit->text().toInt();
+    p->_aprs_filter_range = this->ui->aprsRangeEdit->value();
     p->_plot_range = this->ui->plotRangeEdit->text().toInt();
     p->_init_latitude = this->ui->initialLatEdit->text().toDouble();
     p->_init_longitude = this->ui->initialLongEdit->text().toDouble();
     _db->savePrefs(p);
     emit updatePlotDistance();
     delete p;
+}
+
+void SettingsDialog::chooseDirectory(QString desc,QLineEdit *field){
+    QString path = QFileDialog::getExistingDirectory(this, desc, ".", QFileDialog::ReadOnly);
+    field->setText(path);
+}
+
+void SettingsDialog::chooseFile(QString desc,QLineEdit *field){
+    QString path = QFileDialog::getOpenFileName(this, desc, ".");
+    field->setText(path);
+}
+
+void SettingsDialog::on_fgDataDirDialog_clicked()
+{
+    chooseDirectory(tr("Flightgear Data Directory"), this->ui->fgdataEdit);
+}
+
+void SettingsDialog::on_sceneryEditDialog_clicked()
+{
+    chooseDirectory(tr("Scenery Directory"), this->ui->sceneryEdit);
+}
+
+void SettingsDialog::on_srtmPathLineEditDialog_clicked()
+{
+    chooseDirectory(tr("SRTM Directory"), this->ui->srtmPathLineEdit);
+}
+
+void SettingsDialog::on_shapePathLineEditDialog_clicked()
+{
+    chooseDirectory(tr("Shapefile Directory"), this->ui->shapePathLineEdit);
+}
+
+void SettingsDialog::on_fgfsEditDialog_clicked()
+{
+    chooseFile(tr("Flightgear Executable"), this->ui->fgfsEdit);
+}
+
+void SettingsDialog::on_AircraftEditDialog_clicked()
+{
+    chooseFile(tr("Aircraft "), this->ui->aircraftEdit);
+}
+
+void SettingsDialog::on_airportEditDialog_clicked()
+{
+    chooseFile(tr("Airport "), this->ui->airportEdit);
 }

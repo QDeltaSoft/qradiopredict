@@ -208,11 +208,15 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
 {
 
     OGRRegisterAll();
+    GDALAllRegister();
+    
     QString file = name;
     file.append(".shp");
-    OGRDataSource       *poDS;
+    GDALDataset       *poDS;
 
-    poDS = OGRSFDriverRegistrar::Open( file.toStdString().c_str(), FALSE );
+    poDS = (GDALDataset *) GDALOpen( file.toStdString().c_str(), GA_ReadOnly  );
+
+    //poDS = OGRSFDriverRegistrar::Open( file.toStdString().c_str(), FALSE, NULL );
     if( poDS == NULL )
     {
         qDebug() << "Shapefile opening failed: " << name;
@@ -225,7 +229,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
     if(poLayer == NULL)
     {
         qDebug() << "Shapefile layer is fubar: " << poLayer->GetName();
-        OGRDataSource::DestroyDataSource( poDS );
+        GDALClose( poDS );
         return QString("None");
     }
 
@@ -277,7 +281,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
                     qDebug() << "Using GEOS for: " << terrain_type;
                     delete [] buffer;
                     OGRFeature::DestroyFeature( poFeature );
-                    OGRDataSource::DestroyDataSource( poDS );
+                    GDALClose( poDS );
                     return terrain_type;
                 }
                 delete[] buffer;
@@ -339,7 +343,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
                 if(poly)
                     delete poly;
                 OGRFeature::DestroyFeature( poFeature );
-                OGRDataSource::DestroyDataSource( poDS );
+                GDALClose( poDS );
                 return terrain_type;
             }
 
@@ -373,7 +377,7 @@ QString ShpReader::openShapefile(QString &name, QString &terrain_type)
         OGRFeature::DestroyFeature( poFeature );
     }
 
-    OGRDataSource::DestroyDataSource( poDS );
+    GDALClose( poDS );
 
     return QString("None");
 }
